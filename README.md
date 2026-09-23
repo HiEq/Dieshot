@@ -42,5 +42,7 @@ tools/            工具脚本：import-dieshot.js（导入压缩）/ build-cata
   ]
 }
 ```
-## 图片主要来源于B站UP @万扯淡https://space.bilibili.com/374034429?spm_id_from=333.788.upinfo.detail.click，@硬件趣玩https://space.bilibili.com/1862917461?spm_id_from=333.337.0.0等
+## 图片主要来源于B站UP
+@万扯淡 https://space.bilibili.com/374034429?spm_id_from=333.788.upinfo.detail.click
+@硬件趣玩 https://space.bilibili.com/1862917461?spm_id_from=333.337.0.0等
 ## Layout由本人完成，如有错误尽请谅解
