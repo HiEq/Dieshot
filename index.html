@@ -122,6 +122,7 @@ button{cursor:pointer;background:none;border:0;padding:0}
 .icon-btn:hover{background:rgba(128,128,128,.12);opacity:1}
 .icon-btn.is-on{background:var(--blue);color:#fff;opacity:1}
 .icon-btn svg{width:17px;height:17px}
+.lang-btn{width:auto;min-width:36px;padding:0 10px;border-radius:980px;font-size:13px;font-weight:600;letter-spacing:.02em}
 .icon-btn .ic-sun{display:none}
 :root[data-theme="dark"] .icon-btn .ic-moon{display:none}
 :root[data-theme="dark"] .icon-btn .ic-sun{display:block}
@@ -524,6 +525,7 @@ footer .sep{opacity:.4}
       <a class="brand" href="https://github.com/HiEq" target="_blank" rel="noopener" title="HiEq 的 GitHub 主页"><img class="avatar" id="brandAvatar" src="https://github.com/HiEq.png?size=64" alt="HiEq"><span id="brandName">HiEq</span></a>
       <nav class="nav-menu" id="navMenu"></nav>
       <div class="nav-right">
+        <button class="icon-btn lang-btn" id="btnLang" title="Switch to English">EN</button>
         <button class="icon-btn" id="btnTheme" title="夜间 / 日间模式">
           <svg class="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
           <svg class="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
@@ -637,7 +639,7 @@ footer .sep{opacity:.4}
     <p class="hint">输入管理口令以解锁上传、编辑与删除功能。访客模式下，图片仅可浏览与下载。</p>
     <div class="field">
       <label for="pw">管理口令</label>
-      <input id="pw" type="password" placeholder="默认口令：layout" autocomplete="current-password">
+      <input id="pw" type="password" placeholder="请输入管理口令" autocomplete="current-password">
     </div>
     <div class="note hidden" id="pwErr">口令不正确，请重试。</div>
     <div class="sheet-foot">
@@ -779,12 +781,135 @@ function $(id){ return document.getElementById(id); }
 function el(tag, cls, txt){ var n=document.createElement(tag); if(cls) n.className=cls; if(txt!=null) n.textContent=txt; return n; }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; }); }
 function toast(msg){
-  var t=$('toast'); t.textContent=msg; t.classList.add('is-on');
+  var t=$('toast'); t.textContent=tr(msg); t.classList.add('is-on');
   clearTimeout(t._h); t._h=setTimeout(function(){ t.classList.remove('is-on'); }, 2600);
 }
 function setTheme(mode){
   document.documentElement.setAttribute('data-theme', mode);
   try{ localStorage.setItem('layout.theme', mode); }catch(e){}
+}
+/* ============================================================
+   多语言（中文 / English）：t() 词条表 + applyI18n 走查 HTML 静态文本
+   ============================================================ */
+var LANG = 'zh';
+var EN = {
+  /* 顶栏与导航 */
+  '首页':'Home', 'Layout 版块':'Layout section', '搜索图片':'Search images', '管理模式':'Admin',
+  '打开管理面板':'Open admin panel', '夜间 / 日间模式':'Toggle dark / light', 'HiEq 的 GitHub 主页':'HiEq on GitHub',
+  '{tags} 家厂商 · {items} 张 Die Shot · 支持搜索与标签筛选':'{tags} makers · {items} die shots · search and filter by tags',
+  '{tags} 家厂商 · {items} 张裸片影像 · 支持搜索与标签筛选':'{tags} makers · {items} die shots · search and filter by tags',
+  /* Layout 版块 */
+  '搜索标题、描述或标签':'Search title, description or tags', '最新在前':'Newest first', '最早在前':'Oldest first',
+  '按标题排序':'Sort by title', '全部':'All',
+  '{shown} / {total} 张':'{shown} / {total} photos', '{i} / {n}':'{i} / {n}',
+  '没有匹配的图片':'No matching images', '还没有图片':'No images yet',
+  '换个关键词或标签试试。':'Try another keyword or tag.', '进入管理模式':'Enter admin',
+  '切换到管理模式，点击右上角「＋」即可上传第一批图片。':'Switch to admin mode and use the ＋ button to upload your first images.',
+  '仅本机':'Local only', '仅本机可见':'local only', '点击查看大图':'Click to enlarge',
+  /* 灯箱 */
+  '关闭 (Esc)':'Close (Esc)', '上一张 (←)':'Previous (←)', '下一张 (→)':'Next (→)',
+  '编辑信息':'Edit info', '删除':'Delete', '下载原图':'Download original',
+  /* 管理登录 */
+  '输入管理口令以解锁上传、编辑与删除功能。访客模式下，图片仅可浏览与下载。':'Enter the admin password to unlock upload, edit and delete. Visitors can browse and download only.',
+  '管理口令':'Password', '请输入管理口令':'Enter password', '口令不正确，请重试。':'Wrong password, please try again.',
+  '取消':'Cancel', '解锁':'Unlock', '保存':'Save', '完成':'Done',
+  /* 编辑弹窗 */
+  '修改图片的标题、描述与标签，保存后立即生效。':'Edit the title, description and tags; changes apply immediately.',
+  '标题':'Title', '描述':'Description', '标签':'Tags', '图片标题':'Image title', '描述（可留空）':'Description (optional)',
+  '用逗号分隔，如：示例, 渐变':'Comma separated, e.g. chip, gpu',
+  /* 管理面板 */
+  '图库管理':'Gallery admin', '添加图片':'Add images', '点击选择图片':'Click to select images',
+  '，或把图片拖到这里':', or drag images here',
+  '也支持 Ctrl / ⌘ + V 粘贴截图 · JPG / PNG / GIF / WebP / SVG':'Also supports Ctrl / ⌘ + V to paste screenshots · JPG / PNG / GIF / WebP / SVG',
+  '导出 gallery.json':'Export gallery.json', '保存到图库':'Save to gallery', '待保存':'pending',
+  '接口设置（GitHub 仓库）':'API settings (GitHub repository)',
+  'Personal Access Token':'Personal Access Token', '仓库所有者 / 仓库名':'Owner / repository',
+  '分支':'Branch', '图片目录':'Image directory', '清单文件路径':'Manifest path',
+  '测试连接':'Test connection', '保存设置':'Save settings', '修改管理口令':'Change password',
+  '新的管理口令（至少 4 位）':'New password (min 4 chars)', '更新口令':'Update password',
+  '当前图库':'Current gallery', '补齐缩略图':'Backfill thumbnails', '重新加载清单':'Reload manifest',
+  '退出管理模式':'Exit admin',
+  /* 页脚 */
+  '由 GitHub Pages 托管 · 单文件静态站':'Hosted on GitHub Pages · single-file static site',
+  '厂商目录清单':'Catalog',
+  /* 动态文案模板 */
+  '{shown} / {total} 张':'{shown} / {total} photos', '待保存':'pending', '处理中…':'working…', '已完成':'done',
+  '已提交':'committed', '已存本机':'saved locally',
+  '当前为「仓库模式」：保存后将通过 GitHub 接口提交到 {repo}（{branch} 分支）。':'Repo mode: changes are committed to {repo} ({branch}) via the GitHub API.',
+  '当前为「本机模式」：改动只保存在这台设备上。填写下方 GitHub 接口设置后，即可把图片与清单直接提交到仓库。':'Local mode: changes stay on this device. Fill in the GitHub settings below to publish images and the manifest.',
+  '共 {n} 张图片，其中本机 {m} 张':'{n} images, {m} local-only',
+  '缩略图进度 {a} / {b}':'Thumbnails {a} / {b}',
+  '保存 {n} 张到图库':'Save {n} images',
+  '正在使用<b>本机草稿</b>（{n} 项）。配置 GitHub 接口后保存即可上线，或点击「导出 gallery.json」手动提交到仓库。':'Using a <b>local draft</b> ({n} items). Configure the GitHub API to publish, or export gallery.json and commit it manually.'
+};
+/* 一次性/带变量的文案（toast、confirm 等）按模式翻译 */
+var DYN = [
+  [/^已开始下载 (.+)$/, 'Downloading $1'],
+  [/^已跳过非图片文件：(.+)$/, 'Skipped non-image file: $1'],
+  [/^已加入 (\d+) 张，正在后台生成缩略图…$/, 'Added $1 images — generating thumbnails in background…'],
+  [/^已粘贴 (\d+) 张图片$/, 'Pasted $1 images'],
+  [/^已删除「(.+)」$/, 'Deleted "$1"'],
+  [/^确定删除「(.+)」？此操作不可撤销。$/, 'Delete "$1"? This cannot be undone.'],
+  [/^删除失败：(.+)$/, 'Delete failed: $1'],
+  [/^失败：(.+)$/, 'failed: $1'],
+  [/^同步失败（(\d+)）：(.+)$/, 'Sync failed ($1): $2'],
+  [/^连接失败（(\d+)）：(.+)$/, 'Connection failed ($1): $2'],
+  [/^连接成功：(.+)（权限 (.+)）$/, 'Connected: $1 (access: $2)'],
+  [/^开始为 (\d+) 张图片生成缩略图…$/, 'Generating thumbnails for $1 images…'],
+  [/^已补齐 (\d+) 张缩略图$/, 'Backfilled $1 thumbnails'],
+  [/^正在准备下载…$/, 'Preparing download…'],
+  [/^信息已更新$/, 'Info updated'],
+  [/^已同步到 GitHub 仓库$/, 'Synced to GitHub repo'],
+  [/^已保存到本机草稿（未连接 GitHub）$/, 'Saved as local draft (GitHub not connected)'],
+  [/^已导出 gallery\.json，可直接提交到仓库根目录$/, 'Exported gallery.json — commit it to the repo root'],
+  [/^所有图片都已有缩略图$/, 'All images already have thumbnails'],
+  [/^已重新加载清单$/, 'Manifest reloaded'],
+  [/^口令至少 4 位$/, 'Password must be at least 4 characters'],
+  [/^已进入管理模式$/, 'Admin mode unlocked'],
+  [/^已退出管理模式$/, 'Exited admin mode'],
+  [/^正在连接…$/, 'Connecting…'],
+  [/^请先填写 Token 与仓库名。$/, 'Fill in the token and repository first.'],
+  [/^已保存，之后的改动会直接提交到仓库。$/, 'Saved — future changes are committed to the repo.'],
+  [/^已保存，但 Token 或仓库名为空，仍处于本机模式。$/, 'Saved, but token/repo is empty — still in local mode.']
+];
+function tr(msg){
+  if(LANG !== 'en') return msg;
+  var e = EN[msg];
+  if(e) return e;
+  for(var i = 0; i < DYN.length; i++){
+    var m = msg.match(DYN[i][0]);
+    if(m) return DYN[i][1].replace(/\$(\d)/g, function(_, k){ return m[+k] || ''; });
+  }
+  return msg;
+}
+function t(s){ return (LANG === 'en' ? (EN[s] || s) : s); }
+/* 走查 DOM 翻译 HTML 静态文本 / placeholder / title（原文存在节点上，可切回中文） */
+function applyI18n(){
+  var walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+  var n;
+  while((n = walk.nextNode())){
+    if(n._zh == null) n._zh = n.nodeValue;
+    var m = n._zh.match(/^(\s*)([\s\S]*?)(\s*)$/);
+    if(m && m[2]) n.nodeValue = m[1] + t(m[2]) + m[3];
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[placeholder]'), function(el){
+    if(el._zhPh == null) el._zhPh = el.getAttribute('placeholder');
+    el.setAttribute('placeholder', t(el._zhPh));
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('[title]'), function(el){
+    if(el._zhTi == null) el._zhTi = el.getAttribute('title');
+    el.setAttribute('title', t(el._zhTi));
+  });
+}
+function setLang(l){
+  LANG = (l === 'en') ? 'en' : 'zh';
+  try{ localStorage.setItem('layout.lang', LANG); }catch(e){}
+  document.documentElement.setAttribute('data-lang', LANG);
+  $('btnLang').textContent = (LANG === 'en') ? '中' : 'EN';
+  $('btnLang').title = (LANG === 'en') ? '切换到中文' : 'Switch to English';
+  applyI18n();
+  buildNav();
+  route();
 }
 function uid(){ return 'i' + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
 function safeName(name){
@@ -1017,7 +1142,7 @@ function buildNav(){
   NAV.forEach(function(n){
     var a = el('a', 'nav-item' + (n.menu ? ' has-menu' : ''), null);
     a.href = n.href; a.dataset.nav = n.id;
-    a.appendChild(document.createTextNode(n.label));
+    a.appendChild(document.createTextNode(t(n.label)));
     if(n.menu){
       var svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
       svg.setAttribute('viewBox','0 0 24 24'); svg.setAttribute('fill','none');
@@ -1038,7 +1163,7 @@ function openMenu(n){
   menuOpenFor = n.id;
   var inner = $('megamenuInner');
   inner.innerHTML = '';
-  inner.appendChild(el('div','mm-lead', n.menu.title));
+  inner.appendChild(el('div','mm-lead', t(n.menu.title)));
   var grid = el('div','mm-grid');
   n.menu.links.forEach(function(l){
     var card = el('a','mm-card'); card.href = '#/layout';
@@ -1047,7 +1172,7 @@ function openMenu(n){
     th.appendChild(img);
     var box = el('div');
     box.appendChild(el('div','mm-name', l.name));
-    box.appendChild(el('div','mm-desc', fmtTpl(l.desc)));
+    box.appendChild(el('div','mm-desc', fmtTpl(t(l.desc))));
     card.appendChild(th); card.appendChild(box);
     card.addEventListener('click', closeMenu);
     grid.appendChild(card);
@@ -1070,12 +1195,15 @@ function stats(){
   state.items.forEach(function(it){ (it.tags || []).forEach(function(t){ tags[t] = 1; }); });
   return {items: state.items.length, tags: Object.keys(tags).length};
 }
-function fmtTpl(s){
+function fmtTpl(s, extra){
   var st = stats();
-  return String(s || '').replace(/\{(items|tags)\}/g, function(m, k){ return String(st[k]); });
+  return String(s || '').replace(/\{(\w+)\}/g, function(m, k){
+    if(extra && extra[k] != null) return String(extra[k]);
+    return st[k] != null ? String(st[k]) : m;
+  });
 }
 function renderCounts(){
-  $('layoutSub').textContent = fmtTpl(LAYOUT_SUB_TPL);
+  $('layoutSub').textContent = fmtTpl(t(LAYOUT_SUB_TPL));
 }
 function firstImage(){
   var it = filteredItems()[0] || state.items[0];
@@ -1283,7 +1411,7 @@ function getCard(it){
   card.dataset.cardId = it.id;
   card.setAttribute('role', 'button');
   card.tabIndex = 0;
-  card.title = '点击查看大图';
+  card.title = t('点击查看大图');
   card.addEventListener('keydown', function(e){
     if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openFromCard(it); }
   });
@@ -1368,12 +1496,12 @@ function applyFilter(){
     if(node) node.classList.toggle('is-off', !hit);   /* 只切显隐：不动 DOM、不解码图片 */
   }
   state.visible = visible;               /* 点击开灯箱直接用，免得点击时再算一遍 */
-  $('count').textContent = shown + ' / ' + state.items.length + ' 张';
+  $('count').textContent = fmtTpl(t('{shown} / {total} 张'), {shown: shown, total: state.items.length});
   var isEmpty = shown === 0;
   $('empty').classList.toggle('hidden', !isEmpty);
   if(isEmpty){
-    $('emptyTitle').textContent = state.items.length ? '没有匹配的图片' : '还没有图片';
-    $('emptyText').textContent = state.items.length ? '换个关键词或标签试试。' : '切换到管理模式，点击右上角「＋」即可上传第一批图片。';
+    $('emptyTitle').textContent = t(state.items.length ? '没有匹配的图片' : '还没有图片');
+    $('emptyText').textContent = t(state.items.length ? '换个关键词或标签试试。' : '切换到管理模式，点击右上角「＋」即可上传第一批图片。');
     $('emptyAdminBtn').classList.toggle('hidden', state.admin);
   }
 }
@@ -1382,12 +1510,12 @@ function renderChips(){
   var counts = {};
   state.items.forEach(function(it){ it.tags.forEach(function(t){ counts[t] = (counts[t]||0)+1; }); });
   var tags = Object.keys(counts).sort(COLL.compare.bind(COLL));
-  var sig = tags.map(function(t){ return t + ':' + counts[t]; }).join('|') + '#' + state.filter.tag;
+  var sig = tags.map(function(t){ return t + ':' + counts[t]; }).join('|') + '#' + state.filter.tag + '#' + LANG;
   if(sig === chipsSig) return;      /* 标签没变化就不重建筛选条 */
   chipsSig = sig;
   var box = $('chips');
   box.innerHTML = '';
-  var all = el('button', 'chip' + (state.filter.tag ? '' : ' is-on'), '全部');
+  var all = el('button', 'chip' + (state.filter.tag ? '' : ' is-on'), t('全部'));
   all.addEventListener('click', function(){ state.filter.tag = ''; renderChips(); applyFilter(); });
   box.appendChild(all);
   tags.forEach(function(t){
@@ -1417,7 +1545,7 @@ function showLb(){
   $('lbTitle').textContent = it.title;
   $('lbDesc').textContent = it.desc || '';
   $('lbDesc').style.display = it.desc ? '' : 'none';
-  $('lbPos').textContent = (state.lb.idx + 1) + ' / ' + state.lb.list.length;
+  $('lbPos').textContent = fmtTpl(t('{i} / {n}'), {i: state.lb.idx + 1, n: state.lb.list.length});
   $('lbPrev').style.visibility = state.lb.list.length > 1 ? 'visible' : 'hidden';
   $('lbNext').style.visibility = state.lb.list.length > 1 ? 'visible' : 'hidden';
   $('lbEdit').classList.toggle('hidden', !state.admin);
@@ -1509,7 +1637,7 @@ function preloadNeighbors(){
 function paintFacts(facts, it){
   var f = $('lbFacts'); f.innerHTML = '';
   facts.filter(Boolean).forEach(function(x){ f.appendChild(el('span', null, x)); });
-  if(it.local) f.appendChild(el('span', null, '仅本机可见'));
+  if(it.local) f.appendChild(el('span', null, t('仅本机可见')));
 }
 function closeLightbox(){
   $('lightbox').classList.remove('is-open');
@@ -1587,10 +1715,10 @@ function openPanel(){
   $('ghDir').value = c.dir || 'images';
   $('ghManifest').value = c.manifest || 'gallery.json';
   $('panelHint').textContent = ghReady()
-    ? '当前为「仓库模式」：保存后将通过 GitHub 接口提交到 ' + c.owner + '（' + (c.branch||'main') + ' 分支）。'
-    : '当前为「本机模式」：改动只保存在这台设备上。填写下方 GitHub 接口设置后，即可把图片与清单直接提交到仓库。';
-  $('panelStat').textContent = '共 ' + state.items.length + ' 张图片，其中本机 ' +
-    state.items.filter(function(i){ return i.local; }).length + ' 张';
+    ? fmtTpl(t('当前为「仓库模式」：保存后将通过 GitHub 接口提交到 {repo}（{branch} 分支）。'), {repo: c.owner, branch: c.branch || 'main'})
+    : t('当前为「本机模式」：改动只保存在这台设备上。填写下方 GitHub 接口设置后，即可把图片与清单直接提交到仓库。');
+  $('panelStat').textContent = fmtTpl(t('共 {n} 张图片，其中本机 {m} 张'),
+    {n: state.items.length, m: state.items.filter(function(i){ return i.local; }).length});
   renderDraftNote();
   renderQueue();
   $('modalPanel').classList.add('is-open');
@@ -1599,8 +1727,8 @@ function renderDraftNote(){
   var n = $('draftNote');
   if(state.draft){
     n.classList.remove('hidden');
-    n.innerHTML = '正在使用<b>本机草稿</b>（' + state.items.filter(function(i){return !i.local;}).length +
-      ' 项）。配置 GitHub 接口后保存即可上线，或点击「导出 gallery.json」手动提交到仓库。';
+    n.innerHTML = fmtTpl(t('正在使用<b>本机草稿</b>（{n} 项）。配置 GitHub 接口后保存即可上线，或点击「导出 gallery.json」手动提交到仓库。'),
+      {n: state.items.filter(function(i){ return !i.local; }).length});
   }else{
     n.classList.add('hidden');
   }
@@ -1719,7 +1847,7 @@ function renderQueue(){
 
     var head = el('div','q-head');
     var nm = el('div','q-name', q.name + ' · ' + fmtSize(q.size) + (q.w && q.h ? ' · ' + q.w + ' × ' + q.h : ''));
-    var stTxt = q.phase === 'busy' ? '处理中…' : (q.phase === 'ok' ? (q.state || '已完成') : (q.phase === 'err' ? q.state : '待保存'));
+    var stTxt = q.phase === 'busy' ? t('处理中…') : (q.phase === 'ok' ? tr(q.state || '已完成') : (q.phase === 'err' ? tr(q.state) : t('待保存')));
     var st = el('div', 'q-state' + (q.phase === 'ok' ? ' ok' : (q.phase === 'err' ? ' err' : '')), stTxt);
     var x = el('button','q-x');
     x.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
@@ -1738,7 +1866,7 @@ function renderQueue(){
     box.appendChild(row);
   });
   $('btnCommit').disabled = state.queue.length === 0;
-  $('btnCommit').textContent = state.queue.length ? ('保存 ' + state.queue.length + ' 张到图库') : '保存到图库';
+  $('btnCommit').textContent = state.queue.length ? fmtTpl(t('保存 {n} 张到图库'), {n: state.queue.length}) : t('保存到图库');
 }
 async function commitQueue(){
   if(!state.admin) return;      /* 写操作仅限管理模式 */
@@ -1753,17 +1881,17 @@ async function commitQueue(){
       q.phase = 'busy'; renderQueue();
       var tags = q.tags.split(/[,，]/).map(function(s){ return s.trim(); }).filter(Boolean);
       /* 缩略图：队列阶段已生成就直接复用，避免重复解码大图；生成失败也不影响原图上传 */
-      var t = null;
+      var th = null;
       try{
-        t = (q.thumbBlob ? {blob:q.thumbBlob, w:q.w, h:q.h, url:q.thumb} : await makeThumb(q.file));
+        th = (q.thumbBlob ? {blob:q.thumbBlob, w:q.w, h:q.h, url:q.thumb} : await makeThumb(q.file));
       }catch(e){
-        t = {blob:null, w:q.w, h:q.h, url:q.thumb || ''};
+        th = {blob:null, w:q.w, h:q.h, url:q.thumb || ''};
       }
       var buf = await q.file.arrayBuffer();
       var item = {
         id: uid(), title: q.title || '未命名', desc: q.desc || '', tags: tags,
         name: q.name, size: q.size, addedAt: new Date().toISOString(),
-        w: t.w || q.w || 0, h: t.h || q.h || 0
+        w: th.w || q.w || 0, h: th.h || q.h || 0
       };
       if(mode === 'github'){
         var date = new Date();
@@ -1774,19 +1902,19 @@ async function commitQueue(){
         item.src = path;
         item.file = path;
         /* 原图旁生成缩略图文件，访客预览只加载它 */
-        if(t.blob){
+        if(th.blob){
           var tpath = thumbName(path);
-          var putT = await ghPutFile(tpath, await t.blob.arrayBuffer(), 'add ' + tpath);
+          var putT = await ghPutFile(tpath, await th.blob.arrayBuffer(), 'add ' + tpath);
           if(putT.ok) item.thumb = tpath;
         }
       }else{
         await IDB.put(item.id, q.file);
-        if(t.blob) await IDB.put(item.id + ':thumb', t.blob);
+        if(th.blob) await IDB.put(item.id + ':thumb', th.blob);
         var ids = lsGet(LS.localIds, []); ids.unshift(item.id); lsSet(LS.localIds, ids);
         var meta = lsGet(LS.localMeta, {});
         meta[item.id] = {title:item.title, desc:item.desc, tags:item.tags, name:item.name, w:item.w, h:item.h, addedAt:item.addedAt};
         lsSet(LS.localMeta, meta);
-        item.thumb = t.url || q.thumb || '';
+        item.thumb = th.url || q.thumb || '';
         item.src = '';            /* 原图按需读取，避免大量大图常驻内存 */
         item.local = true;
       }
@@ -1806,14 +1934,14 @@ async function commitQueue(){
     renderGallery();
   }
   $('btnCommit').disabled = state.queue.length === 0;
-  $('panelStat').textContent = '共 ' + state.items.length + ' 张图片，其中本机 ' +
-    state.items.filter(function(i){ return i.local; }).length + ' 张';
+  $('panelStat').textContent = fmtTpl(t('共 {n} 张图片，其中本机 {m} 张'),
+    {n: state.items.length, m: state.items.filter(function(i){ return i.local; }).length});
 }
 
 /* ---------- 管理：删除 / 编辑 ---------- */
 async function deleteItem(it){
   if(!state.admin) return;
-  if(!confirm('确定删除「' + it.title + '」？此操作不可撤销。')) return;
+  if(!confirm(tr('确定删除「' + it.title + '」？此操作不可撤销。'))) return;
   try{
     if(it.local){
       await IDB.del(it.id);
@@ -1876,9 +2004,9 @@ async function backfillThumbs(){
   for(var i = 0; i < targets.length; i++){
     var it = targets[i];
     try{
-      var t = null;
+      var th = null;
       if(it._thumbBlob){                   /* 浏览时已压好：直接复用，不再下载原图 */
-        t = {blob: it._thumbBlob, w: it.w, h: it.h, url: it._thumbUrl || ''};
+        th = {blob: it._thumbBlob, w: it.w, h: it.h, url: it._thumbUrl || ''};
       }else{
         var src = await ensureSrc(it);
         var blob = null;
@@ -1889,26 +2017,26 @@ async function backfillThumbs(){
           if(res.ok) blob = await res.blob();
         }
         if(!blob) throw new Error('取不到原图');
-        t = await makeThumb(blob);
+        th = await makeThumb(blob);
       }
-      if(!t.blob) throw new Error('缩略图生成失败');
+      if(!th.blob) throw new Error('缩略图生成失败');
       if(it.local){
         await IDB.put(it.id + ':thumb', t.blob);
         var meta = lsGet(LS.localMeta, {});
         meta[it.id] = Object.assign({}, meta[it.id], {w:t.w, h:t.h});
         lsSet(LS.localMeta, meta);
-        it.thumb = t.url;
+        it.thumb = th.url;
       }else if(ghReady() && (it.file || it.src)){
         var tp = thumbName(it.file || it.src);
-        var r = await ghPutFile(tp, await t.blob.arrayBuffer(), 'add ' + tp);
+        var r = await ghPutFile(tp, await th.blob.arrayBuffer(), 'add ' + tp);
         if(!r.ok) throw new Error((r.data && r.data.message) || ('HTTP ' + r.status));
         it.thumb = tp;
       }else{
-        it.thumb = t.url;      /* 未连接仓库：本次会话生效，导出清单后需自行上传缩略图 */
+        it.thumb = th.url;      /* 未连接仓库：本次会话生效，导出清单后需自行上传缩略图 */
       }
-      it.w = t.w || it.w; it.h = t.h || it.h;
+      it.w = th.w || it.w; it.h = th.h || it.h;
       done++;
-      $('panelStat').textContent = '缩略图进度 ' + done + ' / ' + targets.length;
+      $('panelStat').textContent = fmtTpl(t('缩略图进度 {a} / {b}'), {a: done, b: targets.length});
     }catch(e){ /* 跳过失败项，继续处理下一张 */ }
     await new Promise(function(r){ setTimeout(r, 0); });   /* 让出主线程，界面不卡 */
   }
@@ -2095,6 +2223,9 @@ function bind(){
     setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
   });
 
+  /* 中 / EN 切换 */
+  $('btnLang').addEventListener('click', function(){ setLang(LANG === 'en' ? 'zh' : 'en'); });
+
   /* 点击遮罩关闭（编辑弹窗除外：只能用「取消」/「保存」关闭，防误触丢改动） */
   ['modalLogin','modalPanel'].forEach(function(id){
     $(id).addEventListener('click', function(e){ if(e.target === $(id)) $(id).classList.remove('is-open'); });
@@ -2108,7 +2239,9 @@ function bind(){
   buildNav();
   bind();
   await loadManifest();
-  route();
+  var savedLang = '';
+  try{ savedLang = localStorage.getItem('layout.lang') || ''; }catch(e){}
+  setLang(savedLang || ((navigator.language || '').toLowerCase().indexOf('en') === 0 ? 'en' : 'zh'));
 })();
 
 })();
