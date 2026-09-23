@@ -602,7 +602,7 @@ footer .sep{opacity:.4}
   <section class="view" id="view-layout">
     <div class="wrap section-head">
       <h2>Layout</h2>
-      <div class="sub">26 家厂商 · 219 张裸片影像 · 支持搜索与标签筛选</div>
+      <div class="sub" id="layoutSub">{tags} 家厂商 · {items} 张裸片影像 · 支持搜索与标签筛选</div>
     </div>
     <div class="toolbar">
       <div class="toolbar-inner">
@@ -804,7 +804,7 @@ var DEFAULT_CFG = {
 
 /* ---------- 状态 ---------- */
 var state = {
-  site:{title:'Layout', sub:'Die Shot 裸片图库：26 家厂商 · 219 张裸片显微影像。', brand:'HiEq', avatar:'https://github.com/HiEq.png?size=64'},
+  site:{title:'Layout', sub:'Die Shot 裸片图库：{tags} 家厂商 · {items} 张裸片显微影像。', brand:'HiEq', avatar:'https://github.com/HiEq.png?size=64'},
   cfg: JSON.parse(JSON.stringify(DEFAULT_CFG)),
   items: [],
   filter:{q:'', tag:'', sort:'new'},
@@ -1054,7 +1054,7 @@ var NAV = [
   {id:'layout', label:'Layout', href:'#/layout', menu:{
       title:'Layout 版块',
       lead:'陈列、浏览与下载全部图片',
-      links:[{id:'layout', name:'Layout', desc:'26 家厂商 · 219 张 Die Shot · 支持搜索与标签筛选'}]
+      links:[{id:'layout', name:'Layout', desc:'{tags} 家厂商 · {items} 张 Die Shot · 支持搜索与标签筛选'}]
   }}
   /* 以后新增版块：在这里追加一项，并新建对应的视图区块 */
 ];
@@ -1095,7 +1095,7 @@ function openMenu(n){
     th.appendChild(img);
     var box = el('div');
     box.appendChild(el('div','mm-name', l.name));
-    box.appendChild(el('div','mm-desc', l.desc));
+    box.appendChild(el('div','mm-desc', fmtTpl(l.desc)));
     card.appendChild(th); card.appendChild(box);
     card.addEventListener('click', closeMenu);
     grid.appendChild(card);
@@ -1110,6 +1110,21 @@ function closeMenu(){
   menuOpenFor = null;
   $('megamenu').classList.remove('is-open');
   Array.prototype.forEach.call(document.querySelectorAll('.nav-item'), function(a){ a.classList.remove('is-open'); });
+}
+/* ---------- 实时统计：{tags} 厂商数 / {items} 图片数，随增删即时更新 ---------- */
+var LAYOUT_SUB_TPL = '{tags} 家厂商 · {items} 张裸片影像 · 支持搜索与标签筛选';
+function stats(){
+  var tags = {};
+  state.items.forEach(function(it){ (it.tags || []).forEach(function(t){ tags[t] = 1; }); });
+  return {items: state.items.length, tags: Object.keys(tags).length};
+}
+function fmtTpl(s){
+  var st = stats();
+  return String(s || '').replace(/\{(items|tags)\}/g, function(m, k){ return String(st[k]); });
+}
+function renderCounts(){
+  $('heroSub').textContent = fmtTpl(state.site.sub);
+  $('layoutSub').textContent = fmtTpl(LAYOUT_SUB_TPL);
 }
 function firstImage(){
   var it = filteredItems()[0] || state.items[0];
@@ -1246,7 +1261,7 @@ function route(){
 /* ---------- 渲染：首页 ---------- */
 function renderHome(){
   $('heroTitle').textContent = state.site.title || 'Layout';
-  $('heroSub').textContent = state.site.sub || '';
+  renderCounts();
   $('brandName').textContent = state.site.brand || 'HiEq';
   if(state.site.avatar) $('brandAvatar').src = state.site.avatar;
   $('footName').textContent = state.site.title || 'Layout';
@@ -1424,6 +1439,7 @@ function getCard(it){
   return card;
 }
 function renderGallery(){
+  renderCounts();
   renderChips();
   syncOrder();
 }

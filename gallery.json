@@ -2,7 +2,7 @@
   "version": 1,
   "site": {
     "title": "Layout",
-    "sub": "Die Shot 裸片图库：26 家厂商 · 219 张裸片显微影像。",
+    "sub": "Die Shot 裸片图库：{tags} 家厂商 · {items} 张裸片显微影像。",
     "brand": "HiEq",
     "avatar": "https://github.com/HiEq.png?size=64"
   },
