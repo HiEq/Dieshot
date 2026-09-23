@@ -595,7 +595,7 @@ footer .sep{opacity:.4}
         </div>
       </div>
     </div>
-    <div class="wrap showcase"><div class="showcase-grid" id="showcase"></div></div>
+    <div class="wrap showcase" id="showcaseBox"><div class="showcase-grid" id="showcase"></div></div>
   </section>
 
   <!-- ================= Layout 版块 ================= -->
@@ -1280,20 +1280,28 @@ function randomPicks(n){
   return arr.slice(0, n);
 }
 /* 展示条滚动引擎：自动横移 + 滚轮可控挑选；双份内容到一半即无缝回绕 */
-var scBox = null, scHalf = 0, scHover = false, scHold = 0;
+var scBox = null, scHalf = 0, scPos = 0, scHover = false, scHold = 0;
 var REDUCED = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
-function showcaseMetrics(){ if(scBox) scHalf = scBox.scrollWidth / 2; }
-function showcaseWrap(){ if(scHalf > 0 && scBox.scrollLeft >= scHalf) scBox.scrollLeft -= scHalf; }
+function showcaseMetrics(){
+  if(scBox){ scHalf = scBox.scrollWidth / 2; scPos = scBox.scrollLeft; }
+}
+function showcaseWrap(){                    /* 双份内容 → 越过一半即无缝回绕 */
+  if(scHalf > 0 && scPos >= scHalf) scPos -= scHalf;
+  if(scBox) scBox.scrollLeft = scPos;
+}
 function initShowcase(){
-  scBox = $('showcase');
+  scBox = $('showcaseBox');                 /* 注意：滚动容器是外层 showcaseBox，内层是双份内容轨道 */
   scBox.addEventListener('wheel', function(e){
     if(scBox.scrollWidth <= scBox.clientWidth) return;
     var d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-    e.preventDefault();                      /* 指针停在展示条上：滚轮左右浏览，便于挑图点击 */
-    scBox.scrollLeft += d;
-    scHold = Date.now() + 1600;              /* 手动浏览时暂停自动滚动 */
+    e.preventDefault();                    /* 指针停在展示条上：滚轮左右浏览，便于挑图点击 */
+    scPos = scBox.scrollLeft + d;
+    scHold = Date.now() + 1600;            /* 手动浏览时暂停自动滚动 */
     showcaseWrap();
   }, {passive:false});
+  scBox.addEventListener('scroll', function(){
+    if(Math.abs(scBox.scrollLeft - scPos) > 1){ scPos = scBox.scrollLeft; showcaseWrap(); }
+  });
   scBox.addEventListener('mouseenter', function(){ scHover = true; });
   scBox.addEventListener('mouseleave', function(){ scHover = false; });
   scBox.addEventListener('pointerdown', function(){ scHold = Date.now() + 2600; });
@@ -1301,7 +1309,8 @@ function initShowcase(){
   (function tick(){
     requestAnimationFrame(tick);
     if(scHover || Date.now() < scHold || document.hidden || !scBox) return;
-    scBox.scrollLeft += 0.45;
+    if(!scHalf){ showcaseMetrics(); if(!scHalf) return; }   /* 内容未就绪时自测量宽度 */
+    scPos += 0.5;                          /* 浮点位置累加，避免部分浏览器 scrollLeft 取整后卡死 */
     showcaseWrap();
   })();
 }
