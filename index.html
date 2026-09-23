@@ -122,7 +122,6 @@ button{cursor:pointer;background:none;border:0;padding:0}
 .icon-btn:hover{background:rgba(128,128,128,.12);opacity:1}
 .icon-btn.is-on{background:var(--blue);color:#fff;opacity:1}
 .icon-btn svg{width:17px;height:17px}
-.lang-btn{width:auto;min-width:36px;padding:0 10px;border-radius:980px;font-size:13px;font-weight:600;letter-spacing:.02em}
 .icon-btn .ic-sun{display:none}
 :root[data-theme="dark"] .icon-btn .ic-moon{display:none}
 :root[data-theme="dark"] .icon-btn .ic-sun{display:block}
@@ -490,6 +489,61 @@ footer{
 footer .wrap{padding-top:26px;padding-bottom:30px;display:flex;gap:18px;flex-wrap:wrap;align-items:center}
 footer .sep{opacity:.4}
 
+/* ---------- 液态玻璃质感 + Apple 式动效（覆写层） ---------- */
+:root{--spring:cubic-bezier(.2,.9,.25,1.06);--ease:cubic-bezier(.2,.8,.2,1)}
+/* 中 / EN 并排分段切换：玻璃底 + 滑块平移 */
+.seg{
+  position:relative;display:inline-flex;align-items:center;height:32px;padding:3px;border-radius:980px;
+  background:var(--glass-strong);
+  -webkit-backdrop-filter:saturate(180%) blur(18px);backdrop-filter:saturate(180%) blur(18px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.32), inset 0 0 0 1px var(--hairline), 0 2px 10px rgba(0,0,0,.08);
+}
+.seg-opt{
+  position:relative;z-index:1;min-width:42px;height:26px;border-radius:980px;
+  font-size:12.5px;font-weight:600;letter-spacing:.02em;color:var(--fg2);
+  transition:color .25s var(--ease),transform .18s var(--spring);
+}
+.seg-opt:hover{color:var(--fg)}
+.seg-opt.is-on{color:var(--fg)}
+.seg-opt:active{transform:scale(.93)}
+.seg-thumb{
+  position:absolute;top:3px;left:3px;z-index:0;height:26px;border-radius:980px;
+  background:var(--bg-elev);
+  box-shadow:0 1px 5px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.45);
+  transition:transform .34s var(--spring), width .34s var(--spring);
+}
+/* 液态玻璃矩形：镜面高光 + 发丝描边（悬浮层带真实模糊，平铺层用颜色模拟以免耗性能） */
+.dd-btn,.btn,.field input,.field textarea,.field select,.q-body input,.q-body textarea,.q-item,.dropzone,.note{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28), inset 0 0 0 1px var(--hairline);
+}
+.dd-btn{
+  background:var(--glass-strong);border-radius:980px;
+  -webkit-backdrop-filter:saturate(180%) blur(14px);backdrop-filter:saturate(180%) blur(14px);
+}
+.field input,.field textarea,.field select,.q-body input,.q-body textarea{
+  border-radius:14px;border-color:transparent;background:var(--bg-alt);
+  transition:background .2s var(--ease),box-shadow .2s var(--ease);
+}
+.field input:focus,.field textarea:focus,.field select:focus,.q-body input:focus,.q-body textarea:focus{
+  border-color:transparent;background:var(--bg);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28), 0 0 0 3.5px rgba(0,113,227,.18);
+}
+.q-item{border-radius:18px;border-color:transparent;background:var(--bg-alt)}
+.dropzone{border-radius:22px}
+.note{border-radius:16px}
+.card{border-radius:20px;border-color:transparent}
+.card::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:2;
+  background:linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,0) 32%);
+}
+.card:hover{transform:translateY(-6px) scale(1.012)}
+.card:active{transform:scale(.985);transition-duration:.08s}
+.btn{box-shadow:inset 0 1px 0 rgba(255,255,255,.28), 0 1px 3px rgba(0,0,0,.12)}
+.btn:active{transform:scale(.96);transition-duration:.08s}
+.act{box-shadow:0 2px 10px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.4)}
+.sheet{border-radius:26px}
+.dd-menu{border-radius:18px}
+
 @media (max-width:640px){
   .nav-menu{gap:0}
   .nav-item{padding:6px 9px}
@@ -525,7 +579,11 @@ footer .sep{opacity:.4}
       <a class="brand" href="https://github.com/HiEq" target="_blank" rel="noopener" title="HiEq 的 GitHub 主页"><img class="avatar" id="brandAvatar" src="https://github.com/HiEq.png?size=64" alt="HiEq"><span id="brandName">HiEq</span></a>
       <nav class="nav-menu" id="navMenu"></nav>
       <div class="nav-right">
-        <button class="icon-btn lang-btn" id="btnLang" title="Switch to English">EN</button>
+        <div class="seg" id="langSeg" role="group" aria-label="语言 / Language">
+          <button class="seg-opt" data-lang="zh">中</button>
+          <button class="seg-opt" data-lang="en">EN</button>
+          <span class="seg-thumb" id="segThumb"></span>
+        </div>
         <button class="icon-btn" id="btnTheme" title="夜间 / 日间模式">
           <svg class="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
           <svg class="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
@@ -905,8 +963,15 @@ function setLang(l){
   LANG = (l === 'en') ? 'en' : 'zh';
   try{ localStorage.setItem('layout.lang', LANG); }catch(e){}
   document.documentElement.setAttribute('data-lang', LANG);
-  $('btnLang').textContent = (LANG === 'en') ? '中' : 'EN';
-  $('btnLang').title = (LANG === 'en') ? '切换到中文' : 'Switch to English';
+  Array.prototype.forEach.call(document.querySelectorAll('#langSeg .seg-opt'), function(o){
+    o.classList.toggle('is-on', o.dataset.lang === LANG);
+    o.title = (o.dataset.lang === 'zh') ? '切换到中文' : 'Switch to English';
+  });
+  var act = document.querySelector('#langSeg .seg-opt.is-on');
+  if(act && $('segThumb')){
+    $('segThumb').style.width = act.offsetWidth + 'px';
+    $('segThumb').style.transform = 'translateX(' + (act.offsetLeft - 3) + 'px)';
+  }
   applyI18n();
   buildNav();
   route();
@@ -2223,8 +2288,10 @@ function bind(){
     setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
   });
 
-  /* 中 / EN 切换 */
-  $('btnLang').addEventListener('click', function(){ setLang(LANG === 'en' ? 'zh' : 'en'); });
+  /* 中 / EN 并排切换 */
+  Array.prototype.forEach.call(document.querySelectorAll('#langSeg .seg-opt'), function(o){
+    o.addEventListener('click', function(){ setLang(o.dataset.lang); });
+  });
 
   /* 点击遮罩关闭（编辑弹窗除外：只能用「取消」/「保存」关闭，防误触丢改动） */
   ['modalLogin','modalPanel'].forEach(function(id){
