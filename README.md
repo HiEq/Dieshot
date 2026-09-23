@@ -37,7 +37,46 @@ EXIF 旋转仅做方向转正。导入后用 `verify-ratio.js` 逐张比对网�
 - 标题 = 原文件名（去扩展名），描述 = `原图 宽 × 高`，标签 = 厂商子目录名；
 - `gallery.json` 里的 `w/h` 记录**原图**尺寸，`size/name` 是网页版（即下载到的文件）；
 - 原图保留在 D 盘不进仓库；若需原图下载，可另传 GitHub Releases 并把下载链接挂到条目上；
-- 想重新生成/更新图库，运行 `node import-dieshot.js`（导入脚本，基于 sharp/libvips）。
+### 以后新增图片（三种方式）
+
+**① 网页管理 GUI（日常少量，推荐）**
+
+1. 打开网站 → 顶栏**锁图标** → 输入管理口令（默认 `layout`）→ 打开管理面板
+2. 拖拽 / Ctrl+V 粘贴 / 点击选择图片 → 填标题、描述、**标签填厂商名**（自动成为筛选分类）→「保存到图库」
+   （缩略图自动生成并一起提交，访客预览秒开）
+3. 落盘方式二选一：
+   - 已在「接口设置」填过 GitHub Token → **自动提交到仓库**，访客刷新即见
+   - 未配置 → 存为本机草稿，点「导出 gallery.json」，再把图片与清单手动传上 GitHub
+4. 界面里同样可以**编辑信息 / 删除**（已配置接口时会直接改仓库）
+
+> 配置一次接口，以后全程点点即可：GitHub → Settings → Developer settings → Personal access tokens
+> → 填 Token（fine-grained 需选中 Dieshot 仓库并给 `Contents: Read and write`；classic 勾选 `repo`）→
+> 管理面板「接口设置」填 Token + `HiEq/Dieshot` + 分支 `main` + 图片目录 `images/dieshot` → 测试连接 → 保存。
+
+**② 批量导入本地文件夹（几十张以上）**
+
+1. 新图放进 `D:\Dieshot_JPG\Dieshot\<厂商>\`（子目录名 = 标签；新厂商 = 新建文件夹）
+2. `node tools/import-dieshot.js` —— 生成 4096px q45 网页版 + 720px 缩略图并重建 `gallery.json`
+   （当前为全量重建，约 22 分钟；只想增量导入可另行扩展脚本）
+3. `node tools/build-catalog.js` 重建 `CATALOG.md`（可选 `node tools/verify-ratio.js` 校验长宽比）
+4. 推送变更：`git add -A && git commit -m "add images" && git push`（已配本地代理）；
+   或把新增的 `images/dieshot/<厂商>/*.jpg`（含 `.thumb.jpg`）+ 替换后的 `gallery.json`、`CATALOG.md` 手动传上 GitHub
+
+**③ 纯 GitHub 网页手动上传（无脚本环境）**
+
+1. 图片（≤ 25MB / 张）上传到 `images/dieshot/<厂商>/`
+2. 最好同时放一张长边 720px 的 `同名.thumb.jpg`（没有也行：访客首次浏览会自动生成本地缓存，
+   之后进管理模式点「补齐缩略图」即可批量补上）
+3. 在 `gallery.json` 的 `items` 里加一条记录（照抄现有条目改字段即可）：
+
+   ```jsonc
+   {
+     "id": "唯一ID", "title": "标题", "desc": "原图 宽 × 高", "tags": ["厂商"],
+     "src": "images/dieshot/厂商/xx.jpg", "thumb": "images/dieshot/厂商/xx.thumb.jpg",
+     "file": "images/dieshot/厂商/xx.jpg", "name": "xx.jpg", "size": 123456,
+     "w": 12000, "h": 9000, "addedAt": "2026-09-23T00:00:00.000Z"
+   }
+   ```
 
 ## 两种模式
 
