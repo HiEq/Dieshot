@@ -168,29 +168,13 @@ button{cursor:pointer;background:none;border:0;padding:0}
 main{min-height:calc(100vh - 200px)}
 
 /* ---------- 首页 ---------- */
-.hero{
-  padding:96px 0 60px;text-align:center;position:relative;
-  background:
-    radial-gradient(58% 90% at 50% -12%, rgba(0,113,227,.13), transparent 70%),
-    radial-gradient(38% 70% at 82% 4%, rgba(110,91,255,.10), transparent 72%);
+/* 首页：整屏背景图（个人主页，图可在 gallery.json 的 site.bg 里换） */
+.home-bg{
+  min-height:calc(100vh - var(--nav-h));
+  background:var(--bg-alt) url("images/home-bg.jpg") center 25% / cover no-repeat;
 }
-.hero .eyebrow{animation:rise .7s cubic-bezier(.2,.8,.2,1) both}
-.hero h1{animation:rise .7s .06s cubic-bezier(.2,.8,.2,1) both}
-.hero .sub{animation:rise .7s .14s cubic-bezier(.2,.8,.2,1) both}
-.hero .cta{animation:rise .7s .22s cubic-bezier(.2,.8,.2,1) both}
 .section-head h2{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
 @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-.hero .eyebrow{
-  font-size:15px;font-weight:600;letter-spacing:.02em;
-  background:linear-gradient(90deg,#0071e3,#6e5bff 60%,#ff375f);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.hero h1{
-  margin:8px 0 0;font-size:clamp(44px,8.4vw,92px);line-height:1.02;
-  font-weight:700;letter-spacing:-.035em;
-}
-.hero .sub{margin:18px auto 0;max-width:620px;font-size:clamp(18px,2.4vw,24px);color:var(--fg2);letter-spacing:-.015em}
-.hero .cta{margin-top:32px;display:flex;gap:22px;justify-content:center;align-items:center;flex-wrap:wrap}
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
   height:44px;padding:0 22px;border-radius:980px;
@@ -208,28 +192,7 @@ main{min-height:calc(100vh - 200px)}
 .btn[disabled]{opacity:.45;pointer-events:none}
 .link-more{font-size:16px}
 
-/* 首页展示条：外层是横向滚动容器（滚轮可控），内部双份内容实现无缝自动滚动 */
-.showcase{
-  padding:20px 0 40px;
-  overflow-x:auto;overflow-y:hidden;
-  scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;
-}
-.showcase::-webkit-scrollbar{display:none}
-.showcase-grid{display:flex;gap:18px;width:max-content}
-.tile{
-  position:relative;border-radius:var(--radius);overflow:hidden;
-  width:300px;flex:none;aspect-ratio:4/3;
-  background:var(--bg-alt);box-shadow:var(--shadow-card);cursor:pointer;
-  transition:transform .3s cubic-bezier(.2,.8,.2,1);
-}
-.tile:hover{transform:translateY(-4px);box-shadow:var(--shadow-card-hover)}
-.tile img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
-.tile:hover img{transform:scale(1.04)}
-.tile .tile-cap{
-  position:absolute;left:0;right:0;bottom:0;padding:16px 18px;
-  background:linear-gradient(transparent,rgba(0,0,0,.5));
-  color:#fff;font-weight:600;font-size:15px;letter-spacing:-.01em;
-}
+/* 首页展示条样式已随轮播移除（个人主页为整屏背景图） */
 
 /* ---------- Layout 版块 ---------- */
 .section-head{padding:64px 0 26px}
@@ -582,20 +545,9 @@ footer .sep{opacity:.4}
 </div>
 
 <main>
-  <!-- ================= 首页 ================= -->
+  <!-- ================= 首页（个人主页：整屏背景图） ================= -->
   <section class="view" id="view-home">
-    <div class="hero">
-      <div class="wrap">
-        <div class="eyebrow">Die Shot Gallery · 裸片显微图库</div>
-        <h1 id="heroTitle">Layout</h1>
-        <p class="sub" id="heroSub">Die Shot 裸片图库：26 家厂商 · 219 张裸片显微影像。</p>
-        <div class="cta">
-          <a class="btn" href="#/layout">进入 Layout 版块</a>
-          <a class="link-more" href="#/layout">查看全部图片 &rsaquo;</a>
-        </div>
-      </div>
-    </div>
-    <div class="wrap showcase" id="showcaseBox"><div class="showcase-grid" id="showcase"></div></div>
+    <div class="home-bg" id="homeBg"></div>
   </section>
 
   <!-- ================= Layout 版块 ================= -->
@@ -1123,7 +1075,6 @@ function fmtTpl(s){
   return String(s || '').replace(/\{(items|tags)\}/g, function(m, k){ return String(st[k]); });
 }
 function renderCounts(){
-  $('heroSub').textContent = fmtTpl(state.site.sub);
   $('layoutSub').textContent = fmtTpl(LAYOUT_SUB_TPL);
 }
 function firstImage(){
@@ -1260,75 +1211,14 @@ function route(){
 
 /* ---------- 渲染：首页 ---------- */
 function renderHome(){
-  $('heroTitle').textContent = state.site.title || 'Layout';
   renderCounts();
   $('brandName').textContent = state.site.brand || 'HiEq';
   if(state.site.avatar) $('brandAvatar').src = state.site.avatar;
+  if(state.site.bg) $('homeBg').style.backgroundImage = 'url("' + state.site.bg + '")';
   $('footName').textContent = state.site.title || 'Layout';
   $('footYear').textContent = '© ' + new Date().getFullYear();
-
-  var box = $('showcase');
-  box.innerHTML = '';
-  var picks = randomPicks(8);          /* 每次进来随机抽 8 张 */
-  if(!picks.length) return;
-  picks.concat(picks).forEach(function(it){   /* 双份排列 → 无缝循环滚动 */
-    var t = el('div', 'tile');
-    var img = el('img');
-    img.decoding = 'async';
-    img.loading = 'lazy';
-    img.alt = it.title;
-    previewInto(img, it);
-    t.appendChild(img);
-    t.appendChild(el('div','tile-cap', it.title));
-    t.addEventListener('click', function(){ openLightbox(picks, picks.indexOf(it)); });
-    box.appendChild(t);
-  });
-  showcaseMetrics();
 }
-/* 随机抽 n 张（洗牌取前 n，不足则全部） */
-function randomPicks(n){
-  var arr = state.items.slice();
-  for(var i = arr.length - 1; i > 0; i--){
-    var j = Math.floor(Math.random() * (i + 1));
-    var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
-  }
-  return arr.slice(0, n);
-}
-/* 展示条滚动引擎：自动横移 + 滚轮可控挑选；双份内容到一半即无缝回绕 */
-var scBox = null, scHalf = 0, scPos = 0, scHover = false, scHold = 0;
-var REDUCED = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
-function showcaseMetrics(){
-  if(scBox){ scHalf = scBox.scrollWidth / 2; scPos = scBox.scrollLeft; }
-}
-function showcaseWrap(){                    /* 双份内容 → 越过一半即无缝回绕 */
-  if(scHalf > 0 && scPos >= scHalf) scPos -= scHalf;
-  if(scBox) scBox.scrollLeft = scPos;
-}
-function initShowcase(){
-  scBox = $('showcaseBox');                 /* 注意：滚动容器是外层 showcaseBox，内层是双份内容轨道 */
-  scBox.addEventListener('wheel', function(e){
-    if(scBox.scrollWidth <= scBox.clientWidth) return;
-    var d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-    e.preventDefault();                    /* 指针停在展示条上：滚轮左右浏览，便于挑图点击 */
-    scPos = scBox.scrollLeft + d;
-    scHold = Date.now() + 1600;            /* 手动浏览时暂停自动滚动 */
-    showcaseWrap();
-  }, {passive:false});
-  scBox.addEventListener('scroll', function(){
-    if(Math.abs(scBox.scrollLeft - scPos) > 1){ scPos = scBox.scrollLeft; showcaseWrap(); }
-  });
-  scBox.addEventListener('mouseenter', function(){ scHover = true; });
-  scBox.addEventListener('mouseleave', function(){ scHover = false; });
-  scBox.addEventListener('pointerdown', function(){ scHold = Date.now() + 2600; });
-  if(REDUCED || !window.requestAnimationFrame) return;
-  (function tick(){
-    requestAnimationFrame(tick);
-    if(scHover || Date.now() < scHold || document.hidden || !scBox) return;
-    if(!scHalf){ showcaseMetrics(); if(!scHalf) return; }   /* 内容未就绪时自测量宽度 */
-    scPos += 0.5;                          /* 浮点位置累加，避免部分浏览器 scrollLeft 取整后卡死 */
-    showcaseWrap();
-  })();
-}
+/* （展示条随机抽取 / 自动滚动引擎已随个人主页改版移除） */
 
 /* ============================================================
    渲染：图库
@@ -2050,7 +1940,6 @@ function exportManifest(){
 
 /* ---------- 事件绑定 ---------- */
 function bind(){
-  initShowcase();
   $('btnAdmin').addEventListener('click', function(){
     if(state.admin){ state.admin = false; setAdminUI(); toast('已退出管理模式'); }
     else openLogin();

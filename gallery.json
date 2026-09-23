@@ -4,7 +4,8 @@
     "title": "Layout",
     "sub": "Die Shot 裸片图库：{tags} 家厂商 · {items} 张裸片显微影像。",
     "brand": "HiEq",
-    "avatar": "https://github.com/HiEq.png?size=64"
+    "avatar": "https://github.com/HiEq.png?size=64",
+    "bg": "images/home-bg.jpg"
   },
   "config": {
     "adminHash": "93cc00a38267dc95dd05804b0f07592fb7a8d5ee1bfbe9971b56f0a28cdf48c7",
