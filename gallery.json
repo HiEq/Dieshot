@@ -260,7 +260,7 @@
     },
     {
       "id": "ds-18is-16",
-      "title": "Kabini APU",
+      "title": "Kabini 10.20x10.28mm_",
       "desc": "原图 8429 × 8166",
       "tags": [
         "AMD"
@@ -900,7 +900,7 @@
     },
     {
       "id": "ds-19gw-56",
-      "title": "M1 Pro",
+      "title": "m1 Pro",
       "desc": "原图 9414 × 6705",
       "tags": [
         "Apple Silicon"
@@ -916,7 +916,7 @@
     },
     {
       "id": "ds-4kqj-57",
-      "title": "M1 Ultra",
+      "title": "M1 Ultra 10K2",
       "desc": "原图 14910 × 6915",
       "tags": [
         "Apple Silicon"
@@ -932,7 +932,7 @@
     },
     {
       "id": "ds-q2lm-58",
-      "title": "M1 Max",
+      "title": "m1max-10k",
       "desc": "原图 9537 × 10835",
       "tags": [
         "Apple Silicon"
@@ -980,7 +980,7 @@
     },
     {
       "id": "ds-1wg9-61",
-      "title": "M2 Ultra",
+      "title": "M2 Ultra_",
       "desc": "原图 14999 × 7236",
       "tags": [
         "Apple Silicon"
@@ -996,7 +996,7 @@
     },
     {
       "id": "ds-f0g7-62",
-      "title": "M3 Pro",
+      "title": "M3 Pro 13.77x15.92x0.39mm_",
       "desc": "原图 9435 × 11207",
       "tags": [
         "Apple Silicon"
@@ -1012,7 +1012,7 @@
     },
     {
       "id": "ds-1chd-63",
-      "title": "M3",
+      "title": "M3_11.24x13.57mm",
       "desc": "原图 13552 × 11394",
       "tags": [
         "Apple Silicon"
@@ -1028,7 +1028,7 @@
     },
     {
       "id": "ds-d40o-64",
-      "title": "M4",
+      "title": "M4_13.21x12.82mm_",
       "desc": "原图 11007 × 11703",
       "tags": [
         "Apple Silicon"
@@ -1268,7 +1268,7 @@
     },
     {
       "id": "ds-183p-79",
-      "title": "Kirin 820",
+      "title": "k820+hi6290L+v100+8.60x10.32_",
       "desc": "原图 10373 × 12776",
       "tags": [
         "Hisilicon"
@@ -1284,7 +1284,7 @@
     },
     {
       "id": "ds-vm7x-80",
-      "title": "Kirin 9010",
+      "title": "k9010 hi36a0 v121 10.79x10.88",
       "desc": "原图 11118 × 10892",
       "tags": [
         "Hisilicon"
@@ -1300,7 +1300,7 @@
     },
     {
       "id": "ds-hqq4-81",
-      "title": "Kirin 950",
+      "title": "k950 hi3650 v121 8.20x10.69x0.09mm_",
       "desc": "原图 14826 × 19883",
       "tags": [
         "Hisilicon"
@@ -1316,7 +1316,7 @@
     },
     {
       "id": "ds-1alb-82",
-      "title": "Kirin X90",
+      "title": "K9610A or X90 12.82x16.34x0.74mm_",
       "desc": "原图 11142 × 14876",
       "tags": [
         "Hisilicon"
@@ -1332,7 +1332,7 @@
     },
     {
       "id": "ds-8lkb-83",
-      "title": "Kirin 980",
+      "title": "k980_hi3680v130",
       "desc": "原图 9545 × 10615",
       "tags": [
         "Hisilicon"
@@ -1348,7 +1348,7 @@
     },
     {
       "id": "ds-10yx-84",
-      "title": "Kirin 990 5G",
+      "title": "k990+5G+hi3690v201+10.79x10.83_",
       "desc": "原图 10674 × 11187",
       "tags": [
         "Hisilicon"
@@ -1780,7 +1780,7 @@
     },
     {
       "id": "ds-13lu-111",
-      "title": "Haswell",
+      "title": "Intel core i7 4790k",
       "desc": "原图 11535 × 5192",
       "tags": [
         "Intel"
@@ -1796,7 +1796,7 @@
     },
     {
       "id": "ds-1c2h-112",
-      "title": "Soma B3",
+      "title": "intel soma 7.31x7.80",
       "desc": "原图 6521 × 6097",
       "tags": [
         "Intel"
@@ -1812,7 +1812,7 @@
     },
     {
       "id": "ds-pqv9-113",
-      "title": "Movidius 3900V",
+      "title": "Intel_Movidius_3900V_",
       "desc": "原图 7401 × 8564",
       "tags": [
         "Intel"
@@ -1828,7 +1828,7 @@
     },
     {
       "id": "ds-48o9-114",
-      "title": "Nervana NNP-T",
+      "title": "intel_Nervana_NNP-T_25.44x27.14mm_",
       "desc": "原图 9450 × 8982",
       "tags": [
         "Intel"
@@ -1844,7 +1844,7 @@
     },
     {
       "id": "ds-gyw4-115",
-      "title": "Xe DG1",
+      "title": "intel_Xe_DG1",
       "desc": "原图 9104 × 6812",
       "tags": [
         "Intel"
@@ -1860,7 +1860,7 @@
     },
     {
       "id": "ds-cpva-116",
-      "title": "Kaby Lake",
+      "title": "Kaby Lake 2c GT3e 17.14x9.28x0.25mm_",
       "desc": "原图 17694 × 10225",
       "tags": [
         "Intel"
@@ -1876,7 +1876,7 @@
     },
     {
       "id": "ds-1ezn-117",
-      "title": "Kaby Lake Y",
+      "title": "Kaby Lake Y 2c 2gt 9.00x10.68_",
       "desc": "原图 12894 × 8983",
       "tags": [
         "Intel"
@@ -1892,7 +1892,7 @@
     },
     {
       "id": "ds-9h1x-118",
-      "title": "Lakefield",
+      "title": "Lakefield 1P 4E 7.64x11.07_",
       "desc": "原图 14999 × 11157",
       "tags": [
         "Intel"
@@ -1908,7 +1908,7 @@
     },
     {
       "id": "ds-2094-119",
-      "title": "Lunar Lake",
+      "title": "LNL",
       "desc": "原图 15560 × 13007",
       "tags": [
         "Intel"
@@ -1924,7 +1924,7 @@
     },
     {
       "id": "ds-2iy5-120",
-      "title": "Optane M10 SSD controller",
+      "title": "M10",
       "desc": "原图 4325 × 4866",
       "tags": [
         "Intel"
@@ -1972,7 +1972,7 @@
     },
     {
       "id": "ds-1hq4-122",
-      "title": "Meteor Lake S ES",
+      "title": "Meteor Lake-S",
       "desc": "原图 11036 × 6968",
       "tags": [
         "Intel"
@@ -1988,7 +1988,7 @@
     },
     {
       "id": "ds-9jq9-124",
-      "title": "Braswell",
+      "title": "N3160 Braswell 8.52x8.42x0.35mm_",
       "desc": "原图 11652 × 12264",
       "tags": [
         "Intel"
@@ -2164,7 +2164,7 @@
     },
     {
       "id": "ds-ro9b-135",
-      "title": "Longxin 3A3000",
+      "title": "longxin 3A3000 10.72x14.88x0.29mm.",
       "desc": "原图 11853 × 8551",
       "tags": [
         "Longxin"
@@ -2292,7 +2292,7 @@
     },
     {
       "id": "ds-z3zu-143",
-      "title": "Dimensity 9300",
+      "title": "Media Tek Dimensity 9300",
       "desc": "原图 8226 × 9456",
       "tags": [
         "MediaTek"
