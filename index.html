@@ -264,10 +264,45 @@ main{min-height:calc(100vh - 200px)}
 .chip.is-on{background:var(--fg);color:var(--bg);font-weight:500}
 .chip .n{opacity:.55;font-size:12px}
 .count{color:var(--fg2);font-size:13.5px;white-space:nowrap}
-.sortsel{
-  height:30px;border-radius:980px;border:1px solid var(--hairline);
-  background:transparent;padding:0 10px;font-size:13.5px;outline:none;
+/* 排序下拉：站内自绘「液态玻璃」圆角菜单（替代系统 select 弹层，风格与整体统一） */
+.dd{position:relative}
+.dd-btn{
+  height:32px;padding:0 12px;border-radius:980px;font-size:13.5px;
+  display:inline-flex;align-items:center;gap:7px;white-space:nowrap;
+  color:var(--fg);background:rgba(128,128,128,.12);
+  box-shadow:inset 0 0 0 1px var(--hairline);
+  transition:background .2s,transform .2s;
 }
+.dd-btn:hover{background:rgba(128,128,128,.18)}
+.dd-btn:active{transform:scale(.97)}
+.dd-btn svg{width:11px;height:11px;opacity:.6;transition:transform .25s cubic-bezier(.2,.9,.25,1.02)}
+.dd-btn[aria-expanded="true"] svg{transform:rotate(180deg)}
+.dd-menu{
+  position:absolute;top:calc(100% + 8px);right:0;z-index:80;
+  min-width:168px;padding:6px;border-radius:16px;
+  background:var(--glass-strong);
+  -webkit-backdrop-filter:saturate(180%) blur(22px);
+  backdrop-filter:saturate(180%) blur(22px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.32), inset 0 0 0 1px var(--hairline), var(--shadow-elev);
+  transform:scale(.92) translateY(-8px);transform-origin:top right;
+  opacity:0;pointer-events:none;
+  transition:transform .24s cubic-bezier(.2,.9,.25,1.06), opacity .18s ease;
+}
+.dd-menu::before{             /* 液态玻璃高光 */
+  content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(180deg, rgba(255,255,255,.24), rgba(255,255,255,0) 46%);
+}
+.dd-menu.is-open{transform:none;opacity:1;pointer-events:auto}
+.dd-opt{
+  position:relative;z-index:1;
+  width:100%;height:36px;padding:0 12px;border-radius:10px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  font-size:14px;color:var(--fg);text-align:left;
+  transition:background .16s;
+}
+.dd-opt:hover{background:rgba(128,128,128,.14)}
+.dd-opt.is-on{font-weight:600}
+.dd-opt.is-on::after{content:'✓';font-size:12px;color:var(--blue)}
 
 .gallery{padding:26px 0 90px}
 .grid{
@@ -402,6 +437,11 @@ main{min-height:calc(100vh - 200px)}
   width:100%;max-width:560px;max-height:88vh;overflow:auto;
   background:var(--bg-elev);border-radius:24px;box-shadow:var(--shadow-elev);
   padding:30px 30px 26px;animation:sheet .3s cubic-bezier(.2,.8,.2,1);
+  position:relative;
+}
+.sheet::before{              /* 液态玻璃顶缘高光 */
+  content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,0) 30%);
 }
 .sheet.wide{max-width:940px}
 @keyframes sheet{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
@@ -544,13 +584,15 @@ footer .sep{opacity:.4}
 <main>
   <!-- ================= 首页 ================= -->
   <section class="view" id="view-home">
-    <div class="wrap hero">
-      <div class="eyebrow">Die Shot Gallery · 裸片显微图库</div>
-      <h1 id="heroTitle">Layout</h1>
-      <p class="sub" id="heroSub">Die Shot 裸片图库：26 家厂商 · 219 张裸片显微影像。</p>
-      <div class="cta">
-        <a class="btn" href="#/layout">进入 Layout 版块</a>
-        <a class="link-more" href="#/layout">查看全部图片 &rsaquo;</a>
+    <div class="hero">
+      <div class="wrap">
+        <div class="eyebrow">Die Shot Gallery · 裸片显微图库</div>
+        <h1 id="heroTitle">Layout</h1>
+        <p class="sub" id="heroSub">Die Shot 裸片图库：26 家厂商 · 219 张裸片显微影像。</p>
+        <div class="cta">
+          <a class="btn" href="#/layout">进入 Layout 版块</a>
+          <a class="link-more" href="#/layout">查看全部图片 &rsaquo;</a>
+        </div>
       </div>
     </div>
     <div class="wrap showcase"><div class="showcase-grid" id="showcase"></div></div>
@@ -569,11 +611,17 @@ footer .sep{opacity:.4}
           <input id="q" type="search" placeholder="搜索标题、描述或标签" autocomplete="off">
         </div>
         <div class="chips" id="chips"></div>
-        <select class="sortsel" id="sort">
-          <option value="new">最新在前</option>
-          <option value="old">最早在前</option>
-          <option value="az">按标题排序</option>
-        </select>
+        <div class="dd" id="sortDD">
+          <button class="dd-btn" id="sortBtn" aria-haspopup="true" aria-expanded="false">
+            <span id="sortLabel">最新在前</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 9l7 7 7-7"/></svg>
+          </button>
+          <div class="dd-menu" id="sortMenu" role="menu">
+            <button class="dd-opt" role="menuitem" data-v="new">最新在前</button>
+            <button class="dd-opt" role="menuitem" data-v="old">最早在前</button>
+            <button class="dd-opt" role="menuitem" data-v="az">按标题排序</button>
+          </div>
+        </div>
         <div class="count" id="count"></div>
       </div>
     </div>
@@ -2056,7 +2104,30 @@ function bind(){
     clearTimeout(qTimer);
     qTimer = setTimeout(applyFilter, 120);   /* 输入防抖：筛选只切显隐，不重建 DOM */
   });
-  $('sort').addEventListener('change', function(){ state.filter.sort = $('sort').value; renderGallery(); });
+  /* 排序下拉：自绘液态玻璃菜单 */
+  var ddBtn = $('sortBtn'), ddMenu = $('sortMenu');
+  function closeDD(){ ddMenu.classList.remove('is-open'); ddBtn.setAttribute('aria-expanded', 'false'); }
+  function syncSortUI(){
+    $('sortLabel').textContent = (ddMenu.querySelector('.dd-opt[data-v="' + state.filter.sort + '"]') || {}).textContent || '最新在前';
+    Array.prototype.forEach.call(ddMenu.querySelectorAll('.dd-opt'), function(o){
+      o.classList.toggle('is-on', o.dataset.v === state.filter.sort);
+    });
+  }
+  ddBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    var open = ddMenu.classList.toggle('is-open');
+    ddBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  Array.prototype.forEach.call(ddMenu.querySelectorAll('.dd-opt'), function(opt){
+    opt.addEventListener('click', function(){
+      state.filter.sort = opt.dataset.v;
+      syncSortUI();
+      closeDD();
+      renderGallery();
+    });
+  });
+  document.addEventListener('click', closeDD);   /* 点击菜单以外收起 */
+  syncSortUI();
   $('btnSearch').addEventListener('click', function(){
     if(location.hash.indexOf('#/layout') !== 0){ location.hash = '#/layout'; }
     setTimeout(function(){ $('q').focus(); $('q').select(); }, 80);
@@ -2089,6 +2160,7 @@ function bind(){
       return;
     }
     if(e.key === 'Escape'){
+      closeDD();
       $('modalLogin').classList.remove('is-open');
       $('modalPanel').classList.remove('is-open');
     }
