@@ -125,6 +125,8 @@ button{cursor:pointer;background:none;border:0;padding:0}
 .icon-btn .ic-sun{display:none}
 :root[data-theme="dark"] .icon-btn .ic-moon{display:none}
 :root[data-theme="dark"] .icon-btn .ic-sun{display:block}
+#btnTheme svg{transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+#btnTheme:hover svg{transform:rotate(22deg) scale(1.08)}
 .admin-chip{
   display:inline-flex;align-items:center;gap:6px;
   height:26px;padding:0 10px;margin-left:6px;border-radius:980px;
@@ -166,7 +168,18 @@ button{cursor:pointer;background:none;border:0;padding:0}
 main{min-height:calc(100vh - 200px)}
 
 /* ---------- 首页 ---------- */
-.hero{padding:96px 0 60px;text-align:center}
+.hero{
+  padding:96px 0 60px;text-align:center;position:relative;
+  background:
+    radial-gradient(58% 90% at 50% -12%, rgba(0,113,227,.13), transparent 70%),
+    radial-gradient(38% 70% at 82% 4%, rgba(110,91,255,.10), transparent 72%);
+}
+.hero .eyebrow{animation:rise .7s cubic-bezier(.2,.8,.2,1) both}
+.hero h1{animation:rise .7s .06s cubic-bezier(.2,.8,.2,1) both}
+.hero .sub{animation:rise .7s .14s cubic-bezier(.2,.8,.2,1) both}
+.hero .cta{animation:rise .7s .22s cubic-bezier(.2,.8,.2,1) both}
+.section-head h2{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 .hero .eyebrow{
   font-size:15px;font-weight:600;letter-spacing:.02em;
   background:linear-gradient(90deg,#0071e3,#6e5bff 60%,#ff375f);
@@ -195,14 +208,14 @@ main{min-height:calc(100vh - 200px)}
 .btn[disabled]{opacity:.45;pointer-events:none}
 .link-more{font-size:16px}
 
-.showcase{padding:20px 0 40px;overflow:hidden}
-.showcase-grid{
-  display:flex;gap:18px;width:max-content;
-  animation:marquee 70s linear infinite;      /* 随机排列的图片连续横向滚动 */
+/* 首页展示条：外层是横向滚动容器（滚轮可控），内部双份内容实现无缝自动滚动 */
+.showcase{
+  padding:20px 0 40px;
+  overflow-x:auto;overflow-y:hidden;
+  scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;
 }
-.showcase:hover .showcase-grid{animation-play-state:paused}
-@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@media (prefers-reduced-motion:reduce){ .showcase-grid{animation:none} }
+.showcase::-webkit-scrollbar{display:none}
+.showcase-grid{display:flex;gap:18px;width:max-content}
 .tile{
   position:relative;border-radius:var(--radius);overflow:hidden;
   width:300px;flex:none;aspect-ratio:4/3;
@@ -224,7 +237,9 @@ main{min-height:calc(100vh - 200px)}
 .section-head .sub{margin-top:10px;color:var(--fg2);font-size:19px}
 .toolbar{
   position:sticky;top:var(--nav-h);z-index:60;
-  background:var(--glass-strong);   /* 实色玻璃即可，去掉整屏模糊可省一大笔滚动绘制开销 */
+  background:var(--glass);
+  -webkit-backdrop-filter:saturate(160%) blur(12px);  /* 网格只画缩略图后，轻量毛玻璃不再卡顿 */
+  backdrop-filter:saturate(160%) blur(12px);
   border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);
 }
 .toolbar-inner{max-width:var(--max);margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
@@ -532,7 +547,7 @@ footer .sep{opacity:.4}
     <div class="wrap hero">
       <div class="eyebrow">Die Shot Gallery · 裸片显微图库</div>
       <h1 id="heroTitle">Layout</h1>
-      <p class="sub" id="heroSub">26 家厂商 · 219 张 Die Shot。浏览、搜索、下载，一切刚刚好。</p>
+      <p class="sub" id="heroSub">Die Shot 裸片图库：26 家厂商 · 219 张裸片显微影像。</p>
       <div class="cta">
         <a class="btn" href="#/layout">进入 Layout 版块</a>
         <a class="link-more" href="#/layout">查看全部图片 &rsaquo;</a>
@@ -741,7 +756,7 @@ var DEFAULT_CFG = {
 
 /* ---------- 状态 ---------- */
 var state = {
-  site:{title:'Layout', sub:'把每一张图，放在恰好的位置。浏览、搜索、下载，一切刚刚好。', brand:'HiEq', avatar:'https://github.com/HiEq.png?size=64'},
+  site:{title:'Layout', sub:'Die Shot 裸片图库：26 家厂商 · 219 张裸片显微影像。', brand:'HiEq', avatar:'https://github.com/HiEq.png?size=64'},
   cfg: JSON.parse(JSON.stringify(DEFAULT_CFG)),
   items: [],
   filter:{q:'', tag:'', sort:'new'},
@@ -922,13 +937,14 @@ async function loadManifest(){
     state.items = normalizeItems(FALLBACK_ITEMS);
   }
 
-  /* 2) 本机草稿（离线管理时保存在 localStorage，优先级更高） */
+  /* 2) 本机草稿（离线管理时保存在 localStorage）：只覆盖「图片条目」，
+        站点文案/品牌等以线上清单为准（否则旧草稿会把新发布的文案盖回去）；
+        口令哈希例外——草稿里改过口令要继续生效 */
   var draft = lsGet(LS.draft, null);
   if(draft && Array.isArray(draft.items)){
     state.items = normalizeItems(draft.items);
     state.draft = true;
-    if(draft.site) state.site = Object.assign(state.site, draft.site);
-    if(draft.config) state.cfg = Object.assign(state.cfg, draft.config);
+    if(draft.config && draft.config.adminHash) state.cfg.adminHash = draft.config.adminHash;
   }
 
   /* 3) 本机图片（未连接 GitHub 时添加的图片，仅当前设备可见） */
@@ -1204,6 +1220,7 @@ function renderHome(){
     t.addEventListener('click', function(){ openLightbox(picks, picks.indexOf(it)); });
     box.appendChild(t);
   });
+  showcaseMetrics();
 }
 /* 随机抽 n 张（洗牌取前 n，不足则全部） */
 function randomPicks(n){
@@ -1213,6 +1230,32 @@ function randomPicks(n){
     var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
   }
   return arr.slice(0, n);
+}
+/* 展示条滚动引擎：自动横移 + 滚轮可控挑选；双份内容到一半即无缝回绕 */
+var scBox = null, scHalf = 0, scHover = false, scHold = 0;
+var REDUCED = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+function showcaseMetrics(){ if(scBox) scHalf = scBox.scrollWidth / 2; }
+function showcaseWrap(){ if(scHalf > 0 && scBox.scrollLeft >= scHalf) scBox.scrollLeft -= scHalf; }
+function initShowcase(){
+  scBox = $('showcase');
+  scBox.addEventListener('wheel', function(e){
+    if(scBox.scrollWidth <= scBox.clientWidth) return;
+    var d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    e.preventDefault();                      /* 指针停在展示条上：滚轮左右浏览，便于挑图点击 */
+    scBox.scrollLeft += d;
+    scHold = Date.now() + 1600;              /* 手动浏览时暂停自动滚动 */
+    showcaseWrap();
+  }, {passive:false});
+  scBox.addEventListener('mouseenter', function(){ scHover = true; });
+  scBox.addEventListener('mouseleave', function(){ scHover = false; });
+  scBox.addEventListener('pointerdown', function(){ scHold = Date.now() + 2600; });
+  if(REDUCED || !window.requestAnimationFrame) return;
+  (function tick(){
+    requestAnimationFrame(tick);
+    if(scHover || Date.now() < scHold || document.hidden || !scBox) return;
+    scBox.scrollLeft += 0.45;
+    showcaseWrap();
+  })();
 }
 
 /* ============================================================
@@ -1934,6 +1977,7 @@ function exportManifest(){
 
 /* ---------- 事件绑定 ---------- */
 function bind(){
+  initShowcase();
   $('btnAdmin').addEventListener('click', function(){
     if(state.admin){ state.admin = false; setAdminUI(); toast('已退出管理模式'); }
     else openLogin();
@@ -2047,7 +2091,6 @@ function bind(){
     if(e.key === 'Escape'){
       $('modalLogin').classList.remove('is-open');
       $('modalPanel').classList.remove('is-open');
-      $('modalEdit').classList.remove('is-open');
     }
   });
 
@@ -2066,8 +2109,8 @@ function bind(){
     setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
   });
 
-  /* 点击遮罩关闭 */
-  ['modalLogin','modalPanel','modalEdit'].forEach(function(id){
+  /* 点击遮罩关闭（编辑弹窗除外：只能用「取消」/「保存」关闭，防误触丢改动） */
+  ['modalLogin','modalPanel'].forEach(function(id){
     $(id).addEventListener('click', function(e){ if(e.target === $(id)) $(id).classList.remove('is-open'); });
   });
 
