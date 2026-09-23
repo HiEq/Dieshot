@@ -3,6 +3,7 @@
 一个 单文件静态图库：顶部可选版块导航（目前内置 **Layout** 版块）、图片陈列、
 搜索 / 标签筛选、大图浏览、访客一键下载原图；管理员可通过图形界面上传、编辑、删除图片，
 并借助 **GitHub 接口**把改动直接提交回仓库。
+网页发布在https://hieq.github.io/Dieshot/#/上
 ---
 
 ## 文件结构
@@ -46,3 +47,4 @@ tools/            工具脚本：import-dieshot.js（导入压缩）/ build-cata
 @万扯淡 https://space.bilibili.com/374034429?spm_id_from=333.788.upinfo.detail.click
 @硬件趣玩 https://space.bilibili.com/1862917461?spm_id_from=333.337.0.0等
 ## Layout由本人完成，如有错误尽请谅解
+
