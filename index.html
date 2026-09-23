@@ -898,7 +898,11 @@ var EN = {
   '共 {n} 张图片，其中本机 {m} 张':'{n} images, {m} local-only',
   '缩略图进度 {a} / {b}':'Thumbnails {a} / {b}',
   '保存 {n} 张到图库':'Save {n} images',
-  '正在使用<b>本机草稿</b>（{n} 项）。配置 GitHub 接口后保存即可上线，或点击「导出 gallery.json」手动提交到仓库。':'Using a <b>local draft</b> ({n} items). Configure the GitHub API to publish, or export gallery.json and commit it manually.'
+  '正在使用<b>本机草稿</b>（{n} 项）。配置 GitHub 接口后保存即可上线，或点击「导出 gallery.json」手动提交到仓库。':'Using a <b>local draft</b> ({n} items). Configure the GitHub API to publish, or export gallery.json and commit it manually.',
+  '连接成功：{name}（写权限已实测 ✓，可以保存到仓库）':'Connected: {name} (write access verified ✓ — ready to save)',
+  '连接成功：{name}（Token 只读：请把 Contents 权限改为 Read and write 后重新生成 Token）':'Connected: {name} (token is read-only — set Contents to "Read and write" and regenerate the token)',
+  '连接成功：{name}（权限 可写）':'Connected: {name} (access: read-write)',
+  '连接成功：{name}（无法实测写权限；若保存失败请给 Contents: Read and write）':'Connected: {name} (write access unverified — if saving fails, grant Contents: Read and write)'
 };
 /* 一次性/带变量的文案（toast、confirm 等）按模式翻译 */
 var DYN = [
@@ -1090,6 +1094,20 @@ function showGhMsg(kind, msg){
   var n = $('ghMsg');
   n.className = 'note' + (kind === 'err' ? ' err' : (kind === 'warn' ? ' warn' : ''));
   n.textContent = msg;
+}
+/* 写权限实测（零副作用）：对已存在的清单文件发起「故意写错 sha」的 PUT——
+   有写权限 → 409（内容冲突，仓库不发生任何变化）；无写权限 → 403。
+   比读取 permissions.push 字段可靠（fine-grained Token 在该字段上常误报为只读） */
+async function ghProbeWrite(){
+  var c = ghCfg();
+  var meta = await ghApi(c.manifest, {method:'GET'});
+  if(!(meta.ok && meta.data && meta.data.sha)) return {status: 0};   /* 清单不存在 → 无法安全探测 */
+  return ghApi(c.manifest, {method:'PUT', body: JSON.stringify({
+    message: 'probe write permission (no-op)',
+    content: 'AA==',
+    sha: '0000000000000000000000000000000000000000',
+    branch: c.branch || 'main'
+  })});
 }
 
 /* ---------- 清单加载 / 保存 ---------- */
@@ -2197,11 +2215,24 @@ function bind(){
   });
   $('ghTest').addEventListener('click', async function(){
     $('ghSave').click();
-    if(!ghReady()){ showGhMsg('warn', '请先填写 Token 与仓库名。'); return; }
-    showGhMsg('ok', '正在连接…');
+    if(!ghReady()){ showGhMsg('warn', tr('请先填写 Token 与仓库名。')); return; }
+    showGhMsg('ok', tr('正在连接…'));
     var r = await ghApi('', {method:'GET'});
-    if(r.ok) showGhMsg('ok', '连接成功：' + (r.data && r.data.full_name ? r.data.full_name : '仓库可访问') + '（权限 ' + (r.data && r.data.permissions && r.data.permissions.push ? '可写' : '只读，需要可写 Token') + '）');
-    else showGhMsg('err', '连接失败（' + r.status + '）：' + (r.data && r.data.message ? r.data.message : '请检查设置'));
+    if(!r.ok){
+      showGhMsg('err', fmtTpl(tr('连接失败（{code}）：{msg}'), {code: r.status, msg: (r.data && r.data.message) || ''}));
+      return;
+    }
+    var name = (r.data && r.data.full_name) ? r.data.full_name : '仓库可访问';
+    var probe = await ghProbeWrite();
+    if(probe.status === 409){
+      showGhMsg('ok', fmtTpl(tr('连接成功：{name}（写权限已实测 ✓，可以保存到仓库）'), {name: name}));
+    }else if(probe.status === 403){
+      showGhMsg('err', fmtTpl(tr('连接成功：{name}（Token 只读：请把 Contents 权限改为 Read and write 后重新生成 Token）'), {name: name}));
+    }else{
+      /* 清单不存在等无法安全探测的情况：退回旧字段判断 */
+      var push = r.data && r.data.permissions && r.data.permissions.push;
+      showGhMsg(push ? 'ok' : 'warn', fmtTpl(push ? tr('连接成功：{name}（权限 可写）') : tr('连接成功：{name}（无法实测写权限；若保存失败请给 Contents: Read and write）'), {name: name}));
+    }
   });
 
   /* 搜索 / 排序 */
