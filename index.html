@@ -740,7 +740,10 @@ footer .sep{opacity:.4}
     <div class="queue" id="queue"></div>
 
     <div class="sheet-foot" style="justify-content:space-between">
-      <button class="btn ghost sm" id="btnExport">导出 gallery.json</button>
+      <div style="display:flex;gap:10px">
+        <button class="btn ghost sm" id="btnExport">导出 gallery.json</button>
+        <button class="btn tint sm" id="btnSync">同步到 GitHub</button>
+      </div>
       <div style="display:flex;gap:10px">
         <button class="btn ghost sm" id="panelClose">完成</button>
         <button class="btn sm" id="btnCommit" disabled>保存到图库</button>
@@ -902,7 +905,11 @@ var EN = {
   '连接成功：{name}（写权限已实测 ✓，可以保存到仓库）':'Connected: {name} (write access verified ✓ — ready to save)',
   '连接成功：{name}（Token 只读：请把 Contents 权限改为 Read and write 后重新生成 Token）':'Connected: {name} (token is read-only — set Contents to "Read and write" and regenerate the token)',
   '连接成功：{name}（权限 可写）':'Connected: {name} (access: read-write)',
-  '连接成功：{name}（无法实测写权限；若保存失败请给 Contents: Read and write）':'Connected: {name} (write access unverified — if saving fails, grant Contents: Read and write)'
+  '连接成功：{name}（无法实测写权限；若保存失败请给 Contents: Read and write）':'Connected: {name} (write access unverified — if saving fails, grant Contents: Read and write)',
+  '同步到 GitHub':'Sync to GitHub',
+  '正在同步本机图片 {a} / {b}…':'Syncing local images {a} / {b}…',
+  '同步完成：gallery.json + {n} 张本机图片 → {branch}':'Synced: gallery.json + {n} local images → {branch}',
+  '{n} 张图片同步失败，可重试':'{n} images failed to sync — you can retry'
 };
 /* 一次性/带变量的文案（toast、confirm 等）按模式翻译 */
 var DYN = [
@@ -1162,18 +1169,19 @@ async function loadManifest(){
     if(ids.length){
       var localItems = [];
       for(var i=0;i<ids.length;i++){
-        var blob = await IDB.get(ids[i]);
-        if(!blob) continue;
+        var buf = await IDB.get(ids[i]);
+        if(!buf) continue;
         var m = meta[ids[i]] || {};
         var tb = null;
         try{ tb = await IDB.get(ids[i] + ':thumb'); }catch(e){}
+        var mkBlob = function(b, type){ return (b instanceof Blob) ? b : new Blob([b], {type: type || 'image/*'}); };
         localItems.push({
           id: ids[i], local:true,
           title: m.title || '未命名', desc: m.desc || '', tags: m.tags || [],
           src: '',                                   /* 原图按需读取（ensureSrc） */
-          thumb: URL.createObjectURL(tb || blob),    /* 预览只用小图 */
+          thumb: URL.createObjectURL(tb ? mkBlob(tb, 'image/jpeg') : mkBlob(buf, m.type)),
           name: m.name || 'image.png',
-          size: blob.size, w: m.w || 0, h: m.h || 0,
+          size: (buf instanceof Blob) ? buf.size : buf.byteLength, w: m.w || 0, h: m.h || 0,
           addedAt: m.addedAt || new Date().toISOString()
         });
       }
@@ -1298,9 +1306,9 @@ async function ensureSrc(it){
   if(it.src) return it.src;
   if(!it.local) return '';
   try{
-    var blob = await IDB.get(it.id);
-    if(!blob) return '';
-    it.src = URL.createObjectURL(blob);
+    var b = await IDB.get(it.id);
+    if(!b) return '';
+    it.src = URL.createObjectURL((b instanceof Blob) ? b : new Blob([b], {type: 'image/*'}));
     return it.src;
   }catch(e){ return ''; }
 }
@@ -1353,7 +1361,8 @@ async function ensureThumb(it){
     }catch(e){}
     var blob = null;
     if(it.local){
-      blob = await IDB.get(it.id);
+      var b = await IDB.get(it.id);
+      blob = b ? ((b instanceof Blob) ? b : new Blob([b], {type: 'image/*'})) : null;
     }else{
       var src = await ensureSrc(it);
       if(!src) throw new Error('no-src');
@@ -1991,11 +2000,11 @@ async function commitQueue(){
           if(putT.ok) item.thumb = tpath;
         }
       }else{
-        await IDB.put(item.id, q.file);
-        if(th.blob) await IDB.put(item.id + ':thumb', th.blob);
+        await IDB.put(item.id, await q.file.arrayBuffer());          /* 存字节：跨浏览器/克隆最稳 */
+        if(th.blob) await IDB.put(item.id + ':thumb', await th.blob.arrayBuffer());
         var ids = lsGet(LS.localIds, []); ids.unshift(item.id); lsSet(LS.localIds, ids);
         var meta = lsGet(LS.localMeta, {});
-        meta[item.id] = {title:item.title, desc:item.desc, tags:item.tags, name:item.name, w:item.w, h:item.h, addedAt:item.addedAt};
+        meta[item.id] = {title:item.title, desc:item.desc, tags:item.tags, name:item.name, type:q.file.type || '', w:item.w, h:item.h, addedAt:item.addedAt};
         lsSet(LS.localMeta, meta);
         item.thumb = th.url || q.thumb || '';
         item.src = '';            /* 原图按需读取，避免大量大图常驻内存 */
@@ -2094,7 +2103,8 @@ async function backfillThumbs(){
         var src = await ensureSrc(it);
         var blob = null;
         if(it.local){
-          blob = await IDB.get(it.id);
+          var b3 = await IDB.get(it.id);
+          blob = b3 ? ((b3 instanceof Blob) ? b3 : new Blob([b3], {type: 'image/*'})) : null;
         }else if(src){
           var res = await fetch(src, {cache:'no-store'});
           if(res.ok) blob = await res.blob();
@@ -2126,6 +2136,65 @@ async function backfillThumbs(){
   if(done) await saveManifest('add thumbnails (' + done + ')');
   renderGallery();
   toast('已补齐 ' + done + ' 张缩略图');
+}
+
+/* 手动同步：把 gallery.json 与所有「仅本机」图片（含缩略图）推送到仓库 main 分支 */
+async function syncToGitHub(){
+  if(!state.admin) return;
+  if(!ghReady()){
+    showGhMsg('warn', tr('请先填写 Token 与仓库名。'));
+    toast(tr('请先填写 Token 与仓库名。'));
+    return;
+  }
+  var btn = $('btnSync');
+  btn.disabled = true;
+  try{
+    /* 1) 先把仅本机的图片连同缩略图上传，转为仓库条目 */
+    var locals = state.items.filter(function(i){ return i.local; });
+    var up = 0, fail = 0, c = ghCfg();
+    for(var i = 0; i < locals.length; i++){
+      var it = locals[i];
+      try{
+        showGhMsg('ok', fmtTpl(tr('正在同步本机图片 {a} / {b}…'), {a: i + 1, b: locals.length}));
+        var buf = await IDB.get(it.id);
+        if(!buf) throw new Error('取不到原图');
+        if(buf instanceof Blob) buf = await buf.arrayBuffer();
+        var thBuf = null;
+        if(it._thumbBlob) thBuf = await it._thumbBlob.arrayBuffer();
+        else{
+          var b2 = await IDB.get(it.id + ':thumb');
+          thBuf = b2 ? ((b2 instanceof Blob) ? await b2.arrayBuffer() : b2) : null;
+        }
+        var date = new Date();
+        var sub = date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2);
+        var path = (c.dir || 'images').replace(/\/+$/,'') + '/' + sub + '/' + safeName(it.name || (it.id + '.png'));
+        var put = await ghPutFile(path, buf, 'sync ' + path);
+        if(!put.ok) throw new Error((put.data && put.data.message) || ('HTTP ' + put.status));
+        it.src = path; it.file = path; it.local = false;
+        it.thumb = '';
+        if(thBuf){
+          var tpath = thumbName(path);
+          var pt = await ghPutFile(tpath, thBuf, 'sync ' + tpath);
+          if(pt.ok) it.thumb = tpath;
+        }
+        /* 清掉本机存储，避免与仓库重复 */
+        try{ await IDB.del(it.id); await IDB.del(it.id + ':thumb'); }catch(e){}
+        lsSet(LS.localIds, lsGet(LS.localIds, []).filter(function(x){ return x !== it.id; }));
+        var meta = lsGet(LS.localMeta, {}); delete meta[it.id]; lsSet(LS.localMeta, meta);
+        up++;
+        invalidateCard(it);          /* 卡片需重建：去掉「仅本机」角标 */
+      }catch(e){ fail++; }
+    }
+    /* 2) 写回清单（gallery.json） */
+    var okSave = await saveManifest('sync gallery.json (' + up + ' images)');
+    if(okSave){
+      showGhMsg('ok', fmtTpl(tr('同步完成：gallery.json + {n} 张本机图片 → {branch}'), {n: up, branch: c.branch || 'main'}));
+    }
+    if(fail) showGhMsg('warn', fmtTpl(tr('{n} 张图片同步失败，可重试'), {n: fail}));
+    renderGallery();
+  }finally{
+    btn.disabled = false;
+  }
 }
 
 /* ---------- 导出 ---------- */
@@ -2162,6 +2231,7 @@ function bind(){
   $('panelClose').addEventListener('click', function(){ $('modalPanel').classList.remove('is-open'); renderGallery(); });
   $('btnCommit').addEventListener('click', commitQueue);
   $('btnExport').addEventListener('click', exportManifest);
+  $('btnSync').addEventListener('click', syncToGitHub);
   $('btnThumbs').addEventListener('click', backfillThumbs);
   $('btnReload').addEventListener('click', async function(){
     lsSet(LS.draft, null); state.draft = false;
