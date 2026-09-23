@@ -35,8 +35,7 @@
   --nav-h:52px;
   --max:1180px;
 }
-@media (prefers-color-scheme:dark){
-  :root{
+:root[data-theme="dark"]{
     --bg:#000000;
     --bg-alt:#161617;
     --bg-elev:#1d1d1f;
@@ -53,7 +52,6 @@
     --glass:rgba(22,22,23,.72);
     --glass-strong:rgba(29,29,31,.86);
     --overlay:rgba(0,0,0,.62);
-  }
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scrollbar-gutter:stable} /* 预留滚动条位置：灯箱开关不再引发整页重排 */
@@ -124,12 +122,15 @@ button{cursor:pointer;background:none;border:0;padding:0}
 .icon-btn:hover{background:rgba(128,128,128,.12);opacity:1}
 .icon-btn.is-on{background:var(--blue);color:#fff;opacity:1}
 .icon-btn svg{width:17px;height:17px}
+.icon-btn .ic-sun{display:none}
+:root[data-theme="dark"] .icon-btn .ic-moon{display:none}
+:root[data-theme="dark"] .icon-btn .ic-sun{display:block}
 .admin-chip{
   display:inline-flex;align-items:center;gap:6px;
   height:26px;padding:0 10px;margin-left:6px;border-radius:980px;
   background:rgba(255,149,0,.16);color:#b25000;font-size:12px;font-weight:600;
 }
-@media (prefers-color-scheme:dark){ .admin-chip{color:#ff9f0a} }
+:root[data-theme="dark"] .admin-chip{color:#ff9f0a}
 
 /* 顶栏下拉超大菜单 */
 .megamenu{
@@ -194,27 +195,28 @@ main{min-height:calc(100vh - 200px)}
 .btn[disabled]{opacity:.45;pointer-events:none}
 .link-more{font-size:16px}
 
-.showcase{padding:20px 0 40px}
-.showcase-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:18px}
-@media (max-width:860px){ .showcase-grid{grid-template-columns:1fr 1fr} }
-@media (max-width:560px){ .showcase-grid{grid-template-columns:1fr} }
+.showcase{padding:20px 0 40px;overflow:hidden}
+.showcase-grid{
+  display:flex;gap:18px;width:max-content;
+  animation:marquee 70s linear infinite;      /* 随机排列的图片连续横向滚动 */
+}
+.showcase:hover .showcase-grid{animation-play-state:paused}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){ .showcase-grid{animation:none} }
 .tile{
   position:relative;border-radius:var(--radius);overflow:hidden;
+  width:300px;flex:none;aspect-ratio:4/3;
   background:var(--bg-alt);box-shadow:var(--shadow-card);cursor:pointer;
   transition:transform .3s cubic-bezier(.2,.8,.2,1);
 }
 .tile:hover{transform:translateY(-4px);box-shadow:var(--shadow-card-hover)}
 .tile img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
 .tile:hover img{transform:scale(1.04)}
-.tile.tall{aspect-ratio:4/3}
-.tile.small{aspect-ratio:4/3}
 .tile .tile-cap{
   position:absolute;left:0;right:0;bottom:0;padding:16px 18px;
   background:linear-gradient(transparent,rgba(0,0,0,.5));
   color:#fff;font-weight:600;font-size:15px;letter-spacing:-.01em;
 }
-
-.showcase{padding:20px 0 40px}
 
 /* ---------- Layout 版块 ---------- */
 .section-head{padding:64px 0 26px}
@@ -482,6 +484,18 @@ footer .sep{opacity:.4}
   }
 }
 </style>
+<script>
+/* 主题预置：首次绘制前定好夜间/日间，避免闪白（手动选择优先，否则跟随系统） */
+(function(){
+  try{
+    var saved = localStorage.getItem('layout.theme');
+    var dark = saved ? (saved === 'dark') : !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  }catch(e){
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+</script>
 </head>
 <body>
 
@@ -489,9 +503,13 @@ footer .sep{opacity:.4}
 <div class="nav-shell" id="navShell">
   <header class="nav">
     <div class="nav-inner">
-      <a class="brand" href="#/"><img class="avatar" id="brandAvatar" src="https://github.com/HiEq.png?size=64" alt="HiEq"><span id="brandName">HiEq</span></a>
+      <a class="brand" href="https://github.com/HiEq" target="_blank" rel="noopener" title="HiEq 的 GitHub 主页"><img class="avatar" id="brandAvatar" src="https://github.com/HiEq.png?size=64" alt="HiEq"><span id="brandName">HiEq</span></a>
       <nav class="nav-menu" id="navMenu"></nav>
       <div class="nav-right">
+        <button class="icon-btn" id="btnTheme" title="夜间 / 日间模式">
+          <svg class="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
         <button class="icon-btn" id="btnSearch" title="搜索图片">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
         </button>
@@ -749,6 +767,10 @@ function toast(msg){
   var t=$('toast'); t.textContent=msg; t.classList.add('is-on');
   clearTimeout(t._h); t._h=setTimeout(function(){ t.classList.remove('is-on'); }, 2600);
 }
+function setTheme(mode){
+  document.documentElement.setAttribute('data-theme', mode);
+  try{ localStorage.setItem('layout.theme', mode); }catch(e){}
+}
 function uid(){ return 'i' + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
 function safeName(name){
   /* 文件名规范为 ASCII 安全形式；下载时仍使用原始文件名（it.name） */
@@ -938,10 +960,15 @@ async function loadManifest(){
 }
 async function saveManifest(message){
   /* 仓库模式 → 直接写回 gallery.json；否则存本机草稿 */
+  var gc = ghCfg();
   var payload = {
     version: 1,
     site: state.site,
-    config: state.cfg,
+    config: {
+      adminHash: state.cfg.adminHash || DEFAULT_CFG.adminHash,
+      /* 安全：Token 绝不写进清单/仓库，只存在你自己的浏览器 localStorage 里 */
+      github: {token:'', owner: gc.owner || '', branch: gc.branch || 'main', dir: gc.dir || 'images', manifest: gc.manifest || 'gallery.json'}
+    },
     items: state.items.filter(function(it){ return !it.local; })
   };
   if(ghReady()){
@@ -950,7 +977,7 @@ async function saveManifest(message){
     toast('同步失败（' + r.status + '）：' + (r.data && r.data.message ? r.data.message : '请检查 Token 与仓库设置'));
     return false;
   }
-  lsSet(LS.draft, {items:payload.items, site:state.site, config:state.cfg});
+  lsSet(LS.draft, {items:payload.items, site:payload.site, config:payload.config});
   state.draft = true;
   toast('已保存到本机草稿（未连接 GitHub）');
   renderDraftNote();
@@ -1163,18 +1190,29 @@ function renderHome(){
 
   var box = $('showcase');
   box.innerHTML = '';
-  var picks = state.items.slice(0, 3);
-  picks.forEach(function(it, i){
-    var t = el('div', 'tile ' + (i === 0 ? 'tall' : 'small'));
+  var picks = randomPicks(8);          /* 每次进来随机抽 8 张 */
+  if(!picks.length) return;
+  picks.concat(picks).forEach(function(it){   /* 双份排列 → 无缝循环滚动 */
+    var t = el('div', 'tile');
     var img = el('img');
     img.decoding = 'async';
+    img.loading = 'lazy';
     img.alt = it.title;
     previewInto(img, it);
-    var cap = el('div','tile-cap', it.title);
-    t.appendChild(img); t.appendChild(cap);
-    t.addEventListener('click', function(){ openLightbox(picks, i); });
+    t.appendChild(img);
+    t.appendChild(el('div','tile-cap', it.title));
+    t.addEventListener('click', function(){ openLightbox(picks, picks.indexOf(it)); });
     box.appendChild(t);
   });
+}
+/* 随机抽 n 张（洗牌取前 n，不足则全部） */
+function randomPicks(n){
+  var arr = state.items.slice();
+  for(var i = arr.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+  }
+  return arr.slice(0, n);
 }
 
 /* ============================================================
@@ -1606,6 +1644,7 @@ function thumbName(path){
 
 /* ---------- 管理：上传队列 ---------- */
 function addFiles(files){
+  if(!state.admin) return;      /* 写操作仅限管理模式 */
   var added = 0;
   Array.prototype.forEach.call(files, function(f){
     if(!/^image\//.test(f.type) && !/\.(svg|png|jpe?g|gif|webp|avif)$/i.test(f.name)){
@@ -1696,6 +1735,7 @@ function renderQueue(){
   $('btnCommit').textContent = state.queue.length ? ('保存 ' + state.queue.length + ' 张到图库') : '保存到图库';
 }
 async function commitQueue(){
+  if(!state.admin) return;      /* 写操作仅限管理模式 */
   if(!state.queue.length) return;
   var c = ghCfg();
   var mode = ghReady() ? 'github' : 'local';
@@ -1801,6 +1841,7 @@ function editItem(it){
   setTimeout(function(){ $('edTitle').focus(); $('edTitle').select(); }, 60);
 }
 async function saveEdit(){
+  if(!state.admin) return;      /* 写操作仅限管理模式 */
   var it = editing;
   if(!it){ $('modalEdit').classList.remove('is-open'); return; }
   it.title = $('edTitle').value.trim() || it.title;
@@ -1872,10 +1913,15 @@ async function backfillThumbs(){
 
 /* ---------- 导出 ---------- */
 function exportManifest(){
+  var gc = ghCfg();
   var payload = {
     version: 1,
     site: state.site,
-    config: state.cfg,
+    config: {
+      adminHash: state.cfg.adminHash || DEFAULT_CFG.adminHash,
+      /* 安全：Token 绝不写进清单/仓库，只存在你自己的浏览器 localStorage 里 */
+      github: {token:'', owner: gc.owner || '', branch: gc.branch || 'main', dir: gc.dir || 'images', manifest: gc.manifest || 'gallery.json'}
+    },
     items: state.items.filter(function(it){ return !it.local; })
   };
   var blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
@@ -2005,18 +2051,20 @@ function bind(){
     }
   });
 
-  /* 标签条：竖向滚轮转横向滑动（到两端后交还页面滚动） */
+  /* 标签条：竖向滚轮转横向滑动；指针停在标签区内时始终接管滚动（到底也不带动页面） */
   $('chips').addEventListener('wheel', function(e){
     if(Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
     var box = e.currentTarget;
     var max = box.scrollWidth - box.clientWidth;
     if(max <= 0) return;
-    var atStart = box.scrollLeft <= 0;
-    var atEnd = box.scrollLeft >= max - 1;
-    if((e.deltaY < 0 && atStart) || (e.deltaY > 0 && atEnd)) return;
     e.preventDefault();
     box.scrollLeft = Math.max(0, Math.min(max, box.scrollLeft + e.deltaY));
   }, {passive:false});
+
+  /* 夜间 / 日间切换（手动选择会记住，否则跟随系统） */
+  $('btnTheme').addEventListener('click', function(){
+    setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
 
   /* 点击遮罩关闭 */
   ['modalLogin','modalPanel','modalEdit'].forEach(function(id){
