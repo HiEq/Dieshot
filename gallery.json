@@ -1,0 +1,3523 @@
+{
+  "version": 1,
+  "site": {
+    "title": "Layout",
+    "sub": "Die Shot 裸片图库：26 家厂商 · 219 张裸片显微影像。浏览、搜索、下载，一切刚刚好。"
+  },
+  "config": {
+    "adminHash": "1dc5ae5b68174891b6aa9850aa05ee0d9ae8a20468d9517259951a2dd9e9c0f0",
+    "github": {
+      "token": "",
+      "owner": "",
+      "branch": "main",
+      "dir": "images",
+      "manifest": "gallery.json"
+    }
+  },
+  "items": [
+    {
+      "id": "ds-guz2-1",
+      "title": "48319140097_4a5e932125_o",
+      "desc": "原图 12834 × 10437",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/48319140097_4a5e932125_o-guz2.jpg",
+      "thumb": "images/dieshot/amd/48319140097_4a5e932125_o-guz2.thumb.jpg",
+      "file": "images/dieshot/amd/48319140097_4a5e932125_o-guz2.jpg",
+      "name": "48319140097_4a5e932125_o.jpg",
+      "size": 1628584,
+      "w": 12834,
+      "h": 10437,
+      "addedAt": "2025-10-27T03:44:18.866Z"
+    },
+    {
+      "id": "ds-dou8-2",
+      "title": "7995wx-24.93x15.84x0.76",
+      "desc": "原图 10624 × 7317",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/7995wx-24.93x15.84x0.76-dou8.jpg",
+      "thumb": "images/dieshot/amd/7995wx-24.93x15.84x0.76-dou8.thumb.jpg",
+      "file": "images/dieshot/amd/7995wx-24.93x15.84x0.76-dou8.jpg",
+      "name": "7995wx-24.93x15.84x0.76.jpg",
+      "size": 1445802,
+      "w": 10624,
+      "h": 7317,
+      "addedAt": "2025-08-07T06:36:16.000Z"
+    },
+    {
+      "id": "ds-ihvo-3",
+      "title": "AMD Phoenix2",
+      "desc": "原图 13851 × 8593",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/amd-phoenix2-ihvo.jpg",
+      "thumb": "images/dieshot/amd/amd-phoenix2-ihvo.thumb.jpg",
+      "file": "images/dieshot/amd/amd-phoenix2-ihvo.jpg",
+      "name": "AMD Phoenix2.jpg",
+      "size": 1341682,
+      "w": 13851,
+      "h": 8593,
+      "addedAt": "2025-01-06T09:03:09.000Z"
+    },
+    {
+      "id": "ds-1v7c-4",
+      "title": "AMD R5 2400G",
+      "desc": "原图 11245 × 7081",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/amd-r5-2400g-1v7c.jpg",
+      "thumb": "images/dieshot/amd/amd-r5-2400g-1v7c.thumb.jpg",
+      "file": "images/dieshot/amd/amd-r5-2400g-1v7c.jpg",
+      "name": "AMD R5 2400G.jpg",
+      "size": 1425455,
+      "w": 11245,
+      "h": 7081,
+      "addedAt": "2025-06-07T12:47:46.000Z"
+    },
+    {
+      "id": "ds-1kid-5",
+      "title": "AMD R9 Fury X",
+      "desc": "原图 4125 × 4898",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/amd-r9-fury-x-1kid.jpg",
+      "thumb": "images/dieshot/amd/amd-r9-fury-x-1kid.thumb.jpg",
+      "file": "images/dieshot/amd/amd-r9-fury-x-1kid.jpg",
+      "name": "AMD R9 Fury X.jpg",
+      "size": 1471651,
+      "w": 4125,
+      "h": 4898,
+      "addedAt": "2024-11-06T03:12:49.000Z"
+    },
+    {
+      "id": "ds-9jw6-6",
+      "title": "AMD Radeon Pro V520",
+      "desc": "原图 7202 × 10176",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/amd-radeon-pro-v520-9jw6.jpg",
+      "thumb": "images/dieshot/amd/amd-radeon-pro-v520-9jw6.thumb.jpg",
+      "file": "images/dieshot/amd/amd-radeon-pro-v520-9jw6.jpg",
+      "name": "AMD Radeon Pro V520.jpg",
+      "size": 1282147,
+      "w": 7202,
+      "h": 10176,
+      "addedAt": "2024-12-28T05:17:54.000Z"
+    },
+    {
+      "id": "ds-7cri-7",
+      "title": "AMD Radeon VII vega20-10K",
+      "desc": "原图 10592 × 7207",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/amd-radeon-vii-vega20-10k-7cri.jpg",
+      "thumb": "images/dieshot/amd/amd-radeon-vii-vega20-10k-7cri.thumb.jpg",
+      "file": "images/dieshot/amd/amd-radeon-vii-vega20-10k-7cri.jpg",
+      "name": "AMD Radeon VII vega20-10K.jpg",
+      "size": 1858305,
+      "w": 10592,
+      "h": 7207,
+      "addedAt": "2025-11-10T11:18:25.460Z"
+    },
+    {
+      "id": "ds-y05n-8",
+      "title": "AMD Ryzen CPU",
+      "desc": "原图 5472 × 3655",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/amd-ryzen-cpu-y05n.jpg",
+      "thumb": "images/dieshot/amd/amd-ryzen-cpu-y05n.thumb.jpg",
+      "file": "images/dieshot/amd/amd-ryzen-cpu-y05n.jpg",
+      "name": "AMD Ryzen CPU.jpg",
+      "size": 1108727,
+      "w": 5472,
+      "h": 3655,
+      "addedAt": "2025-01-07T09:08:51.000Z"
+    },
+    {
+      "id": "ds-j8hk-9",
+      "title": "AMD_Radeon_RX_Vega_M_GH11_",
+      "desc": "原图 6912 × 8602",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/amd_radeon_rx_vega_m_gh11_-j8hk.jpg",
+      "thumb": "images/dieshot/amd/amd_radeon_rx_vega_m_gh11_-j8hk.thumb.jpg",
+      "file": "images/dieshot/amd/amd_radeon_rx_vega_m_gh11_-j8hk.jpg",
+      "name": "AMD_Radeon_RX_Vega_M_GH11_.jpg",
+      "size": 1771788,
+      "w": 6912,
+      "h": 8602,
+      "addedAt": "2024-10-31T05:43:50.000Z"
+    },
+    {
+      "id": "ds-tp39-10",
+      "title": "EPYC_9845_io_10k",
+      "desc": "原图 10240 × 7171",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/epyc_9845_io_10k-tp39.jpg",
+      "thumb": "images/dieshot/amd/epyc_9845_io_10k-tp39.thumb.jpg",
+      "file": "images/dieshot/amd/epyc_9845_io_10k-tp39.jpg",
+      "name": "EPYC_9845_io_10k.jpg",
+      "size": 1518781,
+      "w": 10240,
+      "h": 7171,
+      "addedAt": "2025-08-07T06:34:42.000Z"
+    },
+    {
+      "id": "ds-dc2v-11",
+      "title": "GCN 3.0 Tonga 17.47x21.40x0.78mm_",
+      "desc": "原图 10797 × 13554",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/gcn-3.0-tonga-17.47x21.40x0.78mm_-dc2v.jpg",
+      "thumb": "images/dieshot/amd/gcn-3.0-tonga-17.47x21.40x0.78mm_-dc2v.thumb.jpg",
+      "file": "images/dieshot/amd/gcn-3.0-tonga-17.47x21.40x0.78mm_-dc2v.jpg",
+      "name": "GCN 3.0 Tonga 17.47x21.40x0.78mm_.jpg",
+      "size": 1918122,
+      "w": 10797,
+      "h": 13554,
+      "addedAt": "2025-10-18T12:27:29.601Z"
+    },
+    {
+      "id": "ds-1hua-12",
+      "title": "GCN1.0 Neptune 14.22x15.44x0.78mm_",
+      "desc": "原图 13775 × 13456",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/gcn1.0-neptune-14.22x15.44x0.78mm_-1hua.jpg",
+      "thumb": "images/dieshot/amd/gcn1.0-neptune-14.22x15.44x0.78mm_-1hua.thumb.jpg",
+      "file": "images/dieshot/amd/gcn1.0-neptune-14.22x15.44x0.78mm_-1hua.jpg",
+      "name": "GCN1.0 Neptune 14.22x15.44x0.78mm_.jpg",
+      "size": 2410297,
+      "w": 13775,
+      "h": 13456,
+      "addedAt": "2025-10-29T09:12:39.555Z"
+    },
+    {
+      "id": "ds-123l-13",
+      "title": "GCN4.0 Polaris 23 Lexa 8.65x12.06x0.38mm_",
+      "desc": "原图 10392 × 7883",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/gcn4.0-polaris-23-lexa-8.65x12.06x0.38mm_-123l.jpg",
+      "thumb": "images/dieshot/amd/gcn4.0-polaris-23-lexa-8.65x12.06x0.38mm_-123l.thumb.jpg",
+      "file": "images/dieshot/amd/gcn4.0-polaris-23-lexa-8.65x12.06x0.38mm_-123l.jpg",
+      "name": "GCN4.0 Polaris 23 Lexa 8.65x12.06x0.38mm_.jpg",
+      "size": 1583179,
+      "w": 10392,
+      "h": 7883,
+      "addedAt": "2025-07-28T03:19:39.000Z"
+    },
+    {
+      "id": "ds-1nxo-14",
+      "title": "IMG_0721",
+      "desc": "原图 14112 × 11721",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/img_0721-1nxo.jpg",
+      "thumb": "images/dieshot/amd/img_0721-1nxo.thumb.jpg",
+      "file": "images/dieshot/amd/img_0721-1nxo.jpg",
+      "name": "IMG_0721.jpg",
+      "size": 1392440,
+      "w": 14112,
+      "h": 11721,
+      "addedAt": "2025-04-07T05:42:14.000Z"
+    },
+    {
+      "id": "ds-fgfw-15",
+      "title": "IMG_0805",
+      "desc": "原图 13784 × 11786",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/img_0805-fgfw.jpg",
+      "thumb": "images/dieshot/amd/img_0805-fgfw.thumb.jpg",
+      "file": "images/dieshot/amd/img_0805-fgfw.jpg",
+      "name": "IMG_0805.jpg",
+      "size": 1457748,
+      "w": 13784,
+      "h": 11786,
+      "addedAt": "2025-04-24T11:57:42.000Z"
+    },
+    {
+      "id": "ds-18is-16",
+      "title": "Kabini 10.20x10.28mm_",
+      "desc": "原图 8429 × 8166",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/kabini-10.20x10.28mm_-18is.jpg",
+      "thumb": "images/dieshot/amd/kabini-10.20x10.28mm_-18is.thumb.jpg",
+      "file": "images/dieshot/amd/kabini-10.20x10.28mm_-18is.jpg",
+      "name": "Kabini 10.20x10.28mm_.jpg",
+      "size": 2075004,
+      "w": 8429,
+      "h": 8166,
+      "addedAt": "2025-01-06T05:02:28.000Z"
+    },
+    {
+      "id": "ds-8pg5-17",
+      "title": "Mendocino 9.70x10.24_",
+      "desc": "原图 8228 × 7786",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/mendocino-9.70x10.24_-8pg5.jpg",
+      "thumb": "images/dieshot/amd/mendocino-9.70x10.24_-8pg5.thumb.jpg",
+      "file": "images/dieshot/amd/mendocino-9.70x10.24_-8pg5.jpg",
+      "name": "Mendocino 9.70x10.24_.jpg",
+      "size": 1721166,
+      "w": 8228,
+      "h": 7786,
+      "addedAt": "2025-01-05T04:43:58.000Z"
+    },
+    {
+      "id": "ds-pz7k-18",
+      "title": "navi21 18.25x28.45",
+      "desc": "原图 14999 × 10221",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/navi21-18.25x28.45-pz7k.jpg",
+      "thumb": "images/dieshot/amd/navi21-18.25x28.45-pz7k.thumb.jpg",
+      "file": "images/dieshot/amd/navi21-18.25x28.45-pz7k.jpg",
+      "name": "navi21 18.25x28.45.jpg",
+      "size": 1189354,
+      "w": 14999,
+      "h": 10221,
+      "addedAt": "2025-04-02T09:30:49.000Z"
+    },
+    {
+      "id": "ds-128o-19",
+      "title": "navi23",
+      "desc": "原图 8009 × 7088",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/navi23-128o.jpg",
+      "thumb": "images/dieshot/amd/navi23-128o.thumb.jpg",
+      "file": "images/dieshot/amd/navi23-128o.jpg",
+      "name": "navi23.jpg",
+      "size": 1462569,
+      "w": 8009,
+      "h": 7088,
+      "addedAt": "2024-12-28T05:20:01.000Z"
+    },
+    {
+      "id": "ds-1y3p-20",
+      "title": "Polaris_20_13.83x17.66mm_",
+      "desc": "原图 6052 × 7574",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/polaris_20_13.83x17.66mm_-1y3p.jpg",
+      "thumb": "images/dieshot/amd/polaris_20_13.83x17.66mm_-1y3p.thumb.jpg",
+      "file": "images/dieshot/amd/polaris_20_13.83x17.66mm_-1y3p.jpg",
+      "name": "Polaris_20_13.83x17.66mm_.jpg",
+      "size": 1891098,
+      "w": 6052,
+      "h": 7574,
+      "addedAt": "2024-10-30T12:14:21.000Z"
+    },
+    {
+      "id": "ds-d3s9-21",
+      "title": "R9 7950X io_",
+      "desc": "原图 12268 × 9752",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/r9-7950x-io_-d3s9.jpg",
+      "thumb": "images/dieshot/amd/r9-7950x-io_-d3s9.thumb.jpg",
+      "file": "images/dieshot/amd/r9-7950x-io_-d3s9.jpg",
+      "name": "R9 7950X io_.jpg",
+      "size": 1416429,
+      "w": 12268,
+      "h": 9752,
+      "addedAt": "2024-12-27T16:03:39.000Z"
+    },
+    {
+      "id": "ds-1bti-22",
+      "title": "R9 9900X cpu zen5_",
+      "desc": "原图 10727 × 9387",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/r9-9900x-cpu-zen5_-1bti.jpg",
+      "thumb": "images/dieshot/amd/r9-9900x-cpu-zen5_-1bti.thumb.jpg",
+      "file": "images/dieshot/amd/r9-9900x-cpu-zen5_-1bti.jpg",
+      "name": "R9 9900X cpu zen5_.jpg",
+      "size": 1544980,
+      "w": 10727,
+      "h": 9387,
+      "addedAt": "2024-12-27T14:11:19.000Z"
+    },
+    {
+      "id": "ds-ygi7-23",
+      "title": "Rome_sIOD",
+      "desc": "原图 10695 × 6104",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/rome_siod-ygi7.jpg",
+      "thumb": "images/dieshot/amd/rome_siod-ygi7.thumb.jpg",
+      "file": "images/dieshot/amd/rome_siod-ygi7.jpg",
+      "name": "Rome_sIOD.jpg",
+      "size": 1382047,
+      "w": 10695,
+      "h": 6104,
+      "addedAt": "2025-01-07T11:35:43.000Z"
+    },
+    {
+      "id": "ds-3ap6-24",
+      "title": "Steamdeck",
+      "desc": "原图 2854 × 2601",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/steamdeck-3ap6.jpg",
+      "thumb": "images/dieshot/amd/steamdeck-3ap6.thumb.jpg",
+      "file": "images/dieshot/amd/steamdeck-3ap6.jpg",
+      "name": "Steamdeck.jpg",
+      "size": 1178354,
+      "w": 2854,
+      "h": 2601,
+      "addedAt": "2025-01-06T07:25:16.000Z"
+    },
+    {
+      "id": "ds-uwnh-25",
+      "title": "Strix Halo",
+      "desc": "原图 9974 × 12140",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/strix-halo-uwnh.jpg",
+      "thumb": "images/dieshot/amd/strix-halo-uwnh.thumb.jpg",
+      "file": "images/dieshot/amd/strix-halo-uwnh.jpg",
+      "name": "Strix Halo.jpg",
+      "size": 1715281,
+      "w": 9974,
+      "h": 12140,
+      "addedAt": "2025-02-20T11:41:38.000Z"
+    },
+    {
+      "id": "ds-14qf-26",
+      "title": "Strix_Point_",
+      "desc": "原图 10085 × 6807",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/strix_point_-14qf.jpg",
+      "thumb": "images/dieshot/amd/strix_point_-14qf.thumb.jpg",
+      "file": "images/dieshot/amd/strix_point_-14qf.jpg",
+      "name": "Strix_Point_.jpg",
+      "size": 1392032,
+      "w": 10085,
+      "h": 6807,
+      "addedAt": "2024-12-28T05:14:51.000Z"
+    },
+    {
+      "id": "ds-17qo-27",
+      "title": "zen1 Raven Ridge Dali 11.60x12.80x0.37mm_",
+      "desc": "原图 11698 × 11528",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/zen1-raven-ridge-dali-11.60x12.80x0.37mm_-17qo.jpg",
+      "thumb": "images/dieshot/amd/zen1-raven-ridge-dali-11.60x12.80x0.37mm_-17qo.thumb.jpg",
+      "file": "images/dieshot/amd/zen1-raven-ridge-dali-11.60x12.80x0.37mm_-17qo.jpg",
+      "name": "zen1 Raven Ridge Dali 11.60x12.80x0.37mm_.jpg",
+      "size": 2062561,
+      "w": 11698,
+      "h": 11528,
+      "addedAt": "2025-10-13T05:48:56.736Z"
+    },
+    {
+      "id": "ds-mcxs-28",
+      "title": "Zen2_CCD",
+      "desc": "原图 11705 × 8375",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/zen2_ccd-mcxs.jpg",
+      "thumb": "images/dieshot/amd/zen2_ccd-mcxs.thumb.jpg",
+      "file": "images/dieshot/amd/zen2_ccd-mcxs.jpg",
+      "name": "Zen2_CCD.jpg",
+      "size": 1481434,
+      "w": 11705,
+      "h": 8375,
+      "addedAt": "2025-01-07T10:25:34.000Z"
+    },
+    {
+      "id": "ds-1mjc-29",
+      "title": "zen3 7.44x11.28mm",
+      "desc": "原图 9066 × 6112",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/zen3-7.44x11.28mm-1mjc.jpg",
+      "thumb": "images/dieshot/amd/zen3-7.44x11.28mm-1mjc.thumb.jpg",
+      "file": "images/dieshot/amd/zen3-7.44x11.28mm-1mjc.jpg",
+      "name": "zen3 7.44x11.28mm.jpg",
+      "size": 1424393,
+      "w": 9066,
+      "h": 6112,
+      "addedAt": "2025-01-08T06:21:23.000Z"
+    },
+    {
+      "id": "ds-1ql2-30",
+      "title": "zen3-p",
+      "desc": "原图 11195 × 10481",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/zen3-p-1ql2.jpg",
+      "thumb": "images/dieshot/amd/zen3-p-1ql2.thumb.jpg",
+      "file": "images/dieshot/amd/zen3-p-1ql2.jpg",
+      "name": "zen3-p.jpg",
+      "size": 1931015,
+      "w": 11195,
+      "h": 10481,
+      "addedAt": "2024-12-21T06:46:52.000Z"
+    },
+    {
+      "id": "ds-1lpt-31",
+      "title": "zen4 Phoenix1 15.91x11.11x0.35mm_",
+      "desc": "原图 14060 × 10734",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/zen4-phoenix1-15.91x11.11x0.35mm_-1lpt.jpg",
+      "thumb": "images/dieshot/amd/zen4-phoenix1-15.91x11.11x0.35mm_-1lpt.thumb.jpg",
+      "file": "images/dieshot/amd/zen4-phoenix1-15.91x11.11x0.35mm_-1lpt.jpg",
+      "name": "zen4 Phoenix1 15.91x11.11x0.35mm_.jpg",
+      "size": 1483269,
+      "w": 14060,
+      "h": 10734,
+      "addedAt": "2026-04-18T14:53:21.674Z"
+    },
+    {
+      "id": "ds-u3pd-32",
+      "title": "zen5c-core-2",
+      "desc": "原图 15000 × 6843",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/zen5c-core-2-u3pd.jpg",
+      "thumb": "images/dieshot/amd/zen5c-core-2-u3pd.thumb.jpg",
+      "file": "images/dieshot/amd/zen5c-core-2-u3pd.jpg",
+      "name": "zen5c-core-2.jpg",
+      "size": 884016,
+      "w": 15000,
+      "h": 6843,
+      "addedAt": "2025-04-12T03:59:06.000Z"
+    },
+    {
+      "id": "ds-ldis-33",
+      "title": "Zeppelin",
+      "desc": "原图 11613 × 5504",
+      "tags": [
+        "AMD"
+      ],
+      "src": "images/dieshot/amd/zeppelin-ldis.jpg",
+      "thumb": "images/dieshot/amd/zeppelin-ldis.thumb.jpg",
+      "file": "images/dieshot/amd/zeppelin-ldis.jpg",
+      "name": "Zeppelin.jpg",
+      "size": 1105629,
+      "w": 11613,
+      "h": 5504,
+      "addedAt": "2025-01-07T14:24:50.000Z"
+    },
+    {
+      "id": "ds-nxs1-34",
+      "title": "Ampere Altra",
+      "desc": "原图 13037 × 11650",
+      "tags": [
+        "Ampere"
+      ],
+      "src": "images/dieshot/ampere/ampere-altra-nxs1.jpg",
+      "thumb": "images/dieshot/ampere/ampere-altra-nxs1.thumb.jpg",
+      "file": "images/dieshot/ampere/ampere-altra-nxs1.jpg",
+      "name": "Ampere Altra.jpg",
+      "size": 1953692,
+      "w": 13037,
+      "h": 11650,
+      "addedAt": "2025-01-08T13:03:30.000Z"
+    },
+    {
+      "id": "ds-xnzl-35",
+      "title": "A10-23",
+      "desc": "原图 9545 × 9994",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/a10-23-xnzl.jpg",
+      "thumb": "images/dieshot/apple-silicon/a10-23-xnzl.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/a10-23-xnzl.jpg",
+      "name": "A10-23.jpg",
+      "size": 1812679,
+      "w": 9545,
+      "h": 9994,
+      "addedAt": "2025-01-02T07:30:08.000Z"
+    },
+    {
+      "id": "ds-w7tw-36",
+      "title": "a11+8.33x10.76mm1",
+      "desc": "原图 4583 × 5906",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/a11-8.33x10.76mm1-w7tw.jpg",
+      "thumb": "images/dieshot/apple-silicon/a11-8.33x10.76mm1-w7tw.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/a11-8.33x10.76mm1-w7tw.jpg",
+      "name": "a11+8.33x10.76mm1.jpg",
+      "size": 1425671,
+      "w": 4583,
+      "h": 5906,
+      "addedAt": "2025-01-02T07:26:31.000Z"
+    },
+    {
+      "id": "ds-2jxu-37",
+      "title": "a12+8.49x10.04mm1",
+      "desc": "原图 9263 × 10784",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/a12-8.49x10.04mm1-2jxu.jpg",
+      "thumb": "images/dieshot/apple-silicon/a12-8.49x10.04mm1-2jxu.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/a12-8.49x10.04mm1-2jxu.jpg",
+      "name": "a12+8.49x10.04mm1.jpg",
+      "size": 1586897,
+      "w": 9263,
+      "h": 10784,
+      "addedAt": "2025-01-02T08:24:34.000Z"
+    },
+    {
+      "id": "ds-1lrh-38",
+      "title": "A12Z_Z_10.27x12.70mm_",
+      "desc": "原图 10088 × 8340",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/a12z_z_10.27x12.70mm_-1lrh.jpg",
+      "thumb": "images/dieshot/apple-silicon/a12z_z_10.27x12.70mm_-1lrh.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/a12z_z_10.27x12.70mm_-1lrh.jpg",
+      "name": "A12Z_Z_10.27x12.70mm_.jpg",
+      "size": 1726181,
+      "w": 10088,
+      "h": 8340,
+      "addedAt": "2024-11-13T02:36:42.000Z"
+    },
+    {
+      "id": "ds-gi82-39",
+      "title": "a13+9.28x10.89mm1",
+      "desc": "原图 10085 × 11672",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/a13-9.28x10.89mm1-gi82.jpg",
+      "thumb": "images/dieshot/apple-silicon/a13-9.28x10.89mm1-gi82.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/a13-9.28x10.89mm1-gi82.jpg",
+      "name": "a13+9.28x10.89mm1.jpg",
+      "size": 1482382,
+      "w": 10085,
+      "h": 11672,
+      "addedAt": "2025-01-02T09:36:32.000Z"
+    },
+    {
+      "id": "ds-1gvv-40",
+      "title": "a14+8.63x10.40mm1",
+      "desc": "原图 9931 × 11690",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/a14-8.63x10.40mm1-1gvv.jpg",
+      "thumb": "images/dieshot/apple-silicon/a14-8.63x10.40mm1-1gvv.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/a14-8.63x10.40mm1-1gvv.jpg",
+      "name": "a14+8.63x10.40mm1.jpg",
+      "size": 1777455,
+      "w": 9931,
+      "h": 11690,
+      "addedAt": "2025-01-02T10:44:03.000Z"
+    },
+    {
+      "id": "ds-1n3v-41",
+      "title": "A15+8.62x12.77mm1",
+      "desc": "原图 9241 × 13002",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/a15-8.62x12.77mm1-1n3v.jpg",
+      "thumb": "images/dieshot/apple-silicon/a15-8.62x12.77mm1-1n3v.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/a15-8.62x12.77mm1-1n3v.jpg",
+      "name": "A15+8.62x12.77mm1.jpg",
+      "size": 1536686,
+      "w": 9241,
+      "h": 13002,
+      "addedAt": "2025-01-02T12:44:53.000Z"
+    },
+    {
+      "id": "ds-mmgv-42",
+      "title": "A16+8.47x13.62mm1",
+      "desc": "原图 7537 × 11585",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/a16-8.47x13.62mm1-mmgv.jpg",
+      "thumb": "images/dieshot/apple-silicon/a16-8.47x13.62mm1-mmgv.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/a16-8.47x13.62mm1-mmgv.jpg",
+      "name": "A16+8.47x13.62mm1.jpg",
+      "size": 1265416,
+      "w": 7537,
+      "h": 11585,
+      "addedAt": "2025-01-02T13:58:02.000Z"
+    },
+    {
+      "id": "ds-1fpl-43",
+      "title": "A18  7.84x11.79mm_",
+      "desc": "原图 9042 × 12981",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/a18-7.84x11.79mm_-1fpl.jpg",
+      "thumb": "images/dieshot/apple-silicon/a18-7.84x11.79mm_-1fpl.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/a18-7.84x11.79mm_-1fpl.jpg",
+      "name": "A18  7.84x11.79mm_.jpg",
+      "size": 1643577,
+      "w": 9042,
+      "h": 12981,
+      "addedAt": "2025-01-24T15:44:57.000Z"
+    },
+    {
+      "id": "ds-uxhr-44",
+      "title": "A18_Pro_8.44x13.00mm_",
+      "desc": "原图 8813 × 13206",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/a18_pro_8.44x13.00mm_-uxhr.jpg",
+      "thumb": "images/dieshot/apple-silicon/a18_pro_8.44x13.00mm_-uxhr.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/a18_pro_8.44x13.00mm_-uxhr.jpg",
+      "name": "A18_Pro_8.44x13.00mm_.jpg",
+      "size": 1451503,
+      "w": 8813,
+      "h": 13206,
+      "addedAt": "2025-01-24T15:56:21.000Z"
+    },
+    {
+      "id": "ds-l3za-45",
+      "title": "A19Pro 8.03x12.29x0.23mm_",
+      "desc": "原图 15070 × 22833",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/a19pro-8.03x12.29x0.23mm_-l3za.jpg",
+      "thumb": "images/dieshot/apple-silicon/a19pro-8.03x12.29x0.23mm_-l3za.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/a19pro-8.03x12.29x0.23mm_-l3za.jpg",
+      "name": "A19Pro 8.03x12.29x0.23mm_.jpg",
+      "size": 1361380,
+      "w": 15070,
+      "h": 22833,
+      "addedAt": "2025-11-11T09:16:20.493Z"
+    },
+    {
+      "id": "ds-hovn-46",
+      "title": "a20pro  8.00x12.35x0-1",
+      "desc": "原图 7448 × 11471",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/a20pro-8.00x12.35x0-1-hovn.jpg",
+      "thumb": "images/dieshot/apple-silicon/a20pro-8.00x12.35x0-1-hovn.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/a20pro-8.00x12.35x0-1-hovn.jpg",
+      "name": "a20pro  8.00x12.35x0-1.jpg",
+      "size": 1817887,
+      "w": 7448,
+      "h": 11471,
+      "addedAt": "2026-09-18T02:53:44.855Z"
+    },
+    {
+      "id": "ds-1wyb-47",
+      "title": "A5",
+      "desc": "原图 11573 × 13542",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/a5-1wyb.jpg",
+      "thumb": "images/dieshot/apple-silicon/a5-1wyb.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/a5-1wyb.jpg",
+      "name": "A5.jpg",
+      "size": 1657242,
+      "w": 11573,
+      "h": 13542,
+      "addedAt": "2025-01-24T04:41:18.000Z"
+    },
+    {
+      "id": "ds-140i-48",
+      "title": "A9 Samsung N14 APL0898 8.91x10.79mm 1_",
+      "desc": "原图 12221 × 14999",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/a9-samsung-n14-apl0898-8.91x10.79mm-1_-140i.jpg",
+      "thumb": "images/dieshot/apple-silicon/a9-samsung-n14-apl0898-8.91x10.79mm-1_-140i.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/a9-samsung-n14-apl0898-8.91x10.79mm-1_-140i.jpg",
+      "name": "A9 Samsung N14 APL0898 8.91x10.79mm 1_.jpg",
+      "size": 1782783,
+      "w": 12221,
+      "h": 14999,
+      "addedAt": "2026-05-04T13:46:53.245Z"
+    },
+    {
+      "id": "ds-1y64-49",
+      "title": "APL1114 6.20x6.42x0.09mm_",
+      "desc": "原图 11524 × 6510",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/apl1114-6.20x6.42x0.09mm_-1y64.jpg",
+      "thumb": "images/dieshot/apple-silicon/apl1114-6.20x6.42x0.09mm_-1y64.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/apl1114-6.20x6.42x0.09mm_-1y64.jpg",
+      "name": "APL1114 6.20x6.42x0.09mm_.jpg",
+      "size": 1202705,
+      "w": 11524,
+      "h": 6510,
+      "addedAt": "2025-06-19T08:20:12.000Z"
+    },
+    {
+      "id": "ds-8zhm-50",
+      "title": "Apple A17 Pro",
+      "desc": "原图 9161 × 13792",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/apple-a17-pro-8zhm.jpg",
+      "thumb": "images/dieshot/apple-silicon/apple-a17-pro-8zhm.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/apple-a17-pro-8zhm.jpg",
+      "name": "Apple A17 Pro.jpg",
+      "size": 1725504,
+      "w": 9161,
+      "h": 13792,
+      "addedAt": "2024-11-09T08:39:36.000Z"
+    },
+    {
+      "id": "ds-ftnf-51",
+      "title": "apple A4+u",
+      "desc": "原图 8092 × 8120",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/apple-a4-u-ftnf.jpg",
+      "thumb": "images/dieshot/apple-silicon/apple-a4-u-ftnf.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/apple-a4-u-ftnf.jpg",
+      "name": "apple A4+u.jpg",
+      "size": 2693101,
+      "w": 8092,
+      "h": 8120,
+      "addedAt": "2025-01-24T04:09:39.000Z"
+    },
+    {
+      "id": "ds-1c7n-52",
+      "title": "Apple R1",
+      "desc": "原图 12641 × 9320",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/apple-r1-1c7n.jpg",
+      "thumb": "images/dieshot/apple-silicon/apple-r1-1c7n.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/apple-r1-1c7n.jpg",
+      "name": "Apple R1.jpg",
+      "size": 1535254,
+      "w": 12641,
+      "h": 9320,
+      "addedAt": "2025-01-06T07:44:31.000Z"
+    },
+    {
+      "id": "ds-1b4y-53",
+      "title": "Apple_M1",
+      "desc": "原图 12050 × 11649",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/apple_m1-1b4y.jpg",
+      "thumb": "images/dieshot/apple-silicon/apple_m1-1b4y.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/apple_m1-1b4y.jpg",
+      "name": "Apple_M1.jpg",
+      "size": 2162773,
+      "w": 12050,
+      "h": 11649,
+      "addedAt": "2024-11-13T03:06:32.000Z"
+    },
+    {
+      "id": "ds-15um-54",
+      "title": "Apple_M2_",
+      "desc": "原图 11431 × 10463",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/apple_m2_-15um.jpg",
+      "thumb": "images/dieshot/apple-silicon/apple_m2_-15um.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/apple_m2_-15um.jpg",
+      "name": "Apple_M2_.jpg",
+      "size": 2290332,
+      "w": 11431,
+      "h": 10463,
+      "addedAt": "2024-11-13T03:20:09.000Z"
+    },
+    {
+      "id": "ds-a47r-55",
+      "title": "IMG_0811",
+      "desc": "原图 7285 × 8436",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/img_0811-a47r.jpg",
+      "thumb": "images/dieshot/apple-silicon/img_0811-a47r.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/img_0811-a47r.jpg",
+      "name": "IMG_0811.jpg",
+      "size": 1437461,
+      "w": 7285,
+      "h": 8436,
+      "addedAt": "2025-04-26T09:48:58.000Z"
+    },
+    {
+      "id": "ds-19gw-56",
+      "title": "m1 Pro",
+      "desc": "原图 9414 × 6705",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/m1-pro-19gw.jpg",
+      "thumb": "images/dieshot/apple-silicon/m1-pro-19gw.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/m1-pro-19gw.jpg",
+      "name": "m1 Pro.jpg",
+      "size": 1361374,
+      "w": 9414,
+      "h": 6705,
+      "addedAt": "2024-11-13T03:02:19.000Z"
+    },
+    {
+      "id": "ds-4kqj-57",
+      "title": "M1 Ultra 10K2",
+      "desc": "原图 14910 × 6915",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/m1-ultra-10k2-4kqj.jpg",
+      "thumb": "images/dieshot/apple-silicon/m1-ultra-10k2-4kqj.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/m1-ultra-10k2-4kqj.jpg",
+      "name": "M1 Ultra 10K2.jpg",
+      "size": 1037585,
+      "w": 14910,
+      "h": 6915,
+      "addedAt": "2024-11-13T02:52:28.000Z"
+    },
+    {
+      "id": "ds-q2lm-58",
+      "title": "m1max-10k",
+      "desc": "原图 9537 × 10835",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/m1max-10k-q2lm.jpg",
+      "thumb": "images/dieshot/apple-silicon/m1max-10k-q2lm.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/m1max-10k-q2lm.jpg",
+      "name": "m1max-10k.jpg",
+      "size": 1753380,
+      "w": 9537,
+      "h": 10835,
+      "addedAt": "2024-11-13T02:39:00.000Z"
+    },
+    {
+      "id": "ds-1fzq-59",
+      "title": "M2 MAX",
+      "desc": "原图 10112 × 10927",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/m2-max-1fzq.jpg",
+      "thumb": "images/dieshot/apple-silicon/m2-max-1fzq.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/m2-max-1fzq.jpg",
+      "name": "M2 MAX.jpg",
+      "size": 1884094,
+      "w": 10112,
+      "h": 10927,
+      "addedAt": "2024-11-13T03:25:33.000Z"
+    },
+    {
+      "id": "ds-1cjn-60",
+      "title": "M2 Pro",
+      "desc": "原图 9416 × 7032",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/m2-pro-1cjn.jpg",
+      "thumb": "images/dieshot/apple-silicon/m2-pro-1cjn.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/m2-pro-1cjn.jpg",
+      "name": "M2 Pro.jpg",
+      "size": 1866207,
+      "w": 9416,
+      "h": 7032,
+      "addedAt": "2025-11-11T10:59:01.489Z"
+    },
+    {
+      "id": "ds-1wg9-61",
+      "title": "M2 Ultra_",
+      "desc": "原图 14999 × 7236",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/m2-ultra_-1wg9.jpg",
+      "thumb": "images/dieshot/apple-silicon/m2-ultra_-1wg9.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/m2-ultra_-1wg9.jpg",
+      "name": "M2 Ultra_.jpg",
+      "size": 1106851,
+      "w": 14999,
+      "h": 7236,
+      "addedAt": "2024-11-13T03:43:41.000Z"
+    },
+    {
+      "id": "ds-f0g7-62",
+      "title": "M3 Pro 13.77x15.92x0.39mm_",
+      "desc": "原图 9435 × 11207",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/m3-pro-13.77x15.92x0.39mm_-f0g7.jpg",
+      "thumb": "images/dieshot/apple-silicon/m3-pro-13.77x15.92x0.39mm_-f0g7.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/m3-pro-13.77x15.92x0.39mm_-f0g7.jpg",
+      "name": "M3 Pro 13.77x15.92x0.39mm_.jpg",
+      "size": 1969862,
+      "w": 9435,
+      "h": 11207,
+      "addedAt": "2026-06-04T12:52:54.572Z"
+    },
+    {
+      "id": "ds-1chd-63",
+      "title": "M3_11.24x13.57mm",
+      "desc": "原图 13552 × 11394",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/m3_11.24x13.57mm-1chd.jpg",
+      "thumb": "images/dieshot/apple-silicon/m3_11.24x13.57mm-1chd.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/m3_11.24x13.57mm-1chd.jpg",
+      "name": "M3_11.24x13.57mm.jpg",
+      "size": 2162403,
+      "w": 13552,
+      "h": 11394,
+      "addedAt": "2025-01-28T03:40:40.000Z"
+    },
+    {
+      "id": "ds-d40o-64",
+      "title": "M4_13.21x12.82mm_",
+      "desc": "原图 11007 × 11703",
+      "tags": [
+        "Apple Silicon"
+      ],
+      "src": "images/dieshot/apple-silicon/m4_13.21x12.82mm_-d40o.jpg",
+      "thumb": "images/dieshot/apple-silicon/m4_13.21x12.82mm_-d40o.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/m4_13.21x12.82mm_-d40o.jpg",
+      "name": "M4_13.21x12.82mm_.jpg",
+      "size": 2153062,
+      "w": 11007,
+      "h": 11703,
+      "addedAt": "2025-11-11T11:25:20.166Z"
+    },
+    {
+      "id": "ds-1lni-65",
+      "title": "Baikal Electronics BE-S1000",
+      "desc": "原图 2782 × 2192",
+      "tags": [
+        "Baikal Electronics"
+      ],
+      "src": "images/dieshot/baikal-electronics/baikal-electronics-be-s1000-1lni.jpg",
+      "thumb": "images/dieshot/baikal-electronics/baikal-electronics-be-s1000-1lni.thumb.jpg",
+      "file": "images/dieshot/baikal-electronics/baikal-electronics-be-s1000-1lni.jpg",
+      "name": "Baikal Electronics BE-S1000.jpg",
+      "size": 832511,
+      "w": 2782,
+      "h": 2192,
+      "addedAt": "2024-12-30T07:28:45.000Z"
+    },
+    {
+      "id": "ds-vv1z-66",
+      "title": "Baikal Electronics-BE-M1000",
+      "desc": "原图 17153 × 13909",
+      "tags": [
+        "Baikal Electronics"
+      ],
+      "src": "images/dieshot/baikal-electronics/baikal-electronics-be-m1000-vv1z.jpg",
+      "thumb": "images/dieshot/baikal-electronics/baikal-electronics-be-m1000-vv1z.thumb.jpg",
+      "file": "images/dieshot/baikal-electronics/baikal-electronics-be-m1000-vv1z.jpg",
+      "name": "Baikal Electronics-BE-M1000.jpg",
+      "size": 1687312,
+      "w": 17153,
+      "h": 13909,
+      "addedAt": "2025-10-27T07:20:14.645Z"
+    },
+    {
+      "id": "ds-1xb8-67",
+      "title": "Centaur CHA",
+      "desc": "原图 10373 × 10304",
+      "tags": [
+        "Centaur"
+      ],
+      "src": "images/dieshot/centaur/centaur-cha-1xb8.jpg",
+      "thumb": "images/dieshot/centaur/centaur-cha-1xb8.thumb.jpg",
+      "file": "images/dieshot/centaur/centaur-cha-1xb8.jpg",
+      "name": "Centaur CHA.jpg",
+      "size": 2057506,
+      "w": 10373,
+      "h": 10304,
+      "addedAt": "2025-06-07T06:08:06.000Z"
+    },
+    {
+      "id": "ds-1qm7-68",
+      "title": "Fungible F1 DPU",
+      "desc": "原图 3529 × 3666",
+      "tags": [
+        "Fungible"
+      ],
+      "src": "images/dieshot/fungible/fungible-f1-dpu-1qm7.jpg",
+      "thumb": "images/dieshot/fungible/fungible-f1-dpu-1qm7.thumb.jpg",
+      "file": "images/dieshot/fungible/fungible-f1-dpu-1qm7.jpg",
+      "name": "Fungible F1 DPU.jpg",
+      "size": 1161764,
+      "w": 3529,
+      "h": 3666,
+      "addedAt": "2026-09-19T04:25:31.997Z"
+    },
+    {
+      "id": "ds-m6s4-69",
+      "title": "GLENFLY Arrise 1020-dieshot",
+      "desc": "原图 9151 × 10984",
+      "tags": [
+        "Glenfly"
+      ],
+      "src": "images/dieshot/glenfly/glenfly-arrise-1020-dieshot-m6s4.jpg",
+      "thumb": "images/dieshot/glenfly/glenfly-arrise-1020-dieshot-m6s4.thumb.jpg",
+      "file": "images/dieshot/glenfly/glenfly-arrise-1020-dieshot-m6s4.jpg",
+      "name": "GLENFLY Arrise 1020-dieshot.jpg",
+      "size": 1071918,
+      "w": 9151,
+      "h": 10984,
+      "addedAt": "2025-06-07T04:56:11.000Z"
+    },
+    {
+      "id": "ds-1dqf-70",
+      "title": "Google Tensor G1",
+      "desc": "原图 10595 × 10935",
+      "tags": [
+        "Google"
+      ],
+      "src": "images/dieshot/google/google-tensor-g1-1dqf.jpg",
+      "thumb": "images/dieshot/google/google-tensor-g1-1dqf.thumb.jpg",
+      "file": "images/dieshot/google/google-tensor-g1-1dqf.jpg",
+      "name": "Google Tensor G1.jpg",
+      "size": 2290937,
+      "w": 10595,
+      "h": 10935,
+      "addedAt": "2024-12-02T05:55:45.000Z"
+    },
+    {
+      "id": "ds-1dqy-71",
+      "title": "Google Tensor G2",
+      "desc": "原图 10763 × 10763",
+      "tags": [
+        "Google"
+      ],
+      "src": "images/dieshot/google/google-tensor-g2-1dqy.jpg",
+      "thumb": "images/dieshot/google/google-tensor-g2-1dqy.thumb.jpg",
+      "file": "images/dieshot/google/google-tensor-g2-1dqy.jpg",
+      "name": "Google Tensor G2.jpg",
+      "size": 1991856,
+      "w": 10763,
+      "h": 10763,
+      "addedAt": "2024-12-02T06:17:46.000Z"
+    },
+    {
+      "id": "ds-1dri-72",
+      "title": "Google Tensor G3",
+      "desc": "原图 11557 × 9929",
+      "tags": [
+        "Google"
+      ],
+      "src": "images/dieshot/google/google-tensor-g3-1dri.jpg",
+      "thumb": "images/dieshot/google/google-tensor-g3-1dri.thumb.jpg",
+      "file": "images/dieshot/google/google-tensor-g3-1dri.jpg",
+      "name": "Google Tensor G3.jpg",
+      "size": 1482929,
+      "w": 11557,
+      "h": 9929,
+      "addedAt": "2024-12-02T07:07:38.000Z"
+    },
+    {
+      "id": "ds-d24z-73",
+      "title": "Tensor G4 10.74x12.68",
+      "desc": "原图 13214 × 11091",
+      "tags": [
+        "Google"
+      ],
+      "src": "images/dieshot/google/tensor-g4-10.74x12.68-d24z.jpg",
+      "thumb": "images/dieshot/google/tensor-g4-10.74x12.68-d24z.thumb.jpg",
+      "file": "images/dieshot/google/tensor-g4-10.74x12.68-d24z.jpg",
+      "name": "Tensor G4 10.74x12.68.jpg",
+      "size": 1122173,
+      "w": 13214,
+      "h": 11091,
+      "addedAt": "2025-04-05T05:12:56.000Z"
+    },
+    {
+      "id": "ds-1ned-74",
+      "title": "1761758147059",
+      "desc": "原图 11212 × 11540",
+      "tags": [
+        "Hisilicon"
+      ],
+      "src": "images/dieshot/hisilicon/1761758147059-1ned.jpg",
+      "thumb": "images/dieshot/hisilicon/1761758147059-1ned.thumb.jpg",
+      "file": "images/dieshot/hisilicon/1761758147059-1ned.jpg",
+      "name": "1761758147059.jpg",
+      "size": 1635048,
+      "w": 11212,
+      "h": 11540,
+      "addedAt": "2025-11-04T05:06:46.747Z"
+    },
+    {
+      "id": "ds-pi7p-75",
+      "title": "Ascend 310 9.71x10.70_",
+      "desc": "原图 9976 × 9126",
+      "tags": [
+        "Hisilicon"
+      ],
+      "src": "images/dieshot/hisilicon/ascend-310-9.71x10.70_-pi7p.jpg",
+      "thumb": "images/dieshot/hisilicon/ascend-310-9.71x10.70_-pi7p.thumb.jpg",
+      "file": "images/dieshot/hisilicon/ascend-310-9.71x10.70_-pi7p.jpg",
+      "name": "Ascend 310 9.71x10.70_.jpg",
+      "size": 1306091,
+      "w": 9976,
+      "h": 9126,
+      "addedAt": "2025-04-04T04:13:22.000Z"
+    },
+    {
+      "id": "ds-16d3-76",
+      "title": "Ascend 910B 21.32x31.22mm_",
+      "desc": "原图 7286 × 10298",
+      "tags": [
+        "Hisilicon"
+      ],
+      "src": "images/dieshot/hisilicon/ascend-910b-21.32x31.22mm_-16d3.jpg",
+      "thumb": "images/dieshot/hisilicon/ascend-910b-21.32x31.22mm_-16d3.thumb.jpg",
+      "file": "images/dieshot/hisilicon/ascend-910b-21.32x31.22mm_-16d3.jpg",
+      "name": "Ascend 910B 21.32x31.22mm_.jpg",
+      "size": 1369155,
+      "w": 7286,
+      "h": 10298,
+      "addedAt": "2025-02-12T03:34:53.000Z"
+    },
+    {
+      "id": "ds-130o-77",
+      "title": "hi36c0v110_k9020_10.90x12.88_",
+      "desc": "原图 10768 × 9666",
+      "tags": [
+        "Hisilicon"
+      ],
+      "src": "images/dieshot/hisilicon/hi36c0v110_k9020_10.90x12.88_-130o.jpg",
+      "thumb": "images/dieshot/hisilicon/hi36c0v110_k9020_10.90x12.88_-130o.thumb.jpg",
+      "file": "images/dieshot/hisilicon/hi36c0v110_k9020_10.90x12.88_-130o.jpg",
+      "name": "hi36c0v110_k9020_10.90x12.88_.jpg",
+      "size": 1443530,
+      "w": 10768,
+      "h": 9666,
+      "addedAt": "2025-04-23T11:28:26.000Z"
+    },
+    {
+      "id": "ds-1ajj-78",
+      "title": "Hisilicon Kirin 9030Pro",
+      "desc": "原图 11431 × 10354",
+      "tags": [
+        "Hisilicon"
+      ],
+      "src": "images/dieshot/hisilicon/hisilicon-kirin-9030pro-1ajj.jpg",
+      "thumb": "images/dieshot/hisilicon/hisilicon-kirin-9030pro-1ajj.thumb.jpg",
+      "file": "images/dieshot/hisilicon/hisilicon-kirin-9030pro-1ajj.jpg",
+      "name": "Hisilicon Kirin 9030Pro.jpg",
+      "size": 1929012,
+      "w": 11431,
+      "h": 10354,
+      "addedAt": "2026-04-10T14:28:00.145Z"
+    },
+    {
+      "id": "ds-183p-79",
+      "title": "k820+hi6290L+v100+8.60x10.32_",
+      "desc": "原图 10373 × 12776",
+      "tags": [
+        "Hisilicon"
+      ],
+      "src": "images/dieshot/hisilicon/k820-hi6290l-v100-8.60x10.32_-183p.jpg",
+      "thumb": "images/dieshot/hisilicon/k820-hi6290l-v100-8.60x10.32_-183p.thumb.jpg",
+      "file": "images/dieshot/hisilicon/k820-hi6290l-v100-8.60x10.32_-183p.jpg",
+      "name": "k820+hi6290L+v100+8.60x10.32_.jpg",
+      "size": 1498772,
+      "w": 10373,
+      "h": 12776,
+      "addedAt": "2025-10-03T15:09:35.458Z"
+    },
+    {
+      "id": "ds-vm7x-80",
+      "title": "k9010 hi36a0 v121 10.79x10.88",
+      "desc": "原图 11118 × 10892",
+      "tags": [
+        "Hisilicon"
+      ],
+      "src": "images/dieshot/hisilicon/k9010-hi36a0-v121-10.79x10.88-vm7x.jpg",
+      "thumb": "images/dieshot/hisilicon/k9010-hi36a0-v121-10.79x10.88-vm7x.thumb.jpg",
+      "file": "images/dieshot/hisilicon/k9010-hi36a0-v121-10.79x10.88-vm7x.jpg",
+      "name": "k9010 hi36a0 v121 10.79x10.88.jpg",
+      "size": 1584671,
+      "w": 11118,
+      "h": 10892,
+      "addedAt": "2025-04-03T10:09:18.000Z"
+    },
+    {
+      "id": "ds-hqq4-81",
+      "title": "k950 hi3650 v121 8.20x10.69x0.09mm_",
+      "desc": "原图 14826 × 19883",
+      "tags": [
+        "Hisilicon"
+      ],
+      "src": "images/dieshot/hisilicon/k950-hi3650-v121-8.20x10.69x0.09mm_-hqq4.jpg",
+      "thumb": "images/dieshot/hisilicon/k950-hi3650-v121-8.20x10.69x0.09mm_-hqq4.thumb.jpg",
+      "file": "images/dieshot/hisilicon/k950-hi3650-v121-8.20x10.69x0.09mm_-hqq4.jpg",
+      "name": "k950 hi3650 v121 8.20x10.69x0.09mm_.jpg",
+      "size": 1490335,
+      "w": 14826,
+      "h": 19883,
+      "addedAt": "2025-10-24T05:11:16.481Z"
+    },
+    {
+      "id": "ds-1alb-82",
+      "title": "K9610A or X90 12.82x16.34x0.74mm_",
+      "desc": "原图 11142 × 14876",
+      "tags": [
+        "Hisilicon"
+      ],
+      "src": "images/dieshot/hisilicon/k9610a-or-x90-12.82x16.34x0.74mm_-1alb.jpg",
+      "thumb": "images/dieshot/hisilicon/k9610a-or-x90-12.82x16.34x0.74mm_-1alb.thumb.jpg",
+      "file": "images/dieshot/hisilicon/k9610a-or-x90-12.82x16.34x0.74mm_-1alb.jpg",
+      "name": "K9610A or X90 12.82x16.34x0.74mm_.jpg",
+      "size": 1260766,
+      "w": 11142,
+      "h": 14876,
+      "addedAt": "2025-07-28T04:33:04.000Z"
+    },
+    {
+      "id": "ds-8lkb-83",
+      "title": "k980_hi3680v130",
+      "desc": "原图 9545 × 10615",
+      "tags": [
+        "Hisilicon"
+      ],
+      "src": "images/dieshot/hisilicon/k980_hi3680v130-8lkb.jpg",
+      "thumb": "images/dieshot/hisilicon/k980_hi3680v130-8lkb.thumb.jpg",
+      "file": "images/dieshot/hisilicon/k980_hi3680v130-8lkb.jpg",
+      "name": "k980_hi3680v130.jpg",
+      "size": 1322108,
+      "w": 9545,
+      "h": 10615,
+      "addedAt": "2024-10-27T15:15:28.000Z"
+    },
+    {
+      "id": "ds-10yx-84",
+      "title": "k990+5G+hi3690v201+10.79x10.83_",
+      "desc": "原图 10674 × 11187",
+      "tags": [
+        "Hisilicon"
+      ],
+      "src": "images/dieshot/hisilicon/k990-5g-hi3690v201-10.79x10.83_-10yx.jpg",
+      "thumb": "images/dieshot/hisilicon/k990-5g-hi3690v201-10.79x10.83_-10yx.thumb.jpg",
+      "file": "images/dieshot/hisilicon/k990-5g-hi3690v201-10.79x10.83_-10yx.jpg",
+      "name": "k990+5G+hi3690v201+10.79x10.83_.jpg",
+      "size": 1792349,
+      "w": 10674,
+      "h": 11187,
+      "addedAt": "2025-08-18T03:39:19.000Z"
+    },
+    {
+      "id": "ds-vdd4-85",
+      "title": "Kirin 9000 ES",
+      "desc": "原图 10049 × 10637",
+      "tags": [
+        "Hisilicon"
+      ],
+      "src": "images/dieshot/hisilicon/kirin-9000-es-vdd4.jpg",
+      "thumb": "images/dieshot/hisilicon/kirin-9000-es-vdd4.thumb.jpg",
+      "file": "images/dieshot/hisilicon/kirin-9000-es-vdd4.jpg",
+      "name": "Kirin 9000 ES.jpg",
+      "size": 1771116,
+      "w": 10049,
+      "h": 10637,
+      "addedAt": "2025-01-13T15:30:51.000Z"
+    },
+    {
+      "id": "ds-115g-86",
+      "title": "Kirin 925",
+      "desc": "原图 9261 × 10007",
+      "tags": [
+        "Hisilicon"
+      ],
+      "src": "images/dieshot/hisilicon/kirin-925-115g.jpg",
+      "thumb": "images/dieshot/hisilicon/kirin-925-115g.thumb.jpg",
+      "file": "images/dieshot/hisilicon/kirin-925-115g.jpg",
+      "name": "Kirin 925.jpg",
+      "size": 2016292,
+      "w": 9261,
+      "h": 10007,
+      "addedAt": "2025-05-24T05:52:58.000Z"
+    },
+    {
+      "id": "ds-13fx-87",
+      "title": "Kirin 970",
+      "desc": "原图 13421 × 13184",
+      "tags": [
+        "Hisilicon"
+      ],
+      "src": "images/dieshot/hisilicon/kirin-970-13fx.jpg",
+      "thumb": "images/dieshot/hisilicon/kirin-970-13fx.thumb.jpg",
+      "file": "images/dieshot/hisilicon/kirin-970-13fx.jpg",
+      "name": "Kirin 970.jpg",
+      "size": 1650286,
+      "w": 13421,
+      "h": 13184,
+      "addedAt": "2025-04-03T07:31:13.000Z"
+    },
+    {
+      "id": "ds-5pzu-88",
+      "title": "Kunpeng 920",
+      "desc": "原图 10134 × 17035",
+      "tags": [
+        "Hisilicon"
+      ],
+      "src": "images/dieshot/hisilicon/kunpeng-920-5pzu.jpg",
+      "thumb": "images/dieshot/hisilicon/kunpeng-920-5pzu.thumb.jpg",
+      "file": "images/dieshot/hisilicon/kunpeng-920-5pzu.jpg",
+      "name": "Kunpeng 920.jpg",
+      "size": 1258143,
+      "w": 10134,
+      "h": 17035,
+      "addedAt": "2025-10-31T13:03:36.619Z"
+    },
+    {
+      "id": "ds-8pg2-89",
+      "title": "IMG_0836",
+      "desc": "原图 11460 × 13871",
+      "tags": [
+        "Hygon"
+      ],
+      "src": "images/dieshot/hygon/img_0836-8pg2.jpg",
+      "thumb": "images/dieshot/hygon/img_0836-8pg2.thumb.jpg",
+      "file": "images/dieshot/hygon/img_0836-8pg2.jpg",
+      "name": "IMG_0836.jpg",
+      "size": 1528026,
+      "w": 11460,
+      "h": 13871,
+      "addedAt": "2025-05-25T15:28:36.000Z"
+    },
+    {
+      "id": "ds-w51a-90",
+      "title": "1761758394036",
+      "desc": "原图 13453 × 10148",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/1761758394036-w51a.jpg",
+      "thumb": "images/dieshot/intel/1761758394036-w51a.thumb.jpg",
+      "file": "images/dieshot/intel/1761758394036-w51a.jpg",
+      "name": "1761758394036.jpg",
+      "size": 1260005,
+      "w": 13453,
+      "h": 10148,
+      "addedAt": "2025-11-04T06:04:38.125Z"
+    },
+    {
+      "id": "ds-1oxv-91",
+      "title": "36942626963_983b6ba1d7_o",
+      "desc": "原图 6494 × 6096",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/36942626963_983b6ba1d7_o-1oxv.jpg",
+      "thumb": "images/dieshot/intel/36942626963_983b6ba1d7_o-1oxv.thumb.jpg",
+      "file": "images/dieshot/intel/36942626963_983b6ba1d7_o-1oxv.jpg",
+      "name": "36942626963_983b6ba1d7_o.jpg",
+      "size": 2113718,
+      "w": 6494,
+      "h": 6096,
+      "addedAt": "2025-10-26T09:05:19.467Z"
+    },
+    {
+      "id": "ds-11nc-92",
+      "title": "52391740060_00f6048ca5_o",
+      "desc": "原图 14999 × 9179",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/52391740060_00f6048ca5_o-11nc.jpg",
+      "thumb": "images/dieshot/intel/52391740060_00f6048ca5_o-11nc.thumb.jpg",
+      "file": "images/dieshot/intel/52391740060_00f6048ca5_o-11nc.jpg",
+      "name": "52391740060_00f6048ca5_o.jpg",
+      "size": 1528797,
+      "w": 14999,
+      "h": 9179,
+      "addedAt": "2025-08-18T14:47:57.000Z"
+    },
+    {
+      "id": "ds-1fus-93",
+      "title": "52402446455_4ef38a5fff_o",
+      "desc": "原图 14667 × 10827",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/52402446455_4ef38a5fff_o-1fus.jpg",
+      "thumb": "images/dieshot/intel/52402446455_4ef38a5fff_o-1fus.thumb.jpg",
+      "file": "images/dieshot/intel/52402446455_4ef38a5fff_o-1fus.jpg",
+      "name": "52402446455_4ef38a5fff_o.jpg",
+      "size": 2143508,
+      "w": 14667,
+      "h": 10827,
+      "addedAt": "2025-10-26T10:48:23.324Z"
+    },
+    {
+      "id": "ds-183g-94",
+      "title": "52464621807_b0ebcb0478_o",
+      "desc": "原图 13235 × 8808",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/52464621807_b0ebcb0478_o-183g.jpg",
+      "thumb": "images/dieshot/intel/52464621807_b0ebcb0478_o-183g.thumb.jpg",
+      "file": "images/dieshot/intel/52464621807_b0ebcb0478_o-183g.jpg",
+      "name": "52464621807_b0ebcb0478_o.jpg",
+      "size": 1435193,
+      "w": 13235,
+      "h": 8808,
+      "addedAt": "2025-06-21T11:33:12.000Z"
+    },
+    {
+      "id": "ds-1tfs-95",
+      "title": "第5代至强-2x",
+      "desc": "原图 12537 × 8612",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/5-2x-1tfs.jpg",
+      "thumb": "images/dieshot/intel/5-2x-1tfs.thumb.jpg",
+      "file": "images/dieshot/intel/5-2x-1tfs.jpg",
+      "name": "第5代至强-2x.jpg",
+      "size": 1438460,
+      "w": 12537,
+      "h": 8612,
+      "addedAt": "2026-08-13T14:06:21.441Z"
+    },
+    {
+      "id": "ds-l18k-96",
+      "title": "Alder Lake 6+8 10.39x20.35mm_",
+      "desc": "原图 9421 × 5390",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/alder-lake-6-8-10.39x20.35mm_-l18k.jpg",
+      "thumb": "images/dieshot/intel/alder-lake-6-8-10.39x20.35mm_-l18k.thumb.jpg",
+      "file": "images/dieshot/intel/alder-lake-6-8-10.39x20.35mm_-l18k.jpg",
+      "name": "Alder Lake 6+8 10.39x20.35mm_.jpg",
+      "size": 1139526,
+      "w": 9421,
+      "h": 5390,
+      "addedAt": "2025-10-24T16:26:13.079Z"
+    },
+    {
+      "id": "ds-r1au-97",
+      "title": "Alder Lake N",
+      "desc": "原图 11042 × 8897",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/alder-lake-n-r1au.jpg",
+      "thumb": "images/dieshot/intel/alder-lake-n-r1au.thumb.jpg",
+      "file": "images/dieshot/intel/alder-lake-n-r1au.jpg",
+      "name": "Alder Lake N.jpg",
+      "size": 1954233,
+      "w": 11042,
+      "h": 8897,
+      "addedAt": "2025-01-09T07:44:54.000Z"
+    },
+    {
+      "id": "ds-1o8x-98",
+      "title": "Alder Lake S 8+8 10.20x20.39x0.46mm_",
+      "desc": "原图 15161 × 8685",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/alder-lake-s-8-8-10.20x20.39x0.46mm_-1o8x.jpg",
+      "thumb": "images/dieshot/intel/alder-lake-s-8-8-10.20x20.39x0.46mm_-1o8x.thumb.jpg",
+      "file": "images/dieshot/intel/alder-lake-s-8-8-10.20x20.39x0.46mm_-1o8x.jpg",
+      "name": "Alder Lake S 8+8 10.20x20.39x0.46mm_.jpg",
+      "size": 1455416,
+      "w": 15161,
+      "h": 8685,
+      "addedAt": "2025-10-27T06:04:50.841Z"
+    },
+    {
+      "id": "ds-ycyc-99",
+      "title": "Altera Arria 10 SX SoC FPGA 10AX066 14.59x16.05x0.78_",
+      "desc": "原图 12202 × 11607",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/altera-arria-10-sx-soc-fpga-10ax066-14.59x16.05x-ycyc.jpg",
+      "thumb": "images/dieshot/intel/altera-arria-10-sx-soc-fpga-10ax066-14.59x16.05x-ycyc.thumb.jpg",
+      "file": "images/dieshot/intel/altera-arria-10-sx-soc-fpga-10ax066-14.59x16.05x-ycyc.jpg",
+      "name": "Altera Arria 10 SX SoC FPGA 10AX066 14.59x16.05x0.78_.jpg",
+      "size": 2372448,
+      "w": 12202,
+      "h": 11607,
+      "addedAt": "2025-10-18T11:43:33.840Z"
+    },
+    {
+      "id": "ds-pprz-100",
+      "title": "arrow lake11.74x25.72mm_",
+      "desc": "原图 13676 × 6968",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/arrow-lake11.74x25.72mm_-pprz.jpg",
+      "thumb": "images/dieshot/intel/arrow-lake11.74x25.72mm_-pprz.thumb.jpg",
+      "file": "images/dieshot/intel/arrow-lake11.74x25.72mm_-pprz.jpg",
+      "name": "arrow lake11.74x25.72mm_.jpg",
+      "size": 1250150,
+      "w": 13676,
+      "h": 6968,
+      "addedAt": "2024-12-31T08:04:10.000Z"
+    },
+    {
+      "id": "ds-1cxy-101",
+      "title": "Broadwell 15c 16.31x19.30x0.78mm_",
+      "desc": "原图 11291 × 10348",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/broadwell-15c-16.31x19.30x0.78mm_-1cxy.jpg",
+      "thumb": "images/dieshot/intel/broadwell-15c-16.31x19.30x0.78mm_-1cxy.thumb.jpg",
+      "file": "images/dieshot/intel/broadwell-15c-16.31x19.30x0.78mm_-1cxy.jpg",
+      "name": "Broadwell 15c 16.31x19.30x0.78mm_.jpg",
+      "size": 1873518,
+      "w": 11291,
+      "h": 10348,
+      "addedAt": "2025-10-19T07:35:05.828Z"
+    },
+    {
+      "id": "ds-15kh-102",
+      "title": "Broadwell 2c 4gt 6.02x13.43x0.14mm",
+      "desc": "原图 9547 × 4833",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/broadwell-2c-4gt-6.02x13.43x0.14mm-15kh.jpg",
+      "thumb": "images/dieshot/intel/broadwell-2c-4gt-6.02x13.43x0.14mm-15kh.thumb.jpg",
+      "file": "images/dieshot/intel/broadwell-2c-4gt-6.02x13.43x0.14mm-15kh.jpg",
+      "name": "Broadwell 2c 4gt 6.02x13.43x0.14mm.jpg",
+      "size": 1167881,
+      "w": 9547,
+      "h": 4833,
+      "addedAt": "2026-06-17T05:58:38.362Z"
+    },
+    {
+      "id": "ds-1w9u-103",
+      "title": "Cascade Lake SP 21.31x31.78x0.74mm_",
+      "desc": "原图 12070 × 8907",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/cascade-lake-sp-21.31x31.78x0.74mm_-1w9u.jpg",
+      "thumb": "images/dieshot/intel/cascade-lake-sp-21.31x31.78x0.74mm_-1w9u.thumb.jpg",
+      "file": "images/dieshot/intel/cascade-lake-sp-21.31x31.78x0.74mm_-1w9u.jpg",
+      "name": "Cascade Lake SP 21.31x31.78x0.74mm_.jpg",
+      "size": 1533128,
+      "w": 12070,
+      "h": 8907,
+      "addedAt": "2025-10-19T06:54:18.134Z"
+    },
+    {
+      "id": "ds-5rvg-104",
+      "title": "Cooper Lake SP 22.77x32.66x0.78mm_",
+      "desc": "原图 12070 × 8907",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/cooper-lake-sp-22.77x32.66x0.78mm_-5rvg.jpg",
+      "thumb": "images/dieshot/intel/cooper-lake-sp-22.77x32.66x0.78mm_-5rvg.thumb.jpg",
+      "file": "images/dieshot/intel/cooper-lake-sp-22.77x32.66x0.78mm_-5rvg.jpg",
+      "name": "Cooper Lake SP 22.77x32.66x0.78mm_.jpg",
+      "size": 1561703,
+      "w": 12070,
+      "h": 8907,
+      "addedAt": "2025-10-19T06:19:55.179Z"
+    },
+    {
+      "id": "ds-1p5d-105",
+      "title": "DG2-128 12.18x12.79x0.47mm_",
+      "desc": "原图 11422 × 11516",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/dg2-128-12.18x12.79x0.47mm_-1p5d.jpg",
+      "thumb": "images/dieshot/intel/dg2-128-12.18x12.79x0.47mm_-1p5d.thumb.jpg",
+      "file": "images/dieshot/intel/dg2-128-12.18x12.79x0.47mm_-1p5d.jpg",
+      "name": "DG2-128 12.18x12.79x0.47mm_.jpg",
+      "size": 1446732,
+      "w": 11422,
+      "h": 11516,
+      "addedAt": "2025-08-19T13:05:52.000Z"
+    },
+    {
+      "id": "ds-1hut-106",
+      "title": "E3 1585 v5",
+      "desc": "原图 15000 × 6740",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/e3-1585-v5-1hut.jpg",
+      "thumb": "images/dieshot/intel/e3-1585-v5-1hut.thumb.jpg",
+      "file": "images/dieshot/intel/e3-1585-v5-1hut.jpg",
+      "name": "E3 1585 v5.jpg",
+      "size": 700655,
+      "w": 15000,
+      "h": 6740,
+      "addedAt": "2025-01-10T11:55:59.000Z"
+    },
+    {
+      "id": "ds-1c45-107",
+      "title": "Haswell 18c 20.70x31.91x0.78mm_",
+      "desc": "原图 13565 × 9513",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/haswell-18c-20.70x31.91x0.78mm_-1c45.jpg",
+      "thumb": "images/dieshot/intel/haswell-18c-20.70x31.91x0.78mm_-1c45.thumb.jpg",
+      "file": "images/dieshot/intel/haswell-18c-20.70x31.91x0.78mm_-1c45.jpg",
+      "name": "Haswell 18c 20.70x31.91x0.78mm_.jpg",
+      "size": 1659914,
+      "w": 13565,
+      "h": 9513,
+      "addedAt": "2025-09-09T13:13:41.257Z"
+    },
+    {
+      "id": "ds-iwdc-108",
+      "title": "Haswell_12c",
+      "desc": "原图 8068 × 7245",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/haswell_12c-iwdc.jpg",
+      "thumb": "images/dieshot/intel/haswell_12c-iwdc.thumb.jpg",
+      "file": "images/dieshot/intel/haswell_12c-iwdc.jpg",
+      "name": "Haswell_12c.jpg",
+      "size": 1890656,
+      "w": 8068,
+      "h": 7245,
+      "addedAt": "2025-05-30T16:02:57.000Z"
+    },
+    {
+      "id": "ds-1qum-109",
+      "title": "IMG_03413",
+      "desc": "原图 7295 × 5063",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/img_03413-1qum.jpg",
+      "thumb": "images/dieshot/intel/img_03413-1qum.thumb.jpg",
+      "file": "images/dieshot/intel/img_03413-1qum.jpg",
+      "name": "IMG_03413.jpg",
+      "size": 866037,
+      "w": 7295,
+      "h": 5063,
+      "addedAt": "2024-10-31T08:57:31.000Z"
+    },
+    {
+      "id": "ds-t5al-110",
+      "title": "IMG_0752",
+      "desc": "原图 10741 × 10436",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/img_0752-t5al.jpg",
+      "thumb": "images/dieshot/intel/img_0752-t5al.thumb.jpg",
+      "file": "images/dieshot/intel/img_0752-t5al.jpg",
+      "name": "IMG_0752.jpg",
+      "size": 2197937,
+      "w": 10741,
+      "h": 10436,
+      "addedAt": "2025-04-12T15:08:54.000Z"
+    },
+    {
+      "id": "ds-13lu-111",
+      "title": "Intel core i7 4790k",
+      "desc": "原图 11535 × 5192",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/intel-core-i7-4790k-13lu.jpg",
+      "thumb": "images/dieshot/intel/intel-core-i7-4790k-13lu.thumb.jpg",
+      "file": "images/dieshot/intel/intel-core-i7-4790k-13lu.jpg",
+      "name": "Intel core i7 4790k.jpg",
+      "size": 1057793,
+      "w": 11535,
+      "h": 5192,
+      "addedAt": "2025-06-05T13:50:24.000Z"
+    },
+    {
+      "id": "ds-1c2h-112",
+      "title": "intel soma 7.31x7.80",
+      "desc": "原图 6521 × 6097",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/intel-soma-7.31x7.80-1c2h.jpg",
+      "thumb": "images/dieshot/intel/intel-soma-7.31x7.80-1c2h.thumb.jpg",
+      "file": "images/dieshot/intel/intel-soma-7.31x7.80-1c2h.jpg",
+      "name": "intel soma 7.31x7.80.jpg",
+      "size": 1723161,
+      "w": 6521,
+      "h": 6097,
+      "addedAt": "2025-01-08T04:52:26.000Z"
+    },
+    {
+      "id": "ds-pqv9-113",
+      "title": "Intel_Movidius_3900V_",
+      "desc": "原图 7401 × 8564",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/intel_movidius_3900v_-pqv9.jpg",
+      "thumb": "images/dieshot/intel/intel_movidius_3900v_-pqv9.thumb.jpg",
+      "file": "images/dieshot/intel/intel_movidius_3900v_-pqv9.jpg",
+      "name": "Intel_Movidius_3900V_.jpg",
+      "size": 1695323,
+      "w": 7401,
+      "h": 8564,
+      "addedAt": "2025-01-06T05:31:29.000Z"
+    },
+    {
+      "id": "ds-48o9-114",
+      "title": "intel_Nervana_NNP-T_25.44x27.14mm_",
+      "desc": "原图 9450 × 8982",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/intel_nervana_nnp-t_25.44x27.14mm_-48o9.jpg",
+      "thumb": "images/dieshot/intel/intel_nervana_nnp-t_25.44x27.14mm_-48o9.thumb.jpg",
+      "file": "images/dieshot/intel/intel_nervana_nnp-t_25.44x27.14mm_-48o9.jpg",
+      "name": "intel_Nervana_NNP-T_25.44x27.14mm_.jpg",
+      "size": 1580947,
+      "w": 9450,
+      "h": 8982,
+      "addedAt": "2024-10-29T06:00:49.000Z"
+    },
+    {
+      "id": "ds-gyw4-115",
+      "title": "intel_Xe_DG1",
+      "desc": "原图 9104 × 6812",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/intel_xe_dg1-gyw4.jpg",
+      "thumb": "images/dieshot/intel/intel_xe_dg1-gyw4.thumb.jpg",
+      "file": "images/dieshot/intel/intel_xe_dg1-gyw4.jpg",
+      "name": "intel_Xe_DG1.jpg",
+      "size": 1595045,
+      "w": 9104,
+      "h": 6812,
+      "addedAt": "2024-10-28T06:15:00.000Z"
+    },
+    {
+      "id": "ds-cpva-116",
+      "title": "Kaby Lake 2c GT3e 17.14x9.28x0.25mm_",
+      "desc": "原图 17694 × 10225",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/kaby-lake-2c-gt3e-17.14x9.28x0.25mm_-cpva.jpg",
+      "thumb": "images/dieshot/intel/kaby-lake-2c-gt3e-17.14x9.28x0.25mm_-cpva.thumb.jpg",
+      "file": "images/dieshot/intel/kaby-lake-2c-gt3e-17.14x9.28x0.25mm_-cpva.jpg",
+      "name": "Kaby Lake 2c GT3e 17.14x9.28x0.25mm_.jpg",
+      "size": 1149209,
+      "w": 17694,
+      "h": 10225,
+      "addedAt": "2025-11-02T06:22:13.083Z"
+    },
+    {
+      "id": "ds-1ezn-117",
+      "title": "Kaby Lake Y 2c 2gt 9.00x10.68_",
+      "desc": "原图 12894 × 8983",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/kaby-lake-y-2c-2gt-9.00x10.68_-1ezn.jpg",
+      "thumb": "images/dieshot/intel/kaby-lake-y-2c-2gt-9.00x10.68_-1ezn.thumb.jpg",
+      "file": "images/dieshot/intel/kaby-lake-y-2c-2gt-9.00x10.68_-1ezn.jpg",
+      "name": "Kaby Lake Y 2c 2gt 9.00x10.68_.jpg",
+      "size": 1165049,
+      "w": 12894,
+      "h": 8983,
+      "addedAt": "2025-10-24T12:26:25.276Z"
+    },
+    {
+      "id": "ds-9h1x-118",
+      "title": "Lakefield 1P 4E 7.64x11.07_",
+      "desc": "原图 14999 × 11157",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/lakefield-1p-4e-7.64x11.07_-9h1x.jpg",
+      "thumb": "images/dieshot/intel/lakefield-1p-4e-7.64x11.07_-9h1x.thumb.jpg",
+      "file": "images/dieshot/intel/lakefield-1p-4e-7.64x11.07_-9h1x.jpg",
+      "name": "Lakefield 1P 4E 7.64x11.07_.jpg",
+      "size": 1561070,
+      "w": 14999,
+      "h": 11157,
+      "addedAt": "2025-04-16T12:02:28.000Z"
+    },
+    {
+      "id": "ds-2094-119",
+      "title": "LNL",
+      "desc": "原图 15560 × 13007",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/lnl-2094.jpg",
+      "thumb": "images/dieshot/intel/lnl-2094.thumb.jpg",
+      "file": "images/dieshot/intel/lnl-2094.jpg",
+      "name": "LNL.jpg",
+      "size": 1686663,
+      "w": 15560,
+      "h": 13007,
+      "addedAt": "2025-10-16T12:21:10.964Z"
+    },
+    {
+      "id": "ds-2iy5-120",
+      "title": "M10",
+      "desc": "原图 4325 × 4866",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/m10-2iy5.jpg",
+      "thumb": "images/dieshot/intel/m10-2iy5.thumb.jpg",
+      "file": "images/dieshot/intel/m10-2iy5.jpg",
+      "name": "M10.jpg",
+      "size": 1232854,
+      "w": 4325,
+      "h": 4866,
+      "addedAt": "2025-06-05T14:21:54.000Z"
+    },
+    {
+      "id": "ds-3wew-123",
+      "title": "Meteor Lake",
+      "desc": "原图 12546 × 6536",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/meteor-lake-3wew.jpg",
+      "thumb": "images/dieshot/intel/meteor-lake-3wew.thumb.jpg",
+      "file": "images/dieshot/intel/meteor-lake-3wew.jpg",
+      "name": "Meteor Lake.jpg",
+      "size": 1204102,
+      "w": 12546,
+      "h": 6536,
+      "addedAt": "2024-12-31T05:50:42.000Z"
+    },
+    {
+      "id": "ds-fq1h-121",
+      "title": "Meteor Lake UP4",
+      "desc": "原图 9518 × 6470",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/meteor-lake-up4-fq1h.jpg",
+      "thumb": "images/dieshot/intel/meteor-lake-up4-fq1h.thumb.jpg",
+      "file": "images/dieshot/intel/meteor-lake-up4-fq1h.jpg",
+      "name": "Meteor Lake UP4.jpg",
+      "size": 1383155,
+      "w": 9518,
+      "h": 6470,
+      "addedAt": "2024-12-31T07:26:11.000Z"
+    },
+    {
+      "id": "ds-1hq4-122",
+      "title": "Meteor Lake-S",
+      "desc": "原图 11036 × 6968",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/meteor-lake-s-1hq4.jpg",
+      "thumb": "images/dieshot/intel/meteor-lake-s-1hq4.thumb.jpg",
+      "file": "images/dieshot/intel/meteor-lake-s-1hq4.jpg",
+      "name": "Meteor Lake-S.jpg",
+      "size": 1419787,
+      "w": 11036,
+      "h": 6968,
+      "addedAt": "2025-04-06T04:43:11.000Z"
+    },
+    {
+      "id": "ds-9jq9-124",
+      "title": "N3160 Braswell 8.52x8.42x0.35mm_",
+      "desc": "原图 11652 × 12264",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/n3160-braswell-8.52x8.42x0.35mm_-9jq9.jpg",
+      "thumb": "images/dieshot/intel/n3160-braswell-8.52x8.42x0.35mm_-9jq9.thumb.jpg",
+      "file": "images/dieshot/intel/n3160-braswell-8.52x8.42x0.35mm_-9jq9.jpg",
+      "name": "N3160 Braswell 8.52x8.42x0.35mm_.jpg",
+      "size": 2174430,
+      "w": 11652,
+      "h": 12264,
+      "addedAt": "2026-05-12T10:45:11.672Z"
+    },
+    {
+      "id": "ds-a03r-125",
+      "title": "Panther Lake-H gpu 8.14x6.78x0.2mm_",
+      "desc": "原图 9441 × 11372",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/panther-lake-h-gpu-8.14x6.78x0.2mm_-a03r.jpg",
+      "thumb": "images/dieshot/intel/panther-lake-h-gpu-8.14x6.78x0.2mm_-a03r.thumb.jpg",
+      "file": "images/dieshot/intel/panther-lake-h-gpu-8.14x6.78x0.2mm_-a03r.jpg",
+      "name": "Panther Lake-H gpu 8.14x6.78x0.2mm_.jpg",
+      "size": 1645468,
+      "w": 9441,
+      "h": 11372,
+      "addedAt": "2026-05-09T05:19:56.870Z"
+    },
+    {
+      "id": "ds-w7g3-126",
+      "title": "Panther Lake-H io 12.44x4.00x0.18mm_",
+      "desc": "原图 10951 × 4167",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/panther-lake-h-io-12.44x4.00x0.18mm_-w7g3.jpg",
+      "thumb": "images/dieshot/intel/panther-lake-h-io-12.44x4.00x0.18mm_-w7g3.thumb.jpg",
+      "file": "images/dieshot/intel/panther-lake-h-io-12.44x4.00x0.18mm_-w7g3.jpg",
+      "name": "Panther Lake-H io 12.44x4.00x0.18mm_.jpg",
+      "size": 814143,
+      "w": 10951,
+      "h": 4167,
+      "addedAt": "2026-05-09T05:46:12.769Z"
+    },
+    {
+      "id": "ds-13do-127",
+      "title": "pentuim D 820-101K",
+      "desc": "原图 10876 × 5529",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/pentuim-d-820-101k-13do.jpg",
+      "thumb": "images/dieshot/intel/pentuim-d-820-101k-13do.thumb.jpg",
+      "file": "images/dieshot/intel/pentuim-d-820-101k-13do.jpg",
+      "name": "pentuim D 820-101K.jpg",
+      "size": 1205603,
+      "w": 10876,
+      "h": 5529,
+      "addedAt": "2025-01-18T10:51:53.000Z"
+    },
+    {
+      "id": "ds-1wpp-128",
+      "title": "PHI 一代--4k-p",
+      "desc": "原图 4366 × 3068",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/phi-4k-p-1wpp.jpg",
+      "thumb": "images/dieshot/intel/phi-4k-p-1wpp.thumb.jpg",
+      "file": "images/dieshot/intel/phi-4k-p-1wpp.jpg",
+      "name": "PHI 一代--4k-p.jpg",
+      "size": 2096238,
+      "w": 4366,
+      "h": 3068,
+      "addedAt": "2024-12-26T06:43:29.000Z"
+    },
+    {
+      "id": "ds-1yuo-129",
+      "title": "Phi Knights Landing 20.82x31.51_",
+      "desc": "原图 10952 × 7503",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/phi-knights-landing-20.82x31.51_-1yuo.jpg",
+      "thumb": "images/dieshot/intel/phi-knights-landing-20.82x31.51_-1yuo.thumb.jpg",
+      "file": "images/dieshot/intel/phi-knights-landing-20.82x31.51_-1yuo.jpg",
+      "name": "Phi Knights Landing 20.82x31.51_.jpg",
+      "size": 1450669,
+      "w": 10952,
+      "h": 7503,
+      "addedAt": "2024-12-26T05:03:56.000Z"
+    },
+    {
+      "id": "ds-ucia-130",
+      "title": "RPL-S",
+      "desc": "原图 10819 × 5623",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/rpl-s-ucia.jpg",
+      "thumb": "images/dieshot/intel/rpl-s-ucia.thumb.jpg",
+      "file": "images/dieshot/intel/rpl-s-ucia.jpg",
+      "name": "RPL-S.jpg",
+      "size": 1200913,
+      "w": 10819,
+      "h": 5623,
+      "addedAt": "2025-10-24T14:59:32.803Z"
+    },
+    {
+      "id": "ds-1efd-131",
+      "title": "Sapphire-Rapids-15c-es-20.31x20.56x0",
+      "desc": "原图 8407 × 8914",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/sapphire-rapids-15c-es-20.31x20.56x0-1efd.jpg",
+      "thumb": "images/dieshot/intel/sapphire-rapids-15c-es-20.31x20.56x0-1efd.thumb.jpg",
+      "file": "images/dieshot/intel/sapphire-rapids-15c-es-20.31x20.56x0-1efd.jpg",
+      "name": "Sapphire-Rapids-15c-es-20.31x20.56x0.jpg",
+      "size": 2642248,
+      "w": 8407,
+      "h": 8914,
+      "addedAt": "2026-09-22T05:20:16.674Z"
+    },
+    {
+      "id": "ds-whdq-132",
+      "title": "SKX",
+      "desc": "原图 14999 × 10939",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/skx-whdq.jpg",
+      "thumb": "images/dieshot/intel/skx-whdq.thumb.jpg",
+      "file": "images/dieshot/intel/skx-whdq.jpg",
+      "name": "SKX.jpg",
+      "size": 1554235,
+      "w": 14999,
+      "h": 10939,
+      "addedAt": "2025-06-05T15:26:56.000Z"
+    },
+    {
+      "id": "ds-1ev1-133",
+      "title": "Tiger Lake 4c 10.59x13.31x0.26mm",
+      "desc": "原图 11309 × 6801",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/tiger-lake-4c-10.59x13.31x0.26mm-1ev1.jpg",
+      "thumb": "images/dieshot/intel/tiger-lake-4c-10.59x13.31x0.26mm-1ev1.thumb.jpg",
+      "file": "images/dieshot/intel/tiger-lake-4c-10.59x13.31x0.26mm-1ev1.jpg",
+      "name": "Tiger Lake 4c 10.59x13.31x0.26mm.jpg",
+      "size": 1428466,
+      "w": 11309,
+      "h": 6801,
+      "addedAt": "2026-06-17T05:17:00.454Z"
+    },
+    {
+      "id": "ds-mh9s-134",
+      "title": "Tiger_Lake_8c_10.58x18.95mm_",
+      "desc": "原图 10092 × 5809",
+      "tags": [
+        "Intel"
+      ],
+      "src": "images/dieshot/intel/tiger_lake_8c_10.58x18.95mm_-mh9s.jpg",
+      "thumb": "images/dieshot/intel/tiger_lake_8c_10.58x18.95mm_-mh9s.thumb.jpg",
+      "file": "images/dieshot/intel/tiger_lake_8c_10.58x18.95mm_-mh9s.jpg",
+      "name": "Tiger_Lake_8c_10.58x18.95mm_.jpg",
+      "size": 1136734,
+      "w": 10092,
+      "h": 5809,
+      "addedAt": "2024-12-31T09:03:09.000Z"
+    },
+    {
+      "id": "ds-ro9b-135",
+      "title": "longxin 3A3000 10.72x14.88x0.29mm.",
+      "desc": "原图 11853 × 8551",
+      "tags": [
+        "Longxin"
+      ],
+      "src": "images/dieshot/longxin/longxin-3a3000-10.72x14.88x0.29mm-ro9b.jpg",
+      "thumb": "images/dieshot/longxin/longxin-3a3000-10.72x14.88x0.29mm-ro9b.thumb.jpg",
+      "file": "images/dieshot/longxin/longxin-3a3000-10.72x14.88x0.29mm-ro9b.jpg",
+      "name": "longxin 3A3000 10.72x14.88x0.29mm..jpg",
+      "size": 1623334,
+      "w": 11853,
+      "h": 8551,
+      "addedAt": "2025-07-14T02:08:15.000Z"
+    },
+    {
+      "id": "ds-4wi2-136",
+      "title": "MCST-Elbrus-8SV",
+      "desc": "原图 14193 × 14045",
+      "tags": [
+        "MCST-Elbrus"
+      ],
+      "src": "images/dieshot/mcst-elbrus/mcst-elbrus-8sv-4wi2.jpg",
+      "thumb": "images/dieshot/mcst-elbrus/mcst-elbrus-8sv-4wi2.thumb.jpg",
+      "file": "images/dieshot/mcst-elbrus/mcst-elbrus-8sv-4wi2.jpg",
+      "name": "MCST-Elbrus-8SV.jpg",
+      "size": 1872546,
+      "w": 14193,
+      "h": 14045,
+      "addedAt": "2025-10-27T08:20:46.423Z"
+    },
+    {
+      "id": "ds-jpk6-137",
+      "title": "MSCTElbrus-8S",
+      "desc": "原图 11427 × 10910",
+      "tags": [
+        "MCST-Elbrus"
+      ],
+      "src": "images/dieshot/mcst-elbrus/msctelbrus-8s-jpk6.jpg",
+      "thumb": "images/dieshot/mcst-elbrus/msctelbrus-8s-jpk6.thumb.jpg",
+      "file": "images/dieshot/mcst-elbrus/msctelbrus-8s-jpk6.jpg",
+      "name": "MSCTElbrus-8S.jpg",
+      "size": 2115084,
+      "w": 11427,
+      "h": 10910,
+      "addedAt": "2025-10-27T08:50:32.566Z"
+    },
+    {
+      "id": "ds-u1ns-138",
+      "title": "9400_mt6991_10.81x11.68mm_",
+      "desc": "原图 8414 × 7850",
+      "tags": [
+        "MediaTek"
+      ],
+      "src": "images/dieshot/mediatek/9400_mt6991_10.81x11.68mm_-u1ns.jpg",
+      "thumb": "images/dieshot/mediatek/9400_mt6991_10.81x11.68mm_-u1ns.thumb.jpg",
+      "file": "images/dieshot/mediatek/9400_mt6991_10.81x11.68mm_-u1ns.jpg",
+      "name": "9400_mt6991_10.81x11.68mm_.jpg",
+      "size": 2576573,
+      "w": 8414,
+      "h": 7850,
+      "addedAt": "2025-02-02T14:22:06.000Z"
+    },
+    {
+      "id": "ds-hcgt-139",
+      "title": "9600pro mt6995z  10.47x12.80x0",
+      "desc": "原图 10532 × 9313",
+      "tags": [
+        "MediaTek"
+      ],
+      "src": "images/dieshot/mediatek/9600pro-mt6995z-10.47x12.80x0-hcgt.jpg",
+      "thumb": "images/dieshot/mediatek/9600pro-mt6995z-10.47x12.80x0-hcgt.thumb.jpg",
+      "file": "images/dieshot/mediatek/9600pro-mt6995z-10.47x12.80x0-hcgt.jpg",
+      "name": "9600pro mt6995z  10.47x12.80x0.jpg",
+      "size": 1938530,
+      "w": 10532,
+      "h": 9313,
+      "addedAt": "2026-09-21T17:06:00.968Z"
+    },
+    {
+      "id": "ds-rfw9-140",
+      "title": "D8400 MT6899Z 10.91x8.63x0.15mm",
+      "desc": "原图 7871 × 6602",
+      "tags": [
+        "MediaTek"
+      ],
+      "src": "images/dieshot/mediatek/d8400-mt6899z-10.91x8.63x0.15mm-rfw9.jpg",
+      "thumb": "images/dieshot/mediatek/d8400-mt6899z-10.91x8.63x0.15mm-rfw9.thumb.jpg",
+      "file": "images/dieshot/mediatek/d8400-mt6899z-10.91x8.63x0.15mm-rfw9.jpg",
+      "name": "D8400 MT6899Z 10.91x8.63x0.15mm.jpg",
+      "size": 1791539,
+      "w": 7871,
+      "h": 6602,
+      "addedAt": "2026-04-11T14:47:36.801Z"
+    },
+    {
+      "id": "ds-pdza-141",
+      "title": "D9500 mt6995z 10.88x12.92x0.21mm_",
+      "desc": "原图 11959 × 10629",
+      "tags": [
+        "MediaTek"
+      ],
+      "src": "images/dieshot/mediatek/d9500-mt6995z-10.88x12.92x0.21mm_-pdza.jpg",
+      "thumb": "images/dieshot/mediatek/d9500-mt6995z-10.88x12.92x0.21mm_-pdza.thumb.jpg",
+      "file": "images/dieshot/mediatek/d9500-mt6995z-10.88x12.92x0.21mm_-pdza.jpg",
+      "name": "D9500 mt6995z 10.88x12.92x0.21mm_.jpg",
+      "size": 2474237,
+      "w": 11959,
+      "h": 10629,
+      "addedAt": "2025-09-30T07:01:21.856Z"
+    },
+    {
+      "id": "ds-z31p-142",
+      "title": "IMG_0804",
+      "desc": "原图 13920 × 11887",
+      "tags": [
+        "MediaTek"
+      ],
+      "src": "images/dieshot/mediatek/img_0804-z31p.jpg",
+      "thumb": "images/dieshot/mediatek/img_0804-z31p.thumb.jpg",
+      "file": "images/dieshot/mediatek/img_0804-z31p.jpg",
+      "name": "IMG_0804.jpg",
+      "size": 1708682,
+      "w": 13920,
+      "h": 11887,
+      "addedAt": "2025-04-24T07:24:45.000Z"
+    },
+    {
+      "id": "ds-z3zu-143",
+      "title": "Media Tek Dimensity 9300",
+      "desc": "原图 8226 × 9456",
+      "tags": [
+        "MediaTek"
+      ],
+      "src": "images/dieshot/mediatek/media-tek-dimensity-9300-z3zu.jpg",
+      "thumb": "images/dieshot/mediatek/media-tek-dimensity-9300-z3zu.thumb.jpg",
+      "file": "images/dieshot/mediatek/media-tek-dimensity-9300-z3zu.jpg",
+      "name": "Media Tek Dimensity 9300.jpg",
+      "size": 1699957,
+      "w": 8226,
+      "h": 9456,
+      "addedAt": "2025-02-02T14:26:01.000Z"
+    },
+    {
+      "id": "ds-ctov-144",
+      "title": "AMD XBOX X",
+      "desc": "原图 13343 × 9983",
+      "tags": [
+        "Microsoft"
+      ],
+      "src": "images/dieshot/microsoft/amd-xbox-x-ctov.jpg",
+      "thumb": "images/dieshot/microsoft/amd-xbox-x-ctov.thumb.jpg",
+      "file": "images/dieshot/microsoft/amd-xbox-x-ctov.jpg",
+      "name": "AMD XBOX X.jpg",
+      "size": 2077627,
+      "w": 13343,
+      "h": 9983,
+      "addedAt": "2025-10-28T07:47:28.391Z"
+    },
+    {
+      "id": "ds-1hu7-145",
+      "title": "HoloLens 1 HPU 1.0 8.19x8.32x0.09mm_",
+      "desc": "原图 7847 × 8176",
+      "tags": [
+        "Microsoft"
+      ],
+      "src": "images/dieshot/microsoft/hololens-1-hpu-1.0-8.19x8.32x0.09mm_-1hu7.jpg",
+      "thumb": "images/dieshot/microsoft/hololens-1-hpu-1.0-8.19x8.32x0.09mm_-1hu7.thumb.jpg",
+      "file": "images/dieshot/microsoft/hololens-1-hpu-1.0-8.19x8.32x0.09mm_-1hu7.jpg",
+      "name": "HoloLens 1 HPU 1.0 8.19x8.32x0.09mm_.jpg",
+      "size": 1864238,
+      "w": 7847,
+      "h": 8176,
+      "addedAt": "2026-06-12T16:52:23.713Z"
+    },
+    {
+      "id": "ds-5a7d-146",
+      "title": "xbox one s 13.95x17.08x0.78mm_",
+      "desc": "原图 15335 × 13131",
+      "tags": [
+        "Microsoft"
+      ],
+      "src": "images/dieshot/microsoft/xbox-one-s-13.95x17.08x0.78mm_-5a7d.jpg",
+      "thumb": "images/dieshot/microsoft/xbox-one-s-13.95x17.08x0.78mm_-5a7d.thumb.jpg",
+      "file": "images/dieshot/microsoft/xbox-one-s-13.95x17.08x0.78mm_-5a7d.jpg",
+      "name": "xbox one s 13.95x17.08x0.78mm_.jpg",
+      "size": 1740302,
+      "w": 15335,
+      "h": 13131,
+      "addedAt": "2025-10-28T12:16:41.982Z"
+    },
+    {
+      "id": "ds-rktd-147",
+      "title": "Xbox Series S 12.11x16.21",
+      "desc": "原图 11540 × 9541",
+      "tags": [
+        "Microsoft"
+      ],
+      "src": "images/dieshot/microsoft/xbox-series-s-12.11x16.21-rktd.jpg",
+      "thumb": "images/dieshot/microsoft/xbox-series-s-12.11x16.21-rktd.thumb.jpg",
+      "file": "images/dieshot/microsoft/xbox-series-s-12.11x16.21-rktd.jpg",
+      "name": "Xbox Series S 12.11x16.21.jpg",
+      "size": 1559475,
+      "w": 11540,
+      "h": 9541,
+      "addedAt": "2025-10-29T04:47:37.217Z"
+    },
+    {
+      "id": "ds-19b2-148",
+      "title": "Xbox_Series_X_16.29x22.06_",
+      "desc": "原图 11864 × 8937",
+      "tags": [
+        "Microsoft"
+      ],
+      "src": "images/dieshot/microsoft/xbox_series_x_16.29x22.06_-19b2.jpg",
+      "thumb": "images/dieshot/microsoft/xbox_series_x_16.29x22.06_-19b2.thumb.jpg",
+      "file": "images/dieshot/microsoft/xbox_series_x_16.29x22.06_-19b2.jpg",
+      "name": "Xbox_Series_X_16.29x22.06_.jpg",
+      "size": 1527949,
+      "w": 11864,
+      "h": 8937,
+      "addedAt": "2024-12-28T05:24:36.000Z"
+    },
+    {
+      "id": "ds-1pqt-149",
+      "title": "摩尔线程S70",
+      "desc": "原图 14999 × 12932",
+      "tags": [
+        "MooreThreads"
+      ],
+      "src": "images/dieshot/moorethreads/s70-1pqt.jpg",
+      "thumb": "images/dieshot/moorethreads/s70-1pqt.thumb.jpg",
+      "file": "images/dieshot/moorethreads/s70-1pqt.jpg",
+      "name": "摩尔线程S70.jpg",
+      "size": 1237554,
+      "w": 14999,
+      "h": 12932,
+      "addedAt": "2026-09-02T09:32:07.880Z"
+    },
+    {
+      "id": "ds-v1pw-150",
+      "title": "20260917_031730612_iOS",
+      "desc": "原图 19447 × 18177",
+      "tags": [
+        "Nikon"
+      ],
+      "src": "images/dieshot/nikon/20260917_031730612_ios-v1pw.jpg",
+      "thumb": "images/dieshot/nikon/20260917_031730612_ios-v1pw.thumb.jpg",
+      "file": "images/dieshot/nikon/20260917_031730612_ios-v1pw.jpg",
+      "name": "20260917_031730612_iOS.jpg",
+      "size": 1898187,
+      "w": 19447,
+      "h": 18177,
+      "addedAt": "2026-09-17T03:19:05.000Z"
+    },
+    {
+      "id": "ds-b3yk-151",
+      "title": "50867813341_6248cd9440_o",
+      "desc": "原图 14999 × 9397",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/50867813341_6248cd9440_o-b3yk.jpg",
+      "thumb": "images/dieshot/nvidia/50867813341_6248cd9440_o-b3yk.thumb.jpg",
+      "file": "images/dieshot/nvidia/50867813341_6248cd9440_o-b3yk.jpg",
+      "name": "50867813341_6248cd9440_o.jpg",
+      "size": 1495817,
+      "w": 14999,
+      "h": 9397,
+      "addedAt": "2025-08-18T11:01:10.000Z"
+    },
+    {
+      "id": "ds-1wnd-152",
+      "title": "AD107 12.66x12.85x0.74mm_",
+      "desc": "原图 11447 × 12354",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/ad107-12.66x12.85x0.74mm_-1wnd.jpg",
+      "thumb": "images/dieshot/nvidia/ad107-12.66x12.85x0.74mm_-1wnd.thumb.jpg",
+      "file": "images/dieshot/nvidia/ad107-12.66x12.85x0.74mm_-1wnd.jpg",
+      "name": "AD107 12.66x12.85x0.74mm_.jpg",
+      "size": 1574612,
+      "w": 11447,
+      "h": 12354,
+      "addedAt": "2025-08-19T12:15:40.000Z"
+    },
+    {
+      "id": "ds-1ko1-153",
+      "title": "GA100 32.35x25.65x0.68mm_",
+      "desc": "原图 6464 × 8284",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/ga100-32.35x25.65x0.68mm_-1ko1.jpg",
+      "thumb": "images/dieshot/nvidia/ga100-32.35x25.65x0.68mm_-1ko1.thumb.jpg",
+      "file": "images/dieshot/nvidia/ga100-32.35x25.65x0.68mm_-1ko1.jpg",
+      "name": "GA100 32.35x25.65x0.68mm_.jpg",
+      "size": 1723942,
+      "w": 6464,
+      "h": 8284,
+      "addedAt": "2026-05-31T10:32:50.041Z"
+    },
+    {
+      "id": "ds-1wjg-154",
+      "title": "GB10 soc 12.91x16.10x0.23mm_",
+      "desc": "原图 12593 × 6499",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/gb10-soc-12.91x16.10x0.23mm_-1wjg.jpg",
+      "thumb": "images/dieshot/nvidia/gb10-soc-12.91x16.10x0.23mm_-1wjg.thumb.jpg",
+      "file": "images/dieshot/nvidia/gb10-soc-12.91x16.10x0.23mm_-1wjg.jpg",
+      "name": "GB10 soc 12.91x16.10x0.23mm_.jpg",
+      "size": 1117293,
+      "w": 12593,
+      "h": 6499,
+      "addedAt": "2026-03-02T06:10:57.452Z"
+    },
+    {
+      "id": "ds-w6dm-155",
+      "title": "GB202 24.10x31.60_",
+      "desc": "原图 9784 × 12259",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/gb202-24.10x31.60_-w6dm.jpg",
+      "thumb": "images/dieshot/nvidia/gb202-24.10x31.60_-w6dm.thumb.jpg",
+      "file": "images/dieshot/nvidia/gb202-24.10x31.60_-w6dm.jpg",
+      "name": "GB202 24.10x31.60_.jpg",
+      "size": 1869455,
+      "w": 9784,
+      "h": 12259,
+      "addedAt": "2025-01-25T15:57:53.000Z"
+    },
+    {
+      "id": "ds-osab-156",
+      "title": "GH100-1-10K",
+      "desc": "原图 8838 × 11104",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/gh100-1-10k-osab.jpg",
+      "thumb": "images/dieshot/nvidia/gh100-1-10k-osab.thumb.jpg",
+      "file": "images/dieshot/nvidia/gh100-1-10k-osab.jpg",
+      "name": "GH100-1-10K.jpg",
+      "size": 1743295,
+      "w": 8838,
+      "h": 11104,
+      "addedAt": "2026-05-25T14:42:50.370Z"
+    },
+    {
+      "id": "ds-gtxc-157",
+      "title": "GK104 16.53x18.27x0.78mm_",
+      "desc": "原图 11427 × 12968",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/gk104-16.53x18.27x0.78mm_-gtxc.jpg",
+      "thumb": "images/dieshot/nvidia/gk104-16.53x18.27x0.78mm_-gtxc.thumb.jpg",
+      "file": "images/dieshot/nvidia/gk104-16.53x18.27x0.78mm_-gtxc.jpg",
+      "name": "GK104 16.53x18.27x0.78mm_.jpg",
+      "size": 1841224,
+      "w": 11427,
+      "h": 12968,
+      "addedAt": "2025-10-26T06:42:21.048Z"
+    },
+    {
+      "id": "ds-12i5-158",
+      "title": "GK110",
+      "desc": "原图 9121 × 9381",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/gk110-12i5.jpg",
+      "thumb": "images/dieshot/nvidia/gk110-12i5.thumb.jpg",
+      "file": "images/dieshot/nvidia/gk110-12i5.jpg",
+      "name": "GK110.jpg",
+      "size": 1855251,
+      "w": 9121,
+      "h": 9381,
+      "addedAt": "2025-03-09T07:40:13.000Z"
+    },
+    {
+      "id": "ds-1ctj-159",
+      "title": "GTX 295",
+      "desc": "原图 8752 × 9224",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/gtx-295-1ctj.jpg",
+      "thumb": "images/dieshot/nvidia/gtx-295-1ctj.thumb.jpg",
+      "file": "images/dieshot/nvidia/gtx-295-1ctj.jpg",
+      "name": "GTX 295.jpg",
+      "size": 2331030,
+      "w": 8752,
+      "h": 9224,
+      "addedAt": "2025-06-08T03:35:41.000Z"
+    },
+    {
+      "id": "ds-wysn-160",
+      "title": "GTX1080ti GP102 19.66x24.48_",
+      "desc": "原图 5939 × 7247",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/gtx1080ti-gp102-19.66x24.48_-wysn.jpg",
+      "thumb": "images/dieshot/nvidia/gtx1080ti-gp102-19.66x24.48_-wysn.thumb.jpg",
+      "file": "images/dieshot/nvidia/gtx1080ti-gp102-19.66x24.48_-wysn.jpg",
+      "name": "GTX1080ti GP102 19.66x24.48_.jpg",
+      "size": 1819830,
+      "w": 5939,
+      "h": 7247,
+      "addedAt": "2025-01-26T10:43:40.000Z"
+    },
+    {
+      "id": "ds-1570-161",
+      "title": "GTX980Ti",
+      "desc": "原图 7587 × 7473",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/gtx980ti-1570.jpg",
+      "thumb": "images/dieshot/nvidia/gtx980ti-1570.thumb.jpg",
+      "file": "images/dieshot/nvidia/gtx980ti-1570.jpg",
+      "name": "GTX980Ti.jpg",
+      "size": 1655815,
+      "w": 7587,
+      "h": 7473,
+      "addedAt": "2025-01-07T07:09:10.000Z"
+    },
+    {
+      "id": "ds-1yyi-162",
+      "title": "GV100",
+      "desc": "原图 7659 × 9480",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/gv100-1yyi.jpg",
+      "thumb": "images/dieshot/nvidia/gv100-1yyi.thumb.jpg",
+      "file": "images/dieshot/nvidia/gv100-1yyi.jpg",
+      "name": "GV100.jpg",
+      "size": 1649831,
+      "w": 7659,
+      "h": 9480,
+      "addedAt": "2025-01-28T12:22:10.000Z"
+    },
+    {
+      "id": "ds-119r-163",
+      "title": "IMG_0828",
+      "desc": "原图 8654 × 8715",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/img_0828-119r.jpg",
+      "thumb": "images/dieshot/nvidia/img_0828-119r.thumb.jpg",
+      "file": "images/dieshot/nvidia/img_0828-119r.jpg",
+      "name": "IMG_0828.jpg",
+      "size": 1540964,
+      "w": 8654,
+      "h": 8715,
+      "addedAt": "2025-05-25T14:52:00.000Z"
+    },
+    {
+      "id": "ds-1b3u-164",
+      "title": "NVIDIA Jetson TX2 11.78x12.90_",
+      "desc": "原图 10189 × 9882",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/nvidia-jetson-tx2-11.78x12.90_-1b3u.jpg",
+      "thumb": "images/dieshot/nvidia/nvidia-jetson-tx2-11.78x12.90_-1b3u.thumb.jpg",
+      "file": "images/dieshot/nvidia/nvidia-jetson-tx2-11.78x12.90_-1b3u.jpg",
+      "name": "NVIDIA Jetson TX2 11.78x12.90_.jpg",
+      "size": 1935928,
+      "w": 10189,
+      "h": 9882,
+      "addedAt": "2025-10-25T06:41:50.712Z"
+    },
+    {
+      "id": "ds-1smh-165",
+      "title": "NVIDIA P100-2-10k",
+      "desc": "原图 9027 × 11103",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/nvidia-p100-2-10k-1smh.jpg",
+      "thumb": "images/dieshot/nvidia/nvidia-p100-2-10k-1smh.thumb.jpg",
+      "file": "images/dieshot/nvidia/nvidia-p100-2-10k-1smh.jpg",
+      "name": "NVIDIA P100-2-10k.jpg",
+      "size": 1429380,
+      "w": 9027,
+      "h": 11103,
+      "addedAt": "2025-05-30T06:42:40.000Z"
+    },
+    {
+      "id": "ds-cesg-166",
+      "title": "Nvidia RTX 3090",
+      "desc": "原图 12586 × 13912",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/nvidia-rtx-3090-cesg.jpg",
+      "thumb": "images/dieshot/nvidia/nvidia-rtx-3090-cesg.thumb.jpg",
+      "file": "images/dieshot/nvidia/nvidia-rtx-3090-cesg.jpg",
+      "name": "Nvidia RTX 3090.jpg",
+      "size": 1968701,
+      "w": 12586,
+      "h": 13912,
+      "addedAt": "2025-02-09T02:45:20.000Z"
+    },
+    {
+      "id": "ds-cohx-167",
+      "title": "NVIDIA Tegra X1",
+      "desc": "原图 10907 × 11194",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/nvidia-tegra-x1-cohx.jpg",
+      "thumb": "images/dieshot/nvidia/nvidia-tegra-x1-cohx.thumb.jpg",
+      "file": "images/dieshot/nvidia/nvidia-tegra-x1-cohx.jpg",
+      "name": "NVIDIA Tegra X1.jpg",
+      "size": 2148461,
+      "w": 10907,
+      "h": 11194,
+      "addedAt": "2025-01-14T09:04:32.000Z"
+    },
+    {
+      "id": "ds-jsj8-168",
+      "title": "nvidia tegra4 9.34x9.66x0.31mm_",
+      "desc": "原图 17878 × 17896",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/nvidia-tegra4-9.34x9.66x0.31mm_-jsj8.jpg",
+      "thumb": "images/dieshot/nvidia/nvidia-tegra4-9.34x9.66x0.31mm_-jsj8.thumb.jpg",
+      "file": "images/dieshot/nvidia/nvidia-tegra4-9.34x9.66x0.31mm_-jsj8.jpg",
+      "name": "nvidia tegra4 9.34x9.66x0.31mm_.jpg",
+      "size": 1969191,
+      "w": 17878,
+      "h": 17896,
+      "addedAt": "2025-10-19T09:12:19.401Z"
+    },
+    {
+      "id": "ds-jy8c-169",
+      "title": "nvidia Thor 15.71x25.60x0.78mm_",
+      "desc": "原图 15000 × 10034",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/nvidia-thor-15.71x25.60x0.78mm_-jy8c.jpg",
+      "thumb": "images/dieshot/nvidia/nvidia-thor-15.71x25.60x0.78mm_-jy8c.thumb.jpg",
+      "file": "images/dieshot/nvidia/nvidia-thor-15.71x25.60x0.78mm_-jy8c.jpg",
+      "name": "nvidia Thor 15.71x25.60x0.78mm_.jpg",
+      "size": 1792724,
+      "w": 15000,
+      "h": 10034,
+      "addedAt": "2025-09-01T05:41:21.000Z"
+    },
+    {
+      "id": "ds-1010-170",
+      "title": "nvidia_orin_x_20.16x22.21_",
+      "desc": "原图 11088 × 10179",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/nvidia_orin_x_20.16x22.21_-1010.jpg",
+      "thumb": "images/dieshot/nvidia/nvidia_orin_x_20.16x22.21_-1010.thumb.jpg",
+      "file": "images/dieshot/nvidia/nvidia_orin_x_20.16x22.21_-1010.jpg",
+      "name": "nvidia_orin_x_20.16x22.21_.jpg",
+      "size": 1996899,
+      "w": 11088,
+      "h": 10179,
+      "addedAt": "2025-01-07T04:03:14.000Z"
+    },
+    {
+      "id": "ds-1iaq-171",
+      "title": "Nvidia_RTX_4090",
+      "desc": "原图 9463 × 10753",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/nvidia_rtx_4090-1iaq.jpg",
+      "thumb": "images/dieshot/nvidia/nvidia_rtx_4090-1iaq.thumb.jpg",
+      "file": "images/dieshot/nvidia/nvidia_rtx_4090-1iaq.jpg",
+      "name": "Nvidia_RTX_4090.jpg",
+      "size": 2256686,
+      "w": 9463,
+      "h": 10753,
+      "addedAt": "2025-01-07T03:55:19.000Z"
+    },
+    {
+      "id": "ds-8xnq-172",
+      "title": "Nvlink 1.0 SV10-890-A1 4.84x23.65x0.77_",
+      "desc": "原图 14999 × 4008",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/nvlink-1.0-sv10-890-a1-4.84x23.65x0.77_-8xnq.jpg",
+      "thumb": "images/dieshot/nvidia/nvlink-1.0-sv10-890-a1-4.84x23.65x0.77_-8xnq.thumb.jpg",
+      "file": "images/dieshot/nvidia/nvlink-1.0-sv10-890-a1-4.84x23.65x0.77_-8xnq.jpg",
+      "name": "Nvlink 1.0 SV10-890-A1 4.84x23.65x0.77_.jpg",
+      "size": 687722,
+      "w": 14999,
+      "h": 4008,
+      "addedAt": "2025-08-28T02:42:52.000Z"
+    },
+    {
+      "id": "ds-bvrt-173",
+      "title": "Switch 2 12.76x16.25_",
+      "desc": "原图 10608 × 8718",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/switch-2-12.76x16.25_-bvrt.jpg",
+      "thumb": "images/dieshot/nvidia/switch-2-12.76x16.25_-bvrt.thumb.jpg",
+      "file": "images/dieshot/nvidia/switch-2-12.76x16.25_-bvrt.jpg",
+      "name": "Switch 2 12.76x16.25_.jpg",
+      "size": 1472479,
+      "w": 10608,
+      "h": 8718,
+      "addedAt": "2025-06-27T06:38:29.000Z"
+    },
+    {
+      "id": "ds-1q1k-174",
+      "title": "TU102_24.72x30.92mm_",
+      "desc": "原图 6866 × 8588",
+      "tags": [
+        "NVIDIA"
+      ],
+      "src": "images/dieshot/nvidia/tu102_24.72x30.92mm_-1q1k.jpg",
+      "thumb": "images/dieshot/nvidia/tu102_24.72x30.92mm_-1q1k.thumb.jpg",
+      "file": "images/dieshot/nvidia/tu102_24.72x30.92mm_-1q1k.jpg",
+      "name": "TU102_24.72x30.92mm_.jpg",
+      "size": 1616029,
+      "w": 6866,
+      "h": 8588,
+      "addedAt": "2025-06-27T04:49:33.000Z"
+    },
+    {
+      "id": "ds-pjap-175",
+      "title": "7gen4 sm7750 8.60x8.18x0.23mm_",
+      "desc": "原图 7414 × 8180",
+      "tags": [
+        "Qualcomm"
+      ],
+      "src": "images/dieshot/qualcomm/7gen4-sm7750-8.60x8.18x0.23mm_-pjap.jpg",
+      "thumb": "images/dieshot/qualcomm/7gen4-sm7750-8.60x8.18x0.23mm_-pjap.thumb.jpg",
+      "file": "images/dieshot/qualcomm/7gen4-sm7750-8.60x8.18x0.23mm_-pjap.jpg",
+      "name": "7gen4 sm7750 8.60x8.18x0.23mm_.jpg",
+      "size": 1891495,
+      "w": 7414,
+      "h": 8180,
+      "addedAt": "2026-05-24T14:30:38.743Z"
+    },
+    {
+      "id": "ds-1edc-176",
+      "title": "8_elite_sm8750_10.47x11.85mm1_",
+      "desc": "原图 8637 × 8480",
+      "tags": [
+        "Qualcomm"
+      ],
+      "src": "images/dieshot/qualcomm/8_elite_sm8750_10.47x11.85mm1_-1edc.jpg",
+      "thumb": "images/dieshot/qualcomm/8_elite_sm8750_10.47x11.85mm1_-1edc.thumb.jpg",
+      "file": "images/dieshot/qualcomm/8_elite_sm8750_10.47x11.85mm1_-1edc.jpg",
+      "name": "8_elite_sm8750_10.47x11.85mm1_.jpg",
+      "size": 2406289,
+      "w": 8637,
+      "h": 8480,
+      "addedAt": "2025-06-12T07:41:39.000Z"
+    },
+    {
+      "id": "ds-1333-177",
+      "title": "888_sm8350_",
+      "desc": "原图 10609 × 10765",
+      "tags": [
+        "Qualcomm"
+      ],
+      "src": "images/dieshot/qualcomm/888_sm8350_-1333.jpg",
+      "thumb": "images/dieshot/qualcomm/888_sm8350_-1333.thumb.jpg",
+      "file": "images/dieshot/qualcomm/888_sm8350_-1333.jpg",
+      "name": "888_sm8350_.jpg",
+      "size": 1892530,
+      "w": 10609,
+      "h": 10765,
+      "addedAt": "2024-12-27T05:14:54.000Z"
+    },
+    {
+      "id": "ds-x65y-178",
+      "title": "8E5 sm8850 1 10.57x11.94x0.2mm_1",
+      "desc": "原图 10859 × 10405",
+      "tags": [
+        "Qualcomm"
+      ],
+      "src": "images/dieshot/qualcomm/8e5-sm8850-1-10.57x11.94x0.2mm_1-x65y.jpg",
+      "thumb": "images/dieshot/qualcomm/8e5-sm8850-1-10.57x11.94x0.2mm_1-x65y.thumb.jpg",
+      "file": "images/dieshot/qualcomm/8e5-sm8850-1-10.57x11.94x0.2mm_1-x65y.jpg",
+      "name": "8E5 sm8850 1 10.57x11.94x0.2mm_1.jpg",
+      "size": 2577993,
+      "w": 10859,
+      "h": 10405,
+      "addedAt": "2025-09-27T11:00:30.407Z"
+    },
+    {
+      "id": "ds-1f1j-179",
+      "title": "8gen1 sm8450 hd_",
+      "desc": "原图 10171 × 9417",
+      "tags": [
+        "Qualcomm"
+      ],
+      "src": "images/dieshot/qualcomm/8gen1-sm8450-hd_-1f1j.jpg",
+      "thumb": "images/dieshot/qualcomm/8gen1-sm8450-hd_-1f1j.thumb.jpg",
+      "file": "images/dieshot/qualcomm/8gen1-sm8450-hd_-1f1j.jpg",
+      "name": "8gen1 sm8450 hd_.jpg",
+      "size": 1921003,
+      "w": 10171,
+      "h": 9417,
+      "addedAt": "2025-01-01T06:56:22.000Z"
+    },
+    {
+      "id": "ds-1he2-180",
+      "title": "8gen1+ hd",
+      "desc": "原图 7277 × 6877",
+      "tags": [
+        "Qualcomm"
+      ],
+      "src": "images/dieshot/qualcomm/8gen1-hd-1he2.jpg",
+      "thumb": "images/dieshot/qualcomm/8gen1-hd-1he2.thumb.jpg",
+      "file": "images/dieshot/qualcomm/8gen1-hd-1he2.jpg",
+      "name": "8gen1+ hd.jpg",
+      "size": 2073157,
+      "w": 7277,
+      "h": 6877,
+      "addedAt": "2024-12-29T14:12:35.000Z"
+    },
+    {
+      "id": "ds-1j6x-181",
+      "title": "8gen2_sm8550",
+      "desc": "原图 8023 × 7464",
+      "tags": [
+        "Qualcomm"
+      ],
+      "src": "images/dieshot/qualcomm/8gen2_sm8550-1j6x.jpg",
+      "thumb": "images/dieshot/qualcomm/8gen2_sm8550-1j6x.thumb.jpg",
+      "file": "images/dieshot/qualcomm/8gen2_sm8550-1j6x.jpg",
+      "name": "8gen2_sm8550.jpg",
+      "size": 1843292,
+      "w": 8023,
+      "h": 7464,
+      "addedAt": "2024-12-28T15:54:32.000Z"
+    },
+    {
+      "id": "ds-2prr-182",
+      "title": "8gen3 sm8650 hd pro_",
+      "desc": "原图 11752 × 9890",
+      "tags": [
+        "Qualcomm"
+      ],
+      "src": "images/dieshot/qualcomm/8gen3-sm8650-hd-pro_-2prr.jpg",
+      "thumb": "images/dieshot/qualcomm/8gen3-sm8650-hd-pro_-2prr.thumb.jpg",
+      "file": "images/dieshot/qualcomm/8gen3-sm8650-hd-pro_-2prr.jpg",
+      "name": "8gen3 sm8650 hd pro_.jpg",
+      "size": 1766263,
+      "w": 11752,
+      "h": 9890,
+      "addedAt": "2024-12-29T09:32:45.000Z"
+    },
+    {
+      "id": "ds-1pdl-183",
+      "title": "8gen5 sm8845 12.80x8.09x0.2mm_",
+      "desc": "原图 11477 × 7811",
+      "tags": [
+        "Qualcomm"
+      ],
+      "src": "images/dieshot/qualcomm/8gen5-sm8845-12.80x8.09x0.2mm_-1pdl.jpg",
+      "thumb": "images/dieshot/qualcomm/8gen5-sm8845-12.80x8.09x0.2mm_-1pdl.thumb.jpg",
+      "file": "images/dieshot/qualcomm/8gen5-sm8845-12.80x8.09x0.2mm_-1pdl.jpg",
+      "name": "8gen5 sm8845 12.80x8.09x0.2mm_.jpg",
+      "size": 1534510,
+      "w": 11477,
+      "h": 7811,
+      "addedAt": "2026-02-18T13:32:22.138Z"
+    },
+    {
+      "id": "ds-12ry-184",
+      "title": "8sgen4 sm8735 8.17x12.92x0.12mm_",
+      "desc": "原图 14998 × 10278",
+      "tags": [
+        "Qualcomm"
+      ],
+      "src": "images/dieshot/qualcomm/8sgen4-sm8735-8.17x12.92x0.12mm_-12ry.jpg",
+      "thumb": "images/dieshot/qualcomm/8sgen4-sm8735-8.17x12.92x0.12mm_-12ry.thumb.jpg",
+      "file": "images/dieshot/qualcomm/8sgen4-sm8735-8.17x12.92x0.12mm_-12ry.jpg",
+      "name": "8sgen4 sm8735 8.17x12.92x0.12mm_.jpg",
+      "size": 1243978,
+      "w": 14998,
+      "h": 10278,
+      "addedAt": "2026-02-18T13:20:05.368Z"
+    },
+    {
+      "id": "ds-1q3a-185",
+      "title": "IMG_0742",
+      "desc": "原图 10903 × 11323",
+      "tags": [
+        "Qualcomm"
+      ],
+      "src": "images/dieshot/qualcomm/img_0742-1q3a.jpg",
+      "thumb": "images/dieshot/qualcomm/img_0742-1q3a.thumb.jpg",
+      "file": "images/dieshot/qualcomm/img_0742-1q3a.jpg",
+      "name": "IMG_0742.jpg",
+      "size": 1691333,
+      "w": 10903,
+      "h": 11323,
+      "addedAt": "2025-04-16T10:08:10.000Z"
+    },
+    {
+      "id": "ds-4bzw-186",
+      "title": "IMG_0813",
+      "desc": "原图 9929 × 9868",
+      "tags": [
+        "Qualcomm"
+      ],
+      "src": "images/dieshot/qualcomm/img_0813-4bzw.jpg",
+      "thumb": "images/dieshot/qualcomm/img_0813-4bzw.thumb.jpg",
+      "file": "images/dieshot/qualcomm/img_0813-4bzw.jpg",
+      "name": "IMG_0813.jpg",
+      "size": 2138153,
+      "w": 9929,
+      "h": 9868,
+      "addedAt": "2025-04-26T10:46:37.000Z"
+    },
+    {
+      "id": "ds-7nb9-187",
+      "title": "IMG_0883",
+      "desc": "原图 12250 × 13287",
+      "tags": [
+        "Qualcomm"
+      ],
+      "src": "images/dieshot/qualcomm/img_0883-7nb9.jpg",
+      "thumb": "images/dieshot/qualcomm/img_0883-7nb9.thumb.jpg",
+      "file": "images/dieshot/qualcomm/img_0883-7nb9.jpg",
+      "name": "IMG_0883.jpg",
+      "size": 1832235,
+      "w": 12250,
+      "h": 13287,
+      "addedAt": "2025-06-07T04:50:41.000Z"
+    },
+    {
+      "id": "ds-7nv1-188",
+      "title": "IMG_0884",
+      "desc": "原图 11895 × 14391",
+      "tags": [
+        "Qualcomm"
+      ],
+      "src": "images/dieshot/qualcomm/img_0884-7nv1.jpg",
+      "thumb": "images/dieshot/qualcomm/img_0884-7nv1.thumb.jpg",
+      "file": "images/dieshot/qualcomm/img_0884-7nv1.jpg",
+      "name": "IMG_0884.jpg",
+      "size": 1504947,
+      "w": 11895,
+      "h": 14391,
+      "addedAt": "2025-06-05T13:19:27.000Z"
+    },
+    {
+      "id": "ds-oxld-189",
+      "title": "Qualcomm Snapdragon 778G",
+      "desc": "原图 10190 × 10079",
+      "tags": [
+        "Qualcomm"
+      ],
+      "src": "images/dieshot/qualcomm/qualcomm-snapdragon-778g-oxld.jpg",
+      "thumb": "images/dieshot/qualcomm/qualcomm-snapdragon-778g-oxld.thumb.jpg",
+      "file": "images/dieshot/qualcomm/qualcomm-snapdragon-778g-oxld.jpg",
+      "name": "Qualcomm Snapdragon 778G.jpg",
+      "size": 1724603,
+      "w": 10190,
+      "h": 10079,
+      "addedAt": "2026-04-18T13:39:28.513Z"
+    },
+    {
+      "id": "ds-1uar-190",
+      "title": "Qualcomm Snapdragon 7Gen3",
+      "desc": "原图 7661 × 10546",
+      "tags": [
+        "Qualcomm"
+      ],
+      "src": "images/dieshot/qualcomm/qualcomm-snapdragon-7gen3-1uar.jpg",
+      "thumb": "images/dieshot/qualcomm/qualcomm-snapdragon-7gen3-1uar.thumb.jpg",
+      "file": "images/dieshot/qualcomm/qualcomm-snapdragon-7gen3-1uar.jpg",
+      "name": "Qualcomm Snapdragon 7Gen3.jpg",
+      "size": 1378107,
+      "w": 7661,
+      "h": 10546,
+      "addedAt": "2026-04-17T13:36:16.154Z"
+    },
+    {
+      "id": "ds-zsc4-191",
+      "title": "Qualcomm Snapdragon 8s Gen3",
+      "desc": "原图 9920 × 12236",
+      "tags": [
+        "Qualcomm"
+      ],
+      "src": "images/dieshot/qualcomm/qualcomm-snapdragon-8s-gen3-zsc4.jpg",
+      "thumb": "images/dieshot/qualcomm/qualcomm-snapdragon-8s-gen3-zsc4.thumb.jpg",
+      "file": "images/dieshot/qualcomm/qualcomm-snapdragon-8s-gen3-zsc4.jpg",
+      "name": "Qualcomm Snapdragon 8s Gen3.jpg",
+      "size": 1558934,
+      "w": 9920,
+      "h": 12236,
+      "addedAt": "2025-01-14T07:35:31.000Z"
+    },
+    {
+      "id": "ds-11ya-192",
+      "title": "Qualcomm Wear 5 Gen 1",
+      "desc": "原图 5578 × 3917",
+      "tags": [
+        "Qualcomm"
+      ],
+      "src": "images/dieshot/qualcomm/qualcomm-wear-5-gen-1-11ya.jpg",
+      "thumb": "images/dieshot/qualcomm/qualcomm-wear-5-gen-1-11ya.thumb.jpg",
+      "file": "images/dieshot/qualcomm/qualcomm-wear-5-gen-1-11ya.jpg",
+      "name": "Qualcomm Wear 5 Gen 1.jpg",
+      "size": 1481743,
+      "w": 5578,
+      "h": 3917,
+      "addedAt": "2024-11-12T13:09:10.000Z"
+    },
+    {
+      "id": "ds-4d33-193",
+      "title": "SA8650P",
+      "desc": "原图 10482 × 10193",
+      "tags": [
+        "Qualcomm"
+      ],
+      "src": "images/dieshot/qualcomm/sa8650p-4d33.jpg",
+      "thumb": "images/dieshot/qualcomm/sa8650p-4d33.thumb.jpg",
+      "file": "images/dieshot/qualcomm/sa8650p-4d33.jpg",
+      "name": "SA8650P.jpg",
+      "size": 1799599,
+      "w": 10482,
+      "h": 10193,
+      "addedAt": "2025-05-24T08:20:38.000Z"
+    },
+    {
+      "id": "ds-1fid-194",
+      "title": "SD820A APQ8096AU 10.55x10.72x0.10mm_",
+      "desc": "原图 9445 × 10114",
+      "tags": [
+        "Qualcomm"
+      ],
+      "src": "images/dieshot/qualcomm/sd820a-apq8096au-10.55x10.72x0.10mm_-1fid.jpg",
+      "thumb": "images/dieshot/qualcomm/sd820a-apq8096au-10.55x10.72x0.10mm_-1fid.thumb.jpg",
+      "file": "images/dieshot/qualcomm/sd820a-apq8096au-10.55x10.72x0.10mm_-1fid.jpg",
+      "name": "SD820A APQ8096AU 10.55x10.72x0.10mm_.jpg",
+      "size": 2333257,
+      "w": 9445,
+      "h": 10114,
+      "addedAt": "2025-09-02T02:53:15.000Z"
+    },
+    {
+      "id": "ds-46h6-195",
+      "title": "X_Elite_13.40x12.89mm_",
+      "desc": "原图 5196 × 5359",
+      "tags": [
+        "Qualcomm"
+      ],
+      "src": "images/dieshot/qualcomm/x_elite_13.40x12.89mm_-46h6.jpg",
+      "thumb": "images/dieshot/qualcomm/x_elite_13.40x12.89mm_-46h6.thumb.jpg",
+      "file": "images/dieshot/qualcomm/x_elite_13.40x12.89mm_-46h6.jpg",
+      "name": "X_Elite_13.40x12.89mm_.jpg",
+      "size": 1836435,
+      "w": 5196,
+      "h": 5359,
+      "addedAt": "2024-11-07T05:36:26.000Z"
+    },
+    {
+      "id": "ds-19bn-196",
+      "title": "136733CB56E27ED59CCF2787290431BF",
+      "desc": "原图 6887 × 6244",
+      "tags": [
+        "Samsung"
+      ],
+      "src": "images/dieshot/samsung/136733cb56e27ed59ccf2787290431bf-19bn.jpg",
+      "thumb": "images/dieshot/samsung/136733cb56e27ed59ccf2787290431bf-19bn.thumb.jpg",
+      "file": "images/dieshot/samsung/136733cb56e27ed59ccf2787290431bf-19bn.jpg",
+      "name": "136733CB56E27ED59CCF2787290431BF.jpg",
+      "size": 1714358,
+      "w": 6887,
+      "h": 6244,
+      "addedAt": "2026-06-08T14:24:13.711Z"
+    },
+    {
+      "id": "ds-a5ms-197",
+      "title": "E8835 1380 6.54x8.15x0.21mm_",
+      "desc": "原图 14698 × 12763",
+      "tags": [
+        "Samsung"
+      ],
+      "src": "images/dieshot/samsung/e8835-1380-6.54x8.15x0.21mm_-a5ms.jpg",
+      "thumb": "images/dieshot/samsung/e8835-1380-6.54x8.15x0.21mm_-a5ms.thumb.jpg",
+      "file": "images/dieshot/samsung/e8835-1380-6.54x8.15x0.21mm_-a5ms.jpg",
+      "name": "E8835 1380 6.54x8.15x0.21mm_.jpg",
+      "size": 1747452,
+      "w": 14698,
+      "h": 12763,
+      "addedAt": "2026-05-12T06:24:10.342Z"
+    },
+    {
+      "id": "ds-18uv-198",
+      "title": "Exynos 1080 9815_",
+      "desc": "原图 7658 × 9411",
+      "tags": [
+        "Samsung"
+      ],
+      "src": "images/dieshot/samsung/exynos-1080-9815_-18uv.jpg",
+      "thumb": "images/dieshot/samsung/exynos-1080-9815_-18uv.thumb.jpg",
+      "file": "images/dieshot/samsung/exynos-1080-9815_-18uv.jpg",
+      "name": "Exynos 1080 9815_.jpg",
+      "size": 1200305,
+      "w": 7658,
+      "h": 9411,
+      "addedAt": "2024-12-29T16:27:57.000Z"
+    },
+    {
+      "id": "ds-1xwp-199",
+      "title": "Exynos 990_",
+      "desc": "原图 7487 × 9231",
+      "tags": [
+        "Samsung"
+      ],
+      "src": "images/dieshot/samsung/exynos-990_-1xwp.jpg",
+      "thumb": "images/dieshot/samsung/exynos-990_-1xwp.thumb.jpg",
+      "file": "images/dieshot/samsung/exynos-990_-1xwp.jpg",
+      "name": "Exynos 990_.jpg",
+      "size": 1323248,
+      "w": 7487,
+      "h": 9231,
+      "addedAt": "2024-12-31T11:01:42.000Z"
+    },
+    {
+      "id": "ds-1m1q-200",
+      "title": "Exynos auto V920 11.44x13.00_",
+      "desc": "原图 20958 × 24824",
+      "tags": [
+        "Samsung"
+      ],
+      "src": "images/dieshot/samsung/exynos-auto-v920-11.44x13.00_-1m1q.jpg",
+      "thumb": "images/dieshot/samsung/exynos-auto-v920-11.44x13.00_-1m1q.thumb.jpg",
+      "file": "images/dieshot/samsung/exynos-auto-v920-11.44x13.00_-1m1q.jpg",
+      "name": "Exynos auto V920 11.44x13.00_.jpg",
+      "size": 1486516,
+      "w": 20958,
+      "h": 24824,
+      "addedAt": "2025-10-24T14:25:10.849Z"
+    },
+    {
+      "id": "ds-1ovt-201",
+      "title": "Exynos Modem 5400 5.42x6.36_",
+      "desc": "原图 11351 × 10274",
+      "tags": [
+        "Samsung"
+      ],
+      "src": "images/dieshot/samsung/exynos-modem-5400-5.42x6.36_-1ovt.jpg",
+      "thumb": "images/dieshot/samsung/exynos-modem-5400-5.42x6.36_-1ovt.thumb.jpg",
+      "file": "images/dieshot/samsung/exynos-modem-5400-5.42x6.36_-1ovt.jpg",
+      "name": "Exynos Modem 5400 5.42x6.36_.jpg",
+      "size": 1417272,
+      "w": 11351,
+      "h": 10274,
+      "addedAt": "2025-04-25T02:02:19.000Z"
+    },
+    {
+      "id": "ds-13tg-202",
+      "title": "Exynos2400_e9945_",
+      "desc": "原图 8975 × 7433",
+      "tags": [
+        "Samsung"
+      ],
+      "src": "images/dieshot/samsung/exynos2400_e9945_-13tg.jpg",
+      "thumb": "images/dieshot/samsung/exynos2400_e9945_-13tg.thumb.jpg",
+      "file": "images/dieshot/samsung/exynos2400_e9945_-13tg.jpg",
+      "name": "Exynos2400_e9945_.jpg",
+      "size": 1775287,
+      "w": 8975,
+      "h": 7433,
+      "addedAt": "2025-01-06T10:10:05.000Z"
+    },
+    {
+      "id": "ds-1tsn-203",
+      "title": "Exynos2600 E9965 12.95x10.93x0.17mm",
+      "desc": "原图 11826 × 10582",
+      "tags": [
+        "Samsung"
+      ],
+      "src": "images/dieshot/samsung/exynos2600-e9965-12.95x10.93x0.17mm-1tsn.jpg",
+      "thumb": "images/dieshot/samsung/exynos2600-e9965-12.95x10.93x0.17mm-1tsn.thumb.jpg",
+      "file": "images/dieshot/samsung/exynos2600-e9965-12.95x10.93x0.17mm-1tsn.jpg",
+      "name": "Exynos2600 E9965 12.95x10.93x0.17mm.jpg",
+      "size": 1498397,
+      "w": 11826,
+      "h": 10582,
+      "addedAt": "2026-05-30T16:53:44.916Z"
+    },
+    {
+      "id": "ds-jras-204",
+      "title": "IMG_0743",
+      "desc": "原图 9932 × 9911",
+      "tags": [
+        "Samsung"
+      ],
+      "src": "images/dieshot/samsung/img_0743-jras.jpg",
+      "thumb": "images/dieshot/samsung/img_0743-jras.thumb.jpg",
+      "file": "images/dieshot/samsung/img_0743-jras.jpg",
+      "name": "IMG_0743.jpg",
+      "size": 1709191,
+      "w": 9932,
+      "h": 9911,
+      "addedAt": "2025-05-30T07:31:11.000Z"
+    },
+    {
+      "id": "ds-1eva-205",
+      "title": "Samsung Exynos 2200",
+      "desc": "原图 10451 × 11335",
+      "tags": [
+        "Samsung"
+      ],
+      "src": "images/dieshot/samsung/samsung-exynos-2200-1eva.jpg",
+      "thumb": "images/dieshot/samsung/samsung-exynos-2200-1eva.thumb.jpg",
+      "file": "images/dieshot/samsung/samsung-exynos-2200-1eva.jpg",
+      "name": "Samsung Exynos 2200.jpg",
+      "size": 1527140,
+      "w": 10451,
+      "h": 11335,
+      "addedAt": "2025-01-06T12:13:46.000Z"
+    },
+    {
+      "id": "ds-1tjo-206",
+      "title": "Samsung Exynos 2300",
+      "desc": "原图 10662 × 10825",
+      "tags": [
+        "Samsung"
+      ],
+      "src": "images/dieshot/samsung/samsung-exynos-2300-1tjo.jpg",
+      "thumb": "images/dieshot/samsung/samsung-exynos-2300-1tjo.thumb.jpg",
+      "file": "images/dieshot/samsung/samsung-exynos-2300-1tjo.jpg",
+      "name": "Samsung Exynos 2300.jpg",
+      "size": 1691324,
+      "w": 10662,
+      "h": 10825,
+      "addedAt": "2025-01-06T14:03:41.000Z"
+    },
+    {
+      "id": "ds-1b8a-207",
+      "title": "w1000 3.70x4.87x0.12mm_",
+      "desc": "原图 8736 × 7174",
+      "tags": [
+        "Samsung"
+      ],
+      "src": "images/dieshot/samsung/w1000-3.70x4.87x0.12mm_-1b8a.jpg",
+      "thumb": "images/dieshot/samsung/w1000-3.70x4.87x0.12mm_-1b8a.thumb.jpg",
+      "file": "images/dieshot/samsung/w1000-3.70x4.87x0.12mm_-1b8a.jpg",
+      "name": "w1000 3.70x4.87x0.12mm_.jpg",
+      "size": 1366832,
+      "w": 8736,
+      "h": 7174,
+      "addedAt": "2026-05-12T09:49:36.915Z"
+    },
+    {
+      "id": "ds-84lq-208",
+      "title": "cell",
+      "desc": "原图 7691 × 10192",
+      "tags": [
+        "Sony"
+      ],
+      "src": "images/dieshot/sony/cell-84lq.jpg",
+      "thumb": "images/dieshot/sony/cell-84lq.thumb.jpg",
+      "file": "images/dieshot/sony/cell-84lq.jpg",
+      "name": "cell.jpg",
+      "size": 2069185,
+      "w": 7691,
+      "h": 10192,
+      "addedAt": "2024-12-06T13:51:30.000Z"
+    },
+    {
+      "id": "ds-7v2p-209",
+      "title": "PS4 APU",
+      "desc": "原图 11178 × 11223",
+      "tags": [
+        "Sony"
+      ],
+      "src": "images/dieshot/sony/ps4-apu-7v2p.jpg",
+      "thumb": "images/dieshot/sony/ps4-apu-7v2p.thumb.jpg",
+      "file": "images/dieshot/sony/ps4-apu-7v2p.jpg",
+      "name": "PS4 APU.jpg",
+      "size": 1494621,
+      "w": 11178,
+      "h": 11223,
+      "addedAt": "2025-03-17T05:27:01.000Z"
+    },
+    {
+      "id": "ds-8scn-210",
+      "title": "ps4 pro 14.13x22.14_",
+      "desc": "原图 20046 × 13755",
+      "tags": [
+        "Sony"
+      ],
+      "src": "images/dieshot/sony/ps4-pro-14.13x22.14_-8scn.jpg",
+      "thumb": "images/dieshot/sony/ps4-pro-14.13x22.14_-8scn.thumb.jpg",
+      "file": "images/dieshot/sony/ps4-pro-14.13x22.14_-8scn.jpg",
+      "name": "ps4 pro 14.13x22.14_.jpg",
+      "size": 1597676,
+      "w": 20046,
+      "h": 13755,
+      "addedAt": "2025-10-28T10:00:01.699Z"
+    },
+    {
+      "id": "ds-kn2g-211",
+      "title": "ps5_10ms_10k_23.12x12.88x0.76",
+      "desc": "原图 10635 × 6521",
+      "tags": [
+        "Sony"
+      ],
+      "src": "images/dieshot/sony/ps5_10ms_10k_23.12x12.88x0.76-kn2g.jpg",
+      "thumb": "images/dieshot/sony/ps5_10ms_10k_23.12x12.88x0.76-kn2g.thumb.jpg",
+      "file": "images/dieshot/sony/ps5_10ms_10k_23.12x12.88x0.76-kn2g.jpg",
+      "name": "ps5_10ms_10k_23.12x12.88x0.76.jpg",
+      "size": 941251,
+      "w": 10635,
+      "h": 6521,
+      "addedAt": "2025-04-21T05:49:39.000Z"
+    },
+    {
+      "id": "ds-arh8-212",
+      "title": "psv-die-5x-2-11.12x12.52x0.26-10k",
+      "desc": "原图 8260 × 7890",
+      "tags": [
+        "Sony"
+      ],
+      "src": "images/dieshot/sony/psv-die-5x-2-11.12x12.52x0.26-10k-arh8.jpg",
+      "thumb": "images/dieshot/sony/psv-die-5x-2-11.12x12.52x0.26-10k-arh8.thumb.jpg",
+      "file": "images/dieshot/sony/psv-die-5x-2-11.12x12.52x0.26-10k-arh8.jpg",
+      "name": "psv-die-5x-2-11.12x12.52x0.26-10k.jpg",
+      "size": 2017648,
+      "w": 8260,
+      "h": 7890,
+      "addedAt": "2026-06-23T05:55:12.453Z"
+    },
+    {
+      "id": "ds-1rfz-213",
+      "title": "spacemit K1 6.54x8.03x0.15mm_",
+      "desc": "原图 9196 × 11513",
+      "tags": [
+        "SpacemitKit"
+      ],
+      "src": "images/dieshot/spacemitkit/spacemit-k1-6.54x8.03x0.15mm_-1rfz.jpg",
+      "thumb": "images/dieshot/spacemitkit/spacemit-k1-6.54x8.03x0.15mm_-1rfz.thumb.jpg",
+      "file": "images/dieshot/spacemitkit/spacemit-k1-6.54x8.03x0.15mm_-1rfz.jpg",
+      "name": "spacemit K1 6.54x8.03x0.15mm_.jpg",
+      "size": 1359832,
+      "w": 9196,
+      "h": 11513,
+      "addedAt": "2025-11-17T03:03:27.312Z"
+    },
+    {
+      "id": "ds-1omc-214",
+      "title": "sc9853i 7.47x6.90x0.18mm_",
+      "desc": "原图 13922 × 13723",
+      "tags": [
+        "Spreadtrum"
+      ],
+      "src": "images/dieshot/spreadtrum/sc9853i-7.47x6.90x0.18mm_-1omc.jpg",
+      "thumb": "images/dieshot/spreadtrum/sc9853i-7.47x6.90x0.18mm_-1omc.thumb.jpg",
+      "file": "images/dieshot/spreadtrum/sc9853i-7.47x6.90x0.18mm_-1omc.jpg",
+      "name": "sc9853i 7.47x6.90x0.18mm_.jpg",
+      "size": 1818790,
+      "w": 13922,
+      "h": 13723,
+      "addedAt": "2026-05-12T11:43:42.207Z"
+    },
+    {
+      "id": "ds-rlgh-215",
+      "title": "Tesla FSD",
+      "desc": "原图 6212 × 3900",
+      "tags": [
+        "Tesla"
+      ],
+      "src": "images/dieshot/tesla/tesla-fsd-rlgh.jpg",
+      "thumb": "images/dieshot/tesla/tesla-fsd-rlgh.thumb.jpg",
+      "file": "images/dieshot/tesla/tesla-fsd-rlgh.jpg",
+      "name": "Tesla FSD.jpg",
+      "size": 1255317,
+      "w": 6212,
+      "h": 3900,
+      "addedAt": "2026-04-13T10:43:47.300Z"
+    },
+    {
+      "id": "ds-1do9-216",
+      "title": "Xiaomi Pinecone S1",
+      "desc": "原图 11620 × 9906",
+      "tags": [
+        "Xiaomi"
+      ],
+      "src": "images/dieshot/xiaomi/xiaomi-pinecone-s1-1do9.jpg",
+      "thumb": "images/dieshot/xiaomi/xiaomi-pinecone-s1-1do9.thumb.jpg",
+      "file": "images/dieshot/xiaomi/xiaomi-pinecone-s1-1do9.jpg",
+      "name": "Xiaomi Pinecone S1.jpg",
+      "size": 1790555,
+      "w": 11620,
+      "h": 9906,
+      "addedAt": "2025-01-14T08:25:04.000Z"
+    },
+    {
+      "id": "ds-18ht-217",
+      "title": "Xiaomi Xring O1-3",
+      "desc": "原图 12453 × 13319",
+      "tags": [
+        "Xiaomi"
+      ],
+      "src": "images/dieshot/xiaomi/xiaomi-xring-o1-3-18ht.jpg",
+      "thumb": "images/dieshot/xiaomi/xiaomi-xring-o1-3-18ht.thumb.jpg",
+      "file": "images/dieshot/xiaomi/xiaomi-xring-o1-3-18ht.jpg",
+      "name": "Xiaomi Xring O1-3.jpg",
+      "size": 1916868,
+      "w": 12453,
+      "h": 13319,
+      "addedAt": "2025-10-18T10:44:18.082Z"
+    },
+    {
+      "id": "ds-rq66-218",
+      "title": "Xring O3 12.81x10.80x0",
+      "desc": "原图 7861 × 7394",
+      "tags": [
+        "Xiaomi"
+      ],
+      "src": "images/dieshot/xiaomi/xring-o3-12.81x10.80x0-rq66.jpg",
+      "thumb": "images/dieshot/xiaomi/xring-o3-12.81x10.80x0-rq66.thumb.jpg",
+      "file": "images/dieshot/xiaomi/xring-o3-12.81x10.80x0-rq66.jpg",
+      "name": "Xring O3 12.81x10.80x0.jpg",
+      "size": 2073875,
+      "w": 7861,
+      "h": 7394,
+      "addedAt": "2026-08-25T02:00:48.828Z"
+    },
+    {
+      "id": "ds-16q5-219",
+      "title": "Xilinx Versal AI Core 17.72x25.42.",
+      "desc": "原图 11102 × 15892",
+      "tags": [
+        "Xilinx"
+      ],
+      "src": "images/dieshot/xilinx/xilinx-versal-ai-core-17.72x25.42-16q5.jpg",
+      "thumb": "images/dieshot/xilinx/xilinx-versal-ai-core-17.72x25.42-16q5.thumb.jpg",
+      "file": "images/dieshot/xilinx/xilinx-versal-ai-core-17.72x25.42-16q5.jpg",
+      "name": "Xilinx Versal AI Core 17.72x25.42..jpg",
+      "size": 1688086,
+      "w": 11102,
+      "h": 15892,
+      "addedAt": "2025-07-14T02:15:51.000Z"
+    }
+  ]
+}
