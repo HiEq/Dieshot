@@ -1,0 +1,2040 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Layout · Die Shot 图库</title>
+<meta name="description" content="Die Shot 裸片显微图库：26 家厂商 · 219 张裸片影像。浏览、搜索、下载，一切刚刚好。">
+<meta property="og:title" content="Layout · Die Shot 图库">
+<meta property="og:description" content="26 家厂商 · 219 张 Die Shot 裸片显微影像，浏览、搜索、下载。">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#ffffff">
+<style>
+/* ============================================================
+   Layout · 极简图库  ——  样式
+   ============================================================ */
+:root{
+  --bg:#ffffff;
+  --bg-alt:#f5f5f7;
+  --bg-elev:#ffffff;
+  --fg:#1d1d1f;
+  --fg2:#86868b;
+  --fg3:#aeaeb2;
+  --hairline:rgba(0,0,0,.09);
+  --hairline-strong:rgba(0,0,0,.16);
+  --blue:#0071e3;
+  --blue-hover:#0077ed;
+  --red:#ff3b30;
+  --shadow-card:0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+  --shadow-card-hover:0 6px 14px rgba(0,0,0,.08), 0 24px 60px rgba(0,0,0,.12);
+  --shadow-elev:0 20px 60px rgba(0,0,0,.18);
+  --glass:rgba(255,255,255,.72);
+  --glass-strong:rgba(255,255,255,.86);
+  --overlay:rgba(245,245,247,.72);
+  --radius:18px;
+  --nav-h:52px;
+  --max:1180px;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#000000;
+    --bg-alt:#161617;
+    --bg-elev:#1d1d1f;
+    --fg:#f5f5f7;
+    --fg2:#98989d;
+    --fg3:#6e6e73;
+    --hairline:rgba(255,255,255,.12);
+    --hairline-strong:rgba(255,255,255,.22);
+    --blue:#2997ff;
+    --blue-hover:#40a9ff;
+    --shadow-card:0 1px 2px rgba(0,0,0,.5), 0 8px 24px rgba(0,0,0,.45);
+    --shadow-card-hover:0 6px 14px rgba(0,0,0,.5), 0 24px 60px rgba(0,0,0,.6);
+    --shadow-elev:0 20px 60px rgba(0,0,0,.7);
+    --glass:rgba(22,22,23,.72);
+    --glass-strong:rgba(29,29,31,.86);
+    --overlay:rgba(0,0,0,.62);
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scrollbar-gutter:stable} /* 预留滚动条位置：灯箱开关不再引发整页重排 */
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--fg);
+  touch-action:manipulation;            /* 触屏点击免去双击缩放判定延迟 */
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:17px;
+  line-height:1.5;
+  letter-spacing:-.01em;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+body.no-scroll{overflow:hidden}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+img{display:block;max-width:100%}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+::selection{background:rgba(0,113,227,.18)}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+.hidden{display:none !important}
+
+/* ---------- 顶栏 ---------- */
+.nav-shell{position:sticky;top:0;z-index:200}
+.nav{
+  height:var(--nav-h);
+  background:var(--glass);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--hairline);
+}
+.nav-inner{
+  max-width:var(--max);height:100%;margin:0 auto;padding:0 24px;
+  display:flex;align-items:center;gap:8px;
+}
+.brand{
+  display:flex;align-items:center;gap:8px;
+  font-weight:600;font-size:15px;letter-spacing:-.01em;color:var(--fg);
+  margin-right:18px;
+}
+.brand:hover{text-decoration:none}
+.brand .mark{
+  width:20px;height:20px;border-radius:6px;flex:none;
+  background:linear-gradient(135deg,#42a1f4,#0071e3 55%,#6e5bff);
+  box-shadow:inset 0 0 0 .5px rgba(255,255,255,.35);
+}
+.nav-menu{display:flex;align-items:center;gap:2px;flex:1}
+.nav-item{
+  position:relative;
+  padding:6px 12px;border-radius:8px;
+  font-size:14px;color:var(--fg);opacity:.86;
+  display:inline-flex;align-items:center;gap:5px;
+  transition:opacity .2s,background .2s;
+}
+.nav-item:hover,.nav-item.is-open{opacity:1;background:rgba(128,128,128,.10);text-decoration:none}
+.nav-item .chev{width:9px;height:9px;opacity:.55;transition:transform .25s}
+.nav-item.is-open .chev{transform:rotate(180deg)}
+.nav-item.is-current{opacity:1;font-weight:500}
+.nav-right{display:flex;align-items:center;gap:4px;margin-left:auto}
+.icon-btn{
+  width:32px;height:32px;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;
+  color:var(--fg);opacity:.8;transition:background .2s,opacity .2s;
+}
+.icon-btn:hover{background:rgba(128,128,128,.12);opacity:1}
+.icon-btn.is-on{background:var(--blue);color:#fff;opacity:1}
+.icon-btn svg{width:17px;height:17px}
+.admin-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  height:26px;padding:0 10px;margin-left:6px;border-radius:980px;
+  background:rgba(255,149,0,.16);color:#b25000;font-size:12px;font-weight:600;
+}
+@media (prefers-color-scheme:dark){ .admin-chip{color:#ff9f0a} }
+
+/* 顶栏下拉超大菜单 */
+.megamenu{
+  position:absolute;left:0;right:0;top:var(--nav-h);
+  background:var(--glass-strong);
+  -webkit-backdrop-filter:saturate(180%) blur(24px);
+  backdrop-filter:saturate(180%) blur(24px);
+  border-bottom:1px solid var(--hairline);
+  opacity:0;transform:translateY(-6px);pointer-events:none;
+  transition:opacity .28s ease,transform .28s ease;
+}
+.megamenu.is-open{opacity:1;transform:none;pointer-events:auto}
+.megamenu-inner{max-width:var(--max);margin:0 auto;padding:34px 24px 42px}
+.mm-lead{font-size:24px;font-weight:700;letter-spacing:-.02em;margin:0 0 20px}
+.mm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.mm-card{
+  display:flex;gap:14px;align-items:center;
+  padding:12px;border-radius:14px;border:1px solid transparent;
+  transition:background .2s,border-color .2s;
+}
+.mm-card:hover{background:rgba(128,128,128,.09);border-color:var(--hairline);text-decoration:none}
+.mm-thumb{
+  width:74px;height:56px;border-radius:9px;flex:none;overflow:hidden;
+  background:var(--bg-alt);box-shadow:inset 0 0 0 1px var(--hairline);
+}
+.mm-thumb img{width:100%;height:100%;object-fit:cover}
+.mm-name{font-size:15px;font-weight:600;color:var(--fg)}
+.mm-desc{font-size:12.5px;color:var(--fg2);margin-top:2px;line-height:1.35}
+
+/* ---------- 视图 ---------- */
+.view{display:none}
+.view.is-active{display:block}
+main{min-height:calc(100vh - 200px)}
+
+/* ---------- 首页 ---------- */
+.hero{padding:96px 0 60px;text-align:center}
+.hero .eyebrow{
+  font-size:15px;font-weight:600;letter-spacing:.02em;
+  background:linear-gradient(90deg,#0071e3,#6e5bff 60%,#ff375f);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero h1{
+  margin:8px 0 0;font-size:clamp(44px,8.4vw,92px);line-height:1.02;
+  font-weight:700;letter-spacing:-.035em;
+}
+.hero .sub{margin:18px auto 0;max-width:620px;font-size:clamp(18px,2.4vw,24px);color:var(--fg2);letter-spacing:-.015em}
+.hero .cta{margin-top:32px;display:flex;gap:22px;justify-content:center;align-items:center;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  height:44px;padding:0 22px;border-radius:980px;
+  background:var(--blue);color:#fff;font-size:16px;font-weight:500;
+  transition:background .2s,transform .2s;
+}
+.btn:hover{background:var(--blue-hover);text-decoration:none}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:transparent;color:var(--blue);box-shadow:inset 0 0 0 1px var(--hairline-strong)}
+.btn.ghost:hover{background:rgba(128,128,128,.08)}
+.btn.tint{background:rgba(0,113,227,.12);color:var(--blue)}
+.btn.danger{background:transparent;color:var(--red);box-shadow:inset 0 0 0 1px rgba(255,59,48,.35)}
+.btn.danger:hover{background:rgba(255,59,48,.08)}
+.btn.sm{height:34px;padding:0 15px;font-size:14px}
+.btn[disabled]{opacity:.45;pointer-events:none}
+.link-more{font-size:16px}
+
+.showcase{padding:20px 0 40px}
+.showcase-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:18px}
+@media (max-width:860px){ .showcase-grid{grid-template-columns:1fr 1fr} }
+@media (max-width:560px){ .showcase-grid{grid-template-columns:1fr} }
+.tile{
+  position:relative;border-radius:var(--radius);overflow:hidden;
+  background:var(--bg-alt);box-shadow:var(--shadow-card);cursor:pointer;
+  transition:transform .3s cubic-bezier(.2,.8,.2,1);
+}
+.tile:hover{transform:translateY(-4px);box-shadow:var(--shadow-card-hover)}
+.tile img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.tile:hover img{transform:scale(1.04)}
+.tile.tall{aspect-ratio:4/3}
+.tile.small{aspect-ratio:4/3}
+.tile .tile-cap{
+  position:absolute;left:0;right:0;bottom:0;padding:16px 18px;
+  background:linear-gradient(transparent,rgba(0,0,0,.5));
+  color:#fff;font-weight:600;font-size:15px;letter-spacing:-.01em;
+}
+
+.blurb{padding:70px 0 30px}
+.blurb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:34px}
+@media (max-width:820px){ .blurb-grid{grid-template-columns:1fr;gap:26px} }
+.blurb h3{margin:0 0 6px;font-size:19px;letter-spacing:-.02em}
+.blurb p{margin:0;color:var(--fg2);font-size:15px;line-height:1.55}
+
+/* ---------- Layout 版块 ---------- */
+.section-head{padding:64px 0 26px}
+.section-head h2{margin:0;font-size:clamp(36px,5.6vw,60px);letter-spacing:-.035em;font-weight:700;line-height:1.05}
+.section-head .sub{margin-top:10px;color:var(--fg2);font-size:19px}
+.toolbar{
+  position:sticky;top:var(--nav-h);z-index:60;
+  background:var(--glass-strong);   /* 实色玻璃即可，去掉整屏模糊可省一大笔滚动绘制开销 */
+  border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);
+}
+.toolbar-inner{max-width:var(--max);margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.search{
+  position:relative;flex:0 1 280px;min-width:180px;
+}
+.search input{
+  width:100%;height:36px;border-radius:980px;border:1px solid var(--hairline);
+  background:var(--bg-alt);padding:0 14px 0 36px;font-size:14.5px;outline:none;
+  transition:border-color .2s,background .2s;
+}
+.search input:focus{border-color:var(--blue);background:var(--bg)}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:var(--fg2)}
+.chips{display:flex;gap:8px;align-items:center;flex:1;min-width:0;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none;padding:2px 0}
+.chips::-webkit-scrollbar{display:none}
+.chip{
+  height:28px;padding:0 12px;border-radius:980px;font-size:13px;white-space:nowrap;flex:none;
+  color:var(--fg);background:rgba(128,128,128,.10);
+  display:inline-flex;align-items:center;gap:6px;transition:background .2s,color .2s;
+}
+.chip:hover{background:rgba(128,128,128,.18)}
+.chip.is-on{background:var(--fg);color:var(--bg);font-weight:500}
+.chip .n{opacity:.55;font-size:12px}
+.count{color:var(--fg2);font-size:13.5px;white-space:nowrap}
+.sortsel{
+  height:30px;border-radius:980px;border:1px solid var(--hairline);
+  background:transparent;padding:0 10px;font-size:13.5px;outline:none;
+}
+
+.gallery{padding:26px 0 90px}
+.grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:22px;
+}
+.card{
+  position:relative;border-radius:var(--radius);overflow:hidden;
+  background:var(--bg-elev);border:1px solid var(--hairline);box-shadow:var(--shadow-card);
+  cursor:zoom-in;text-align:left;width:100%;
+  transition:transform .3s cubic-bezier(.2,.8,.2,1);  /* 只过渡 transform：合成层完成，点击不掉帧 */
+  content-visibility:auto;              /* 屏外卡片跳过布局与绘制，长图库滚动不卡 */
+  contain-intrinsic-size:auto 330px;
+}
+.card.is-off{display:none}
+.card:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-card-hover)}
+.card:active{transform:scale(.985)}   /* 按下立刻有反馈，观感上点击更快 */
+.card .thumb{aspect-ratio:4/3;overflow:hidden;background:var(--bg-alt)}
+.card .thumb.is-loading{animation:pulse 1.2s ease-in-out infinite}
+.card .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.card .thumb img.is-loading{opacity:0}
+.card:hover .thumb img{transform:scale(1.045)}
+.card .meta{padding:13px 15px 15px}
+.card .t{font-size:15.5px;font-weight:600;letter-spacing:-.015em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card .d{
+  margin-top:3px;color:var(--fg2);font-size:13px;line-height:1.4;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:1.4em;
+}
+.card .tagrow{margin-top:9px;display:flex;gap:6px;flex-wrap:wrap}
+.card .tag{
+  font-size:11.5px;color:var(--fg2);background:rgba(128,128,128,.10);
+  padding:2px 8px;border-radius:980px;
+}
+.badge-local{
+  position:absolute;top:10px;left:10px;z-index:2;
+  background:rgba(255,149,0,.92);color:#fff;font-size:11px;font-weight:700;
+  padding:3px 9px;border-radius:980px;
+}
+.card-actions{
+  position:absolute;top:10px;right:10px;z-index:3;display:flex;gap:6px;
+  opacity:0;transform:translateY(-4px);transition:opacity .2s,transform .2s;
+}
+.card:hover .card-actions,.card:focus-within .card-actions{opacity:1;transform:none}
+.act{
+  width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.9);color:#1d1d1f;box-shadow:0 2px 8px rgba(0,0,0,.18);
+}
+.act:hover{background:#fff}
+.act.del{color:var(--red)}
+.act svg{width:15px;height:15px}
+@media (hover:none){ .card-actions{opacity:1;transform:none} }
+
+.empty{
+  text-align:center;padding:90px 20px;color:var(--fg2);
+}
+.empty .orb{
+  width:88px;height:88px;margin:0 auto 22px;border-radius:26px;
+  background:linear-gradient(135deg,var(--bg-alt),var(--bg-elev));
+  box-shadow:inset 0 0 0 1px var(--hairline);
+  display:flex;align-items:center;justify-content:center;
+}
+.empty .orb svg{width:36px;height:36px;opacity:.5}
+.empty h3{margin:0 0 6px;color:var(--fg);font-size:22px;letter-spacing:-.02em}
+.empty p{margin:0 0 18px;font-size:15px}
+
+/* ---------- 灯箱 ---------- */
+.lightbox{
+  position:fixed;inset:0;z-index:500;display:none;
+  background:var(--overlay);
+  -webkit-backdrop-filter:saturate(180%) blur(28px);
+  backdrop-filter:saturate(180%) blur(28px);
+}
+.lightbox.is-open{display:flex;flex-direction:column}
+.lb-top{
+  height:58px;flex:none;display:flex;align-items:center;justify-content:space-between;
+  padding:0 18px;border-bottom:1px solid var(--hairline);
+}
+.lb-stage{
+  flex:1;position:relative;display:flex;align-items:center;justify-content:center;
+  padding:26px 74px;min-height:0;
+}
+.lb-stage img{
+  max-width:100%;max-height:100%;border-radius:10px;
+  box-shadow:0 30px 80px rgba(0,0,0,.3);
+  background:var(--bg-alt);
+  transition:opacity .25s ease;
+  animation:pop .32s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes pop{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+.lb-nav{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:44px;height:44px;border-radius:50%;
+  background:var(--glass-strong);color:var(--fg);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 12px rgba(0,0,0,.14);
+}
+.lb-nav:hover{background:var(--bg-elev)}
+.lb-nav.prev{left:16px}
+.lb-nav.next{right:16px}
+.lb-nav svg{width:18px;height:18px}
+.lb-bar{
+  flex:none;border-top:1px solid var(--hairline);
+  background:var(--glass);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  backdrop-filter:saturate(180%) blur(20px);
+  padding:16px 24px calc(18px + env(safe-area-inset-bottom));
+}
+.lb-bar-inner{
+  max-width:var(--max);margin:0 auto;display:flex;gap:20px;align-items:flex-start;
+}
+.lb-info{flex:1;min-width:0}
+.lb-info h4{margin:0;font-size:18px;letter-spacing:-.02em}
+.lb-info p{margin:5px 0 0;color:var(--fg2);font-size:14.5px;line-height:1.5;max-width:70ch}
+.lb-info .facts{margin-top:8px;color:var(--fg3);font-size:12.5px;display:flex;gap:14px;flex-wrap:wrap}
+.lb-actions{display:flex;gap:10px;align-items:center;flex:none;padding-top:2px}
+@media (max-width:720px){
+  .lb-stage{padding:18px 12px}
+  .lb-nav.prev{left:6px}.lb-nav.next{right:6px}
+  .lb-bar-inner{flex-direction:column}
+  .lb-actions{width:100%}
+}
+
+/* ---------- 弹层 / 管理面板 ---------- */
+.modal{
+  position:fixed;inset:0;z-index:600;display:none;
+  align-items:center;justify-content:center;padding:24px;
+  background:rgba(0,0,0,.32);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+}
+.modal.is-open{display:flex}
+.sheet{
+  width:100%;max-width:560px;max-height:88vh;overflow:auto;
+  background:var(--bg-elev);border-radius:24px;box-shadow:var(--shadow-elev);
+  padding:30px 30px 26px;animation:sheet .3s cubic-bezier(.2,.8,.2,1);
+}
+.sheet.wide{max-width:940px}
+@keyframes sheet{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+.sheet h3{margin:0 0 6px;font-size:24px;letter-spacing:-.025em}
+.sheet .hint{margin:0 0 20px;color:var(--fg2);font-size:14px;line-height:1.5}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;color:var(--fg2);margin-bottom:6px;font-weight:500}
+.field input,.field textarea,.field select{
+  width:100%;border-radius:12px;border:1px solid var(--hairline-strong);
+  background:var(--bg);padding:10px 13px;font-size:15px;outline:none;
+  transition:border-color .2s;
+}
+.field textarea{min-height:70px;resize:vertical}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--blue)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:620px){ .row2{grid-template-columns:1fr} }
+.sheet-foot{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap}
+.divider{height:1px;background:var(--hairline);margin:22px 0}
+.mini-title{font-size:13px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:var(--fg2);margin:0 0 12px}
+
+/* 上传区 */
+.dropzone{
+  border:1.5px dashed var(--hairline-strong);border-radius:18px;
+  padding:34px 20px;text-align:center;color:var(--fg2);
+  transition:border-color .2s,background .2s;cursor:pointer;
+}
+.dropzone:hover,.dropzone.is-over{border-color:var(--blue);background:rgba(0,113,227,.05);color:var(--fg)}
+.dropzone svg{width:30px;height:30px;opacity:.6;margin-bottom:8px}
+.dropzone b{color:var(--fg);font-weight:600}
+.dropzone .tip{font-size:12.5px;margin-top:6px;color:var(--fg3)}
+.queue{margin-top:16px;display:flex;flex-direction:column;gap:12px}
+.q-item{
+  display:flex;gap:14px;padding:12px;border:1px solid var(--hairline);border-radius:14px;
+  background:var(--bg);
+}
+.q-thumb{width:88px;height:66px;border-radius:9px;overflow:hidden;flex:none;background:var(--bg-alt)}
+.q-thumb img{width:100%;height:100%;object-fit:cover}
+.q-thumb.pending{animation:pulse 1.1s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+.q-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.q-body input,.q-body textarea{
+  width:100%;border:1px solid var(--hairline);border-radius:9px;background:var(--bg);
+  padding:7px 10px;font-size:14px;outline:none;
+}
+.q-body input:focus,.q-body textarea:focus{border-color:var(--blue)}
+.q-body textarea{min-height:44px;resize:vertical}
+.q-head{display:flex;align-items:center;gap:10px}
+.q-name{font-size:12.5px;color:var(--fg2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.q-state{font-size:12px;font-weight:600;color:var(--fg2);white-space:nowrap}
+.q-state.ok{color:#34c759}.q-state.err{color:var(--red)}
+.q-x{width:24px;height:24px;border-radius:50%;color:var(--fg2);display:flex;align-items:center;justify-content:center}
+.q-x:hover{background:rgba(128,128,128,.14);color:var(--fg)}
+.q-x svg{width:13px;height:13px}
+
+.note{
+  border-radius:12px;padding:11px 14px;font-size:13px;line-height:1.5;
+  background:rgba(0,113,227,.08);color:var(--fg);
+}
+.note.warn{background:rgba(255,149,0,.12)}
+.note.err{background:rgba(255,59,48,.1)}
+.note b{font-weight:600}
+kbd{
+  display:inline-block;padding:1px 6px;border-radius:5px;font-size:12px;
+  background:rgba(128,128,128,.14);box-shadow:inset 0 -1px 0 var(--hairline-strong);
+}
+
+/* ---------- Toast ---------- */
+.toast{
+  position:fixed;left:50%;bottom:34px;transform:translate(-50%,16px);
+  z-index:900;background:rgba(29,29,31,.92);color:#fff;
+  padding:11px 20px;border-radius:980px;font-size:14px;
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+  box-shadow:0 8px 30px rgba(0,0,0,.25);
+}
+.toast.is-on{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- 页脚 ---------- */
+footer{
+  border-top:1px solid var(--hairline);background:var(--bg-alt);
+  color:var(--fg2);font-size:13px;
+}
+footer .wrap{padding-top:26px;padding-bottom:30px;display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+footer .sep{opacity:.4}
+
+@media (max-width:640px){
+  .nav-menu{gap:0}
+  .nav-item{padding:6px 9px}
+  .brand{margin-right:8px}
+  .hero{padding:64px 0 40px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms !important;animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ================= 顶栏 ================= -->
+<div class="nav-shell" id="navShell">
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#/"><span class="mark"></span><span id="brandName">Layout</span></a>
+      <nav class="nav-menu" id="navMenu"></nav>
+      <div class="nav-right">
+        <button class="icon-btn" id="btnSearch" title="搜索图片">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </button>
+        <button class="icon-btn" id="btnAdmin" title="管理模式">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="10" width="16" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        </button>
+        <span class="admin-chip hidden" id="adminChip">管理模式</span>
+        <button class="icon-btn hidden" id="btnPanel" title="打开管理面板">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+  <div class="megamenu" id="megamenu"><div class="megamenu-inner" id="megamenuInner"></div></div>
+</div>
+
+<main>
+  <!-- ================= 首页 ================= -->
+  <section class="view" id="view-home">
+    <div class="wrap hero">
+      <div class="eyebrow">Die Shot Gallery · 裸片显微图库</div>
+      <h1 id="heroTitle">Layout</h1>
+      <p class="sub" id="heroSub">26 家厂商 · 219 张 Die Shot。浏览、搜索、下载，一切刚刚好。</p>
+      <div class="cta">
+        <a class="btn" href="#/layout">进入 Layout 版块</a>
+        <a class="link-more" href="#/layout">查看全部图片 &rsaquo;</a>
+      </div>
+    </div>
+    <div class="wrap showcase"><div class="showcase-grid" id="showcase"></div></div>
+    <div class="wrap blurb">
+      <div class="blurb-grid">
+        <div>
+          <h3>简洁到刚刚好</h3>
+          <p>没有多余装饰，只有留白、圆角与克制的动效。图片永远是画面的主角。</p>
+        </div>
+        <div>
+          <h3>访客友好</h3>
+          <p>任何人都可以自由浏览、搜索、放大查看，并把喜欢的图片一键下载原图。</p>
+        </div>
+        <div>
+          <h3>随开随管</h3>
+          <p>输入管理口令即可解锁后台：拖拽上传、填写信息、删除图片，改动直接同步到 GitHub 仓库。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Layout 版块 ================= -->
+  <section class="view" id="view-layout">
+    <div class="wrap section-head">
+      <h2>Layout</h2>
+      <div class="sub">26 家厂商 · 219 张裸片影像 · 支持搜索与标签筛选</div>
+    </div>
+    <div class="toolbar">
+      <div class="toolbar-inner">
+        <div class="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <input id="q" type="search" placeholder="搜索标题、描述或标签" autocomplete="off">
+        </div>
+        <div class="chips" id="chips"></div>
+        <select class="sortsel" id="sort">
+          <option value="new">最新在前</option>
+          <option value="old">最早在前</option>
+          <option value="az">按标题排序</option>
+        </select>
+        <div class="count" id="count"></div>
+      </div>
+    </div>
+    <div class="wrap gallery">
+      <div class="grid" id="grid"></div>
+      <div class="empty hidden" id="empty">
+        <div class="orb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="8.5" cy="9.5" r="1.8"/><path d="M4 17l5-5 4 4 3-2 4 4"/></svg></div>
+        <h3 id="emptyTitle">还没有图片</h3>
+        <p id="emptyText">切换到管理模式，点击右上角「＋」即可上传第一批图片。</p>
+        <button class="btn tint sm hidden" id="emptyAdminBtn">进入管理模式</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span id="footName">Layout</span>
+    <span class="sep">|</span>
+    <span>由 GitHub Pages 托管 · 单文件静态站</span>
+    <span class="sep">|</span>
+    <a href="CATALOG.md">厂商目录清单</a>
+    <span class="sep">|</span>
+    <span id="footYear"></span>
+  </div>
+</footer>
+
+<!-- ================= 灯箱 ================= -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <div class="lb-top">
+    <div class="count" id="lbPos"></div>
+    <button class="icon-btn" id="lbClose" title="关闭 (Esc)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="lb-stage">
+    <button class="lb-nav prev" id="lbPrev" title="上一张 (←)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <img id="lbImg" alt="">
+    <button class="lb-nav next" id="lbNext" title="下一张 (→)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  </div>
+  <div class="lb-bar">
+    <div class="lb-bar-inner">
+      <div class="lb-info">
+        <h4 id="lbTitle"></h4>
+        <p id="lbDesc"></p>
+        <div class="facts" id="lbFacts"></div>
+      </div>
+      <div class="lb-actions">
+        <button class="btn sm tint hidden" id="lbEdit">编辑信息</button>
+        <button class="btn sm danger hidden" id="lbDel">删除</button>
+        <button class="btn sm" id="lbDownload">下载原图</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 管理口令 ================= -->
+<div class="modal" id="modalLogin">
+  <div class="sheet">
+    <h3>管理模式</h3>
+    <p class="hint">输入管理口令以解锁上传、编辑与删除功能。访客模式下，图片仅可浏览与下载。</p>
+    <div class="field">
+      <label for="pw">管理口令</label>
+      <input id="pw" type="password" placeholder="默认口令：layout" autocomplete="current-password">
+    </div>
+    <div class="note hidden" id="pwErr">口令不正确，请重试。</div>
+    <div class="sheet-foot">
+      <button class="btn ghost sm" id="pwCancel">取消</button>
+      <button class="btn sm" id="pwOk">解锁</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 编辑图片信息 ================= -->
+<div class="modal" id="modalEdit">
+  <div class="sheet">
+    <h3>编辑信息</h3>
+    <p class="hint">修改图片的标题、描述与标签，保存后立即生效。</p>
+    <div class="field"><label for="edTitle">标题</label><input id="edTitle" placeholder="图片标题"></div>
+    <div class="field"><label for="edDesc">描述</label><textarea id="edDesc" placeholder="描述（可留空）"></textarea></div>
+    <div class="field"><label for="edTags">标签</label><input id="edTags" placeholder="用逗号分隔，如：示例, 渐变"></div>
+    <div class="sheet-foot">
+      <button class="btn ghost sm" id="edCancel">取消</button>
+      <button class="btn sm" id="edOk">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 管理面板 ================= -->
+<div class="modal" id="modalPanel">
+  <div class="sheet wide">
+    <h3>图库管理</h3>
+    <p class="hint" id="panelHint">拖拽、粘贴或点击选择图片，填写信息后保存。改动将写入 gallery.json 与图片目录。</p>
+
+    <div class="note warn hidden" id="draftNote"></div>
+
+    <div class="mini-title">添加图片</div>
+    <div class="dropzone" id="dropzone" tabindex="0">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 16V5m0 0L8 9m4-4l4 4"/><path d="M4 16v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2"/></svg>
+      <div><b>点击选择图片</b>，或把图片拖到这里</div>
+      <div class="tip">也支持 Ctrl / ⌘ + V 粘贴截图 · JPG / PNG / GIF / WebP / SVG</div>
+      <input type="file" id="fileInput" accept="image/*" multiple hidden>
+    </div>
+    <div class="queue" id="queue"></div>
+
+    <div class="sheet-foot" style="justify-content:space-between">
+      <button class="btn ghost sm" id="btnExport">导出 gallery.json</button>
+      <div style="display:flex;gap:10px">
+        <button class="btn ghost sm" id="panelClose">完成</button>
+        <button class="btn sm" id="btnCommit" disabled>保存到图库</button>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <details id="ghBox">
+      <summary style="cursor:pointer;font-size:14px;font-weight:600">接口设置（GitHub 仓库）</summary>
+      <p class="hint" style="margin-top:12px">
+        填写后，上传/删除会通过 GitHub Contents API 直接提交到仓库，访客打开网页即可看到最新图片。<br>
+        Token 仅保存在你自己的浏览器 localStorage 中，不会写入仓库。
+      </p>
+      <div class="row2">
+        <div class="field"><label for="ghToken">Personal Access Token</label><input id="ghToken" type="password" placeholder="ghp_... 或 github_pat_..." autocomplete="off"></div>
+        <div class="field"><label for="ghOwner">仓库所有者 / 仓库名</label><input id="ghOwner" placeholder="如 my-name / my-site"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label for="ghBranch">分支</label><input id="ghBranch" placeholder="main"></div>
+        <div class="field"><label for="ghDir">图片目录</label><input id="ghDir" placeholder="images"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label for="ghManifest">清单文件路径</label><input id="ghManifest" placeholder="gallery.json"></div>
+        <div class="field"><label>&nbsp;</label>
+          <div style="display:flex;gap:10px">
+            <button class="btn ghost sm" id="ghTest" style="flex:1">测试连接</button>
+            <button class="btn ghost sm" id="ghSave" style="flex:1">保存设置</button>
+          </div>
+        </div>
+      </div>
+      <div class="note hidden" id="ghMsg"></div>
+    </details>
+
+    <div class="divider"></div>
+    <div class="row2">
+      <div>
+        <div class="mini-title">修改管理口令</div>
+        <div class="field"><input id="newPw" type="password" placeholder="新的管理口令（至少 4 位）" autocomplete="new-password"></div>
+        <button class="btn ghost sm" id="btnPw">更新口令</button>
+      </div>
+      <div>
+        <div class="mini-title">当前图库</div>
+        <div class="count" id="panelStat"></div>
+        <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn ghost sm" id="btnThumbs">补齐缩略图</button>
+          <button class="btn ghost sm" id="btnReload">重新加载清单</button>
+          <button class="btn danger sm" id="btnLogout">退出管理模式</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   Layout · 极简图库 —— 脚本
+   数据接口：同目录 gallery.json（图片清单）+ images/（图片文件）
+   管理接口：GitHub Contents API（可选，配置后增删改直接提交仓库）
+   ============================================================ */
+(function(){
+'use strict';
+
+/* ---------- 内置默认清单（gallery.json 读取失败时兜底，如 file:// 直开） ---------- */
+/* 真实内容在 gallery.json（219 张 Die Shot）；示例图已随图库上线移除 */
+var FALLBACK_ITEMS = [];
+var DEFAULT_CFG = {
+  adminHash:'1dc5ae5b68174891b6aa9850aa05ee0d9ae8a20468d9517259951a2dd9e9c0f0', /* 口令 layout */
+  github:{token:'', owner:'', branch:'main', dir:'images', manifest:'gallery.json'}
+};
+
+/* ---------- 状态 ---------- */
+var state = {
+  site:{title:'Layout', sub:'把每一张图，放在恰好的位置。浏览、搜索、下载，一切刚刚好。'},
+  cfg: JSON.parse(JSON.stringify(DEFAULT_CFG)),
+  items: [],
+  filter:{q:'', tag:'', sort:'new'},
+  admin:false,
+  lb:{list:[], idx:0},
+  queue:[],        /* 待上传 {file,title,desc,tags,name,size,phase,thumb,thumbBlob,w,h} */
+  thumbBusy:false, /* 缩略图生成器是否在运行 */
+  cards:{},        /* 卡片节点缓存：id -> element（复用节点，图片不重复解码） */
+  order:[],        /* 当前排序后的 items */
+  visible:[],      /* 当前筛选后可见的 items（点击开灯箱直接取用） */
+  lightboxOpen:false,
+  draft:false      /* 是否在使用本机草稿 */
+};
+var LS = {
+  gh:'layout.githubCfg', draft:'layout.draftItems', localMeta:'layout.localMeta', localIds:'layout.localIds'
+};
+
+/* ---------- 小工具 ---------- */
+function $(id){ return document.getElementById(id); }
+function el(tag, cls, txt){ var n=document.createElement(tag); if(cls) n.className=cls; if(txt!=null) n.textContent=txt; return n; }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; }); }
+function toast(msg){
+  var t=$('toast'); t.textContent=msg; t.classList.add('is-on');
+  clearTimeout(t._h); t._h=setTimeout(function(){ t.classList.remove('is-on'); }, 2600);
+}
+function uid(){ return 'i' + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function safeName(name){
+  /* 文件名规范为 ASCII 安全形式；下载时仍使用原始文件名（it.name） */
+  var base = String(name||'image')
+    .replace(/\.[a-z0-9]+$/i, '')
+    .replace(/[^A-Za-z0-9._-]+/g, '-')
+    .replace(/-{2,}/g, '-')
+    .replace(/^[-.]+|[-.]+$/g, '') || 'image';
+  var ext = (String(name).match(/\.[a-z0-9]+$/i) || ['.png'])[0].toLowerCase();
+  return Date.now().toString(36) + '-' + base + ext;
+}
+function fmtSize(b){
+  if(!b && b!==0) return '';
+  if(b < 1024) return b + ' B';
+  if(b < 1048576) return (b/1024).toFixed(0) + ' KB';
+  return (b/1048576).toFixed(1) + ' MB';
+}
+async function sha256(text){
+  /* 非安全上下文（个别浏览器的 file://）下退化为明文标记，仍可正常验证 */
+  if(!(window.crypto && crypto.subtle && crypto.subtle.digest)) return 'plain:' + text;
+  var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return Array.prototype.map.call(new Uint8Array(buf), function(b){ return ('0'+b.toString(16)).slice(-2); }).join('');
+}
+function b64(buf){
+  var u8=new Uint8Array(buf), s='', CH=0x8000;
+  for(var i=0;i<u8.length;i+=CH){ s += String.fromCharCode.apply(null, u8.subarray(i, i+CH)); }
+  return btoa(s);
+}
+function lsGet(k, d){ try{ var v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch(e){ return d; } }
+function lsSet(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+
+/* ---------- IndexedDB（本地模式的图片存储） ---------- */
+var IDB = (function(){
+  var p=null;
+  function open(){
+    if(p) return p;
+    p = new Promise(function(res, rej){
+      var r = indexedDB.open('layout-gallery', 1);
+      r.onupgradeneeded = function(){ r.result.createObjectStore('images'); };
+      r.onsuccess = function(){ res(r.result); };
+      r.onerror = function(){ rej(r.error); };
+    });
+    return p;
+  }
+  function req(mode, fn){
+    return open().then(function(db){
+      return new Promise(function(res, rej){
+        var r = fn(db.transaction('images', mode).objectStore('images'));
+        r.onsuccess = function(){ res(r.result); };
+        r.onerror = function(){ rej(r.error); };
+      });
+    });
+  }
+  return {
+    put:function(id, blob){ return req('readwrite', function(s){ return s.put(blob, id); }); },
+    get:function(id){ return req('readonly', function(s){ return s.get(id); }); },
+    del:function(id){ return req('readwrite', function(s){ return s.delete(id); }); },
+    keys:function(){ return req('readonly', function(s){ return s.getAllKeys(); }); }
+  };
+})();
+
+/* ---------- GitHub 接口 ---------- */
+function ghCfg(){
+  var c = state.cfg.github || {};
+  var merged = Object.assign({}, DEFAULT_CFG.github, c, lsGet(LS.gh, {}));
+  return merged;
+}
+function ghReady(){
+  var c = ghCfg();
+  return !!(c.token && c.owner && c.manifest);
+}
+function ghUrl(path){
+  var c = ghCfg();
+  return 'https://api.github.com/repos/' + c.owner + '/contents/' + path.split('/').map(encodeURIComponent).join('/');
+}
+async function ghApi(path, opts){
+  var c = ghCfg();
+  opts = opts || {};
+  opts.headers = Object.assign({
+    'Authorization': 'token ' + c.token,
+    'Accept': 'application/vnd.github+json'
+  }, opts.headers || {});
+  var res = await fetch(ghUrl(path), opts);
+  var data = null;
+  try{ data = await res.json(); }catch(e){}
+  return {ok:res.ok, status:res.status, data:data};
+}
+async function ghPutFile(path, buf, message){
+  var c = ghCfg();
+  var meta = await ghApi(path, {method:'GET'});
+  var body = {
+    message: message || ('update ' + path),
+    content: b64(buf),
+    branch: c.branch || 'main'
+  };
+  if(meta.ok && meta.data && meta.data.sha) body.sha = meta.data.sha;
+  return ghApi(path, {method:'PUT', body:JSON.stringify(body)});
+}
+async function ghDelFile(path, message){
+  var c = ghCfg();
+  var meta = await ghApi(path, {method:'GET'});
+  if(!meta.ok) return meta;
+  return ghApi(path, {method:'DELETE', body:JSON.stringify({
+    message: message || ('delete ' + path),
+    sha: meta.data.sha,
+    branch: c.branch || 'main'
+  })});
+}
+
+/* 接口设置区的提示条 */
+function showGhMsg(kind, msg){
+  var n = $('ghMsg');
+  n.className = 'note' + (kind === 'err' ? ' err' : (kind === 'warn' ? ' warn' : ''));
+  n.textContent = msg;
+}
+
+/* ---------- 清单加载 / 保存 ---------- */
+function normalizeItems(list){
+  return (list || []).map(function(it){
+    return {
+      id: it.id || uid(),
+      title: it.title || '未命名',
+      desc: it.desc || '',
+      tags: Array.isArray(it.tags) ? it.tags : [],
+      src: it.src || '',
+      thumb: it.thumb || '',
+      file: it.file || '',
+      name: it.name || (it.file ? it.file.split('/').pop() : 'image'),
+      size: it.size || 0,
+      w: it.w || 0,
+      h: it.h || 0,
+      addedAt: it.addedAt || new Date().toISOString()
+    };
+  });
+}
+async function loadManifest(){
+  /* 1) 读取同目录 gallery.json */
+  var got = null;
+  try{
+    var res = await fetch('gallery.json?t=' + Date.now(), {cache:'no-store'});
+    if(res.ok) got = await res.json();
+  }catch(e){ /* file:// 或网络失败 → 用内置清单 */ }
+
+  if(got){
+    if(got.site) state.site = Object.assign(state.site, got.site);
+    if(got.config) state.cfg = Object.assign(state.cfg, got.config);
+    state.items = normalizeItems(got.items);
+  }else{
+    state.items = normalizeItems(FALLBACK_ITEMS);
+  }
+
+  /* 2) 本机草稿（离线管理时保存在 localStorage，优先级更高） */
+  var draft = lsGet(LS.draft, null);
+  if(draft && Array.isArray(draft.items)){
+    state.items = normalizeItems(draft.items);
+    state.draft = true;
+    if(draft.site) state.site = Object.assign(state.site, draft.site);
+    if(draft.config) state.cfg = Object.assign(state.cfg, draft.config);
+  }
+
+  /* 3) 本机图片（未连接 GitHub 时添加的图片，仅当前设备可见） */
+  try{
+    var ids = lsGet(LS.localIds, []);
+    var meta = lsGet(LS.localMeta, {});
+    if(ids.length){
+      var localItems = [];
+      for(var i=0;i<ids.length;i++){
+        var blob = await IDB.get(ids[i]);
+        if(!blob) continue;
+        var m = meta[ids[i]] || {};
+        var tb = null;
+        try{ tb = await IDB.get(ids[i] + ':thumb'); }catch(e){}
+        localItems.push({
+          id: ids[i], local:true,
+          title: m.title || '未命名', desc: m.desc || '', tags: m.tags || [],
+          src: '',                                   /* 原图按需读取（ensureSrc） */
+          thumb: URL.createObjectURL(tb || blob),    /* 预览只用小图 */
+          name: m.name || 'image.png',
+          size: blob.size, w: m.w || 0, h: m.h || 0,
+          addedAt: m.addedAt || new Date().toISOString()
+        });
+      }
+      localItems.reverse();
+      state.items = localItems.concat(state.items);
+    }
+  }catch(e){}
+}
+async function saveManifest(message){
+  /* 仓库模式 → 直接写回 gallery.json；否则存本机草稿 */
+  var payload = {
+    version: 1,
+    site: state.site,
+    config: state.cfg,
+    items: state.items.filter(function(it){ return !it.local; })
+  };
+  if(ghReady()){
+    var r = await ghPutFile(ghCfg().manifest, new TextEncoder().encode(JSON.stringify(payload, null, 2)), message || 'update gallery.json');
+    if(r.ok){ state.draft=false; lsSet(LS.draft, null); toast('已同步到 GitHub 仓库'); return true; }
+    toast('同步失败（' + r.status + '）：' + (r.data && r.data.message ? r.data.message : '请检查 Token 与仓库设置'));
+    return false;
+  }
+  lsSet(LS.draft, {items:payload.items, site:state.site, config:state.cfg});
+  state.draft = true;
+  toast('已保存到本机草稿（未连接 GitHub）');
+  renderDraftNote();
+  return true;
+}
+
+/* ---------- 顶栏与路由 ---------- */
+var NAV = [
+  {id:'home',   label:'首页',  href:'#/',      menu:false},
+  {id:'layout', label:'Layout', href:'#/layout', menu:{
+      title:'Layout 版块',
+      lead:'陈列、浏览与下载全部图片',
+      links:[{id:'layout', name:'Layout', desc:'26 家厂商 · 219 张 Die Shot · 支持搜索与标签筛选'}]
+  }}
+  /* 以后新增版块：在这里追加一项，并新建对应的视图区块 */
+];
+
+function buildNav(){
+  var wrap = $('navMenu');
+  wrap.innerHTML = '';
+  NAV.forEach(function(n){
+    var a = el('a', 'nav-item' + (n.menu ? ' has-menu' : ''), null);
+    a.href = n.href; a.dataset.nav = n.id;
+    a.appendChild(document.createTextNode(n.label));
+    if(n.menu){
+      var svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+      svg.setAttribute('viewBox','0 0 24 24'); svg.setAttribute('fill','none');
+      svg.setAttribute('stroke','currentColor'); svg.setAttribute('stroke-width','2.6');
+      svg.setAttribute('stroke-linecap','round'); svg.classList.add('chev');
+      var p = document.createElementNS('http://www.w3.org/2000/svg','path');
+      p.setAttribute('d','M5 9l7 7 7-7'); svg.appendChild(p); a.appendChild(svg);
+      a.addEventListener('mouseenter', function(){ openMenu(n); });
+    }
+    a.addEventListener('click', function(){ closeMenu(); });
+    wrap.appendChild(a);
+  });
+  $('navShell').addEventListener('mouseleave', closeMenu);
+}
+var menuOpenFor = null;
+function openMenu(n){
+  if(!n.menu) return;
+  menuOpenFor = n.id;
+  var inner = $('megamenuInner');
+  inner.innerHTML = '';
+  inner.appendChild(el('div','mm-lead', n.menu.title));
+  var grid = el('div','mm-grid');
+  n.menu.links.forEach(function(l){
+    var card = el('a','mm-card'); card.href = '#/layout';
+    var th = el('div','mm-thumb');
+    var img = el('img'); img.alt = l.name; img.src = firstImage();
+    th.appendChild(img);
+    var box = el('div');
+    box.appendChild(el('div','mm-name', l.name));
+    box.appendChild(el('div','mm-desc', l.desc));
+    card.appendChild(th); card.appendChild(box);
+    card.addEventListener('click', closeMenu);
+    grid.appendChild(card);
+  });
+  inner.appendChild(grid);
+  $('megamenu').classList.add('is-open');
+  Array.prototype.forEach.call(document.querySelectorAll('.nav-item'), function(a){
+    a.classList.toggle('is-open', a.dataset.nav === n.id);
+  });
+}
+function closeMenu(){
+  menuOpenFor = null;
+  $('megamenu').classList.remove('is-open');
+  Array.prototype.forEach.call(document.querySelectorAll('.nav-item'), function(a){ a.classList.remove('is-open'); });
+}
+function firstImage(){
+  var it = filteredItems()[0] || state.items[0];
+  return it ? (it.thumb || it._thumbUrl || it.src) : 'images/demo-01.svg';
+}
+/* 原图地址：本机模式的大图按需从 IndexedDB 取一次，取到后缓存在 item.src */
+async function ensureSrc(it){
+  if(!it) return '';
+  if(it.src) return it.src;
+  if(!it.local) return '';
+  try{
+    var blob = await IDB.get(it.id);
+    if(!blob) return '';
+    it.src = URL.createObjectURL(blob);
+    return it.src;
+  }catch(e){ return ''; }
+}
+
+/* ============================================================
+   缩略图缓存 —— 主界面流畅的关键
+   网格里只放小图（≤720px），几十 MB 大图的位图永远不进 DOM：
+   清单里有 thumb 就直接用；没有则在图片进入视口附近时后台取原图、
+   压成小图、存进 IndexedDB，之后每次打开都是秒开。
+   ============================================================ */
+function thumbKey(it){ return 't:' + (it.file || it.src || it.id) + ':' + (it.size || 0); }
+var thumbQ = [], thumbBusy = false;
+function queueThumb(it){
+  if(!it || it.thumb || it._thumbUrl || it._thumbFail) return;
+  if(thumbQ.indexOf(it) < 0) thumbQ.push(it);
+  pumpThumbs();
+}
+function pumpThumbs(){
+  if(thumbBusy) return;
+  thumbBusy = true;
+  (async function(){
+    try{
+      while(thumbQ.length){
+        /* 灯箱打开 / 页面隐藏时让出带宽与算力 */
+        if(state.lightboxOpen || document.hidden) break;
+        var it = thumbQ.shift();
+        try{
+          var u = await ensureThumb(it);
+          applyThumb(it, u);
+        }catch(e){
+          it._thumbFail = true;
+          applyThumb(it, it.src || '');   /* 实在压不了就退回原图，保证看得见 */
+        }
+        await new Promise(function(r){ setTimeout(r, 16); });   /* 每张让出一帧 */
+      }
+    }finally{ thumbBusy = false; }
+  })();
+}
+/* 页面切回前台 / 关灯箱后，继续处理剩下的压图任务 */
+document.addEventListener('visibilitychange', function(){ if(!document.hidden) pumpThumbs(); });
+async function ensureThumb(it){
+  if(it.thumb) return it.thumb;
+  if(it._thumbUrl) return it._thumbUrl;
+  if(it._thumbP) return it._thumbP;      /* 正在压同一张图：复用进行中的任务 */
+  it._thumbP = (async function(){
+    var key = thumbKey(it);
+    try{                                   /* 1) 本地缓存命中：完全不碰原图 */
+      var cached = await IDB.get(key);
+      if(cached){ it._thumbBlob = cached; it._thumbUrl = URL.createObjectURL(cached); return it._thumbUrl; }
+    }catch(e){}
+    var blob = null;
+    if(it.local){
+      blob = await IDB.get(it.id);
+    }else{
+      var src = await ensureSrc(it);
+      if(!src) throw new Error('no-src');
+      var res = await fetch(src, {cache:'force-cache'});
+      if(!res.ok) throw new Error('fetch-fail');
+      blob = await res.blob();
+    }
+    if(!blob) throw new Error('no-blob');
+    var t = await makeThumb(blob);
+    if(!t.blob) throw new Error('thumb-fail');
+    it._thumbBlob = t.blob;
+    it._thumbUrl = t.url;
+    it.w = it.w || t.w;
+    it.h = it.h || t.h;
+    try{ await IDB.put(key, t.blob); }catch(e){}
+    return it._thumbUrl;
+  })();
+  try{
+    return await it._thumbP;
+  }finally{
+    it._thumbP = null;
+  }
+}
+function applyThumb(it, url){
+  var node = state.cards[it.id];
+  if(!node || !url) return;
+  var img = node.querySelector('.thumb img');
+  var th = node.querySelector('.thumb');
+  if(img){ img.src = url; img.classList.remove('is-loading'); }
+  if(th) th.classList.remove('is-loading');
+}
+/* 首页 / 顶栏的少量预览：先有啥用啥，压好后换成小图 */
+function previewInto(img, it){
+  var u = it.thumb || it._thumbUrl || it.src || '';
+  if(u) img.src = u;
+  if(!it.thumb && !it._thumbUrl && !it._thumbFail){
+    ensureThumb(it).then(function(v){ if(v && img.src !== v) img.src = v; }, function(){ it._thumbFail = true; });
+  }
+}
+var thumbObserver = ('IntersectionObserver' in window)
+  ? new IntersectionObserver(function(entries){
+      for(var i = 0; i < entries.length; i++){
+        var en = entries[i];
+        if(!en.isIntersecting) continue;
+        thumbObserver.unobserve(en.target);
+        var it = en.target._item;
+        if(it) queueThumb(it);
+      }
+    }, {rootMargin: '500px 0px'})
+  : null;
+
+function route(){
+  closeMenu();
+  var h = (location.hash || '#/').replace(/^#/, '');
+  var name = h.indexOf('/layout') === 0 ? 'layout' : 'home';
+  Array.prototype.forEach.call(document.querySelectorAll('.view'), function(v){
+    v.classList.toggle('is-active', v.id === 'view-' + name);
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.nav-item'), function(a){
+    a.classList.toggle('is-current', a.dataset.nav === name);
+  });
+  if(name === 'layout'){ renderGallery(); }
+  else { renderHome(); }
+  window.scrollTo(0, 0);
+}
+
+/* ---------- 渲染：首页 ---------- */
+function renderHome(){
+  $('heroTitle').textContent = state.site.title || 'Layout';
+  $('heroSub').textContent = state.site.sub || '';
+  $('brandName').textContent = state.site.title || 'Layout';
+  $('footName').textContent = state.site.title || 'Layout';
+  $('footYear').textContent = '© ' + new Date().getFullYear();
+
+  var box = $('showcase');
+  box.innerHTML = '';
+  var picks = state.items.slice(0, 3);
+  picks.forEach(function(it, i){
+    var t = el('div', 'tile ' + (i === 0 ? 'tall' : 'small'));
+    var img = el('img');
+    img.decoding = 'async';
+    img.alt = it.title;
+    previewInto(img, it);
+    var cap = el('div','tile-cap', it.title);
+    t.appendChild(img); t.appendChild(cap);
+    t.addEventListener('click', function(){ openLightbox(picks, i); });
+    box.appendChild(t);
+  });
+}
+
+/* ============================================================
+   渲染：图库
+   性能要点：
+   1) 卡片节点按 id 缓存复用 —— 搜索/筛选只切换显隐，不重建 DOM、图片不解码
+   2) 建卡分批进行（每帧约 30 张），几百张图首帧也不卡
+   3) 排序用共享的 Intl.Collator，不再每次比较都新建对照器
+   ============================================================ */
+var COLL = (window.Intl && Intl.Collator)
+  ? new Intl.Collator('zh-Hans-CN')
+  : {compare: function(a, b){ return a < b ? -1 : (a > b ? 1 : 0); }};
+var BUILD_CHUNK = 30;
+var buildTimer = null;
+/* 让出主线程：支持 scheduler.yield 时用它（长任务之间真正可打断），否则退回 setTimeout */
+function nextTick(fn){
+  if(window.scheduler && scheduler.yield) scheduler.yield().then(fn, function(){ setTimeout(fn, 0); });
+  else setTimeout(fn, 0);
+}
+
+function matchesFilter(it){
+  if(state.filter.tag && it.tags.indexOf(state.filter.tag) < 0) return false;
+  var q = state.filter.q.trim().toLowerCase();
+  if(!q) return true;
+  return (it.title + ' ' + it.desc + ' ' + it.tags.join(' ') + ' ' + (it.name||'')).toLowerCase().indexOf(q) >= 0;
+}
+function sortedItems(){
+  var s = state.filter.sort;
+  var list = state.items.slice();
+  if(s === 'az') list.sort(function(a, b){ return COLL.compare(a.title, b.title); });
+  else list.sort(function(a, b){
+    var ta = Date.parse(a.addedAt) || 0, tb = Date.parse(b.addedAt) || 0;
+    return s === 'old' ? ta - tb : tb - ta;
+  });
+  return list;
+}
+function filteredItems(){ return sortedItems().filter(matchesFilter); }
+function visibleItems(){ return filteredItems(); }
+
+function invalidateCard(it){
+  if(!it) return;
+  var n = state.cards[it.id];
+  if(n){
+    if(n.parentNode) n.parentNode.removeChild(n);
+    if(thumbObserver) thumbObserver.unobserve(n);
+    delete state.cards[it.id];
+  }
+}
+function clearCards(){
+  Object.keys(state.cards).forEach(function(id){ invalidateCard({id: id}); });
+  state.order = [];
+}
+function openFromCard(it){
+  var list = state.visible || filteredItems();
+  var i = list.indexOf(it);
+  if(i < 0){ list = [it]; i = 0; }
+  openLightbox(list, i);
+}
+function getCard(it){
+  if(state.cards[it.id]) return state.cards[it.id];
+  var card = el('div', 'card');
+  card._item = it;
+  card.dataset.cardId = it.id;
+  card.setAttribute('role', 'button');
+  card.tabIndex = 0;
+  card.title = '点击查看大图';
+  card.addEventListener('keydown', function(e){
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openFromCard(it); }
+  });
+  card.addEventListener('click', function(){ openFromCard(it); });
+  if(it.local){ card.appendChild(el('div','badge-local','仅本机')); }
+
+  if(state.admin){
+    var acts = el('div','card-actions');
+    var d = el('button','act del'); d.title = '删除';
+    d.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M9 7V5h6v2M7 7l1 13h8l1-13"/></svg>';
+    d.addEventListener('click', function(e){ e.stopPropagation(); deleteItem(it); });
+    acts.appendChild(d);
+    card.appendChild(acts);
+  }
+
+  var th = el('div','thumb');
+  var img = el('img');
+  img.decoding = 'async';
+  img.loading = 'lazy';
+  img.alt = it.title;
+  var small = it.thumb || it._thumbUrl || '';
+  if(small){
+    img.src = small;
+  }else{
+    /* 没有小图：先占位，等进入视口附近再后台压图（绝不把大图塞进网格） */
+    th.classList.add('is-loading');
+    img.classList.add('is-loading');
+    if(it._thumbFail && it.src) img.src = it.src;
+    if(thumbObserver) thumbObserver.observe(card);
+    else queueThumb(it);
+  }
+  th.appendChild(img);
+  var meta = el('div','meta');
+  meta.appendChild(el('div','t', it.title));
+  if(it.desc) meta.appendChild(el('div','d', it.desc));
+  if(it.tags.length){
+    var tr = el('div','tagrow');
+    it.tags.slice(0,3).forEach(function(t){ tr.appendChild(el('span','tag', t)); });
+    meta.appendChild(tr);
+  }
+  card.appendChild(th); card.appendChild(meta);
+  state.cards[it.id] = card;
+  return card;
+}
+function renderGallery(){
+  renderChips();
+  syncOrder();
+}
+function syncOrder(){
+  var grid = $('grid');
+  var list = sortedItems();
+  var alive = {};
+  list.forEach(function(it){ alive[it.id] = 1; });
+  Object.keys(state.cards).forEach(function(id){
+    if(!alive[id]) invalidateCard({id: id});
+  });
+  state.order = list;
+  if(buildTimer){ clearTimeout(buildTimer); buildTimer = null; }
+  var i = 0;
+  function step(){
+    buildTimer = null;
+    var frag = document.createDocumentFragment();
+    for(var n = 0; i < list.length && n < BUILD_CHUNK; n++, i++){
+      frag.appendChild(getCard(list[i]));      /* 已有节点 = 移动而非重建 */
+    }
+    if(frag.childNodes.length) grid.appendChild(frag);
+    applyFilter();
+    if(i < list.length) buildTimer = setTimeout(function(){ nextTick(step); }, 0);
+  }
+  step();
+}
+function applyFilter(){
+  var list = state.order || [];
+  var shown = 0;
+  var visible = [];
+  for(var i = 0; i < list.length; i++){
+    var it = list[i];
+    var hit = matchesFilter(it);
+    if(hit){ shown++; visible.push(it); }
+    var node = state.cards[it.id];
+    if(node) node.classList.toggle('is-off', !hit);   /* 只切显隐：不动 DOM、不解码图片 */
+  }
+  state.visible = visible;               /* 点击开灯箱直接用，免得点击时再算一遍 */
+  $('count').textContent = shown + ' / ' + state.items.length + ' 张';
+  var isEmpty = shown === 0;
+  $('empty').classList.toggle('hidden', !isEmpty);
+  if(isEmpty){
+    $('emptyTitle').textContent = state.items.length ? '没有匹配的图片' : '还没有图片';
+    $('emptyText').textContent = state.items.length ? '换个关键词或标签试试。' : '切换到管理模式，点击右上角「＋」即可上传第一批图片。';
+    $('emptyAdminBtn').classList.toggle('hidden', state.admin);
+  }
+}
+var chipsSig = '';
+function renderChips(){
+  var counts = {};
+  state.items.forEach(function(it){ it.tags.forEach(function(t){ counts[t] = (counts[t]||0)+1; }); });
+  var tags = Object.keys(counts).sort(COLL.compare.bind(COLL));
+  var sig = tags.map(function(t){ return t + ':' + counts[t]; }).join('|') + '#' + state.filter.tag;
+  if(sig === chipsSig) return;      /* 标签没变化就不重建筛选条 */
+  chipsSig = sig;
+  var box = $('chips');
+  box.innerHTML = '';
+  var all = el('button', 'chip' + (state.filter.tag ? '' : ' is-on'), '全部');
+  all.addEventListener('click', function(){ state.filter.tag = ''; renderChips(); applyFilter(); });
+  box.appendChild(all);
+  tags.forEach(function(t){
+    var c = el('button', 'chip' + (state.filter.tag === t ? ' is-on' : ''));
+    c.appendChild(document.createTextNode(t));
+    c.appendChild(el('span','n', String(counts[t])));
+    c.addEventListener('click', function(){ state.filter.tag = (state.filter.tag === t ? '' : t); renderChips(); applyFilter(); });
+    box.appendChild(c);
+  });
+}
+
+/* ---------- 灯箱 ---------- */
+function openLightbox(list, idx){
+  state.lb.list = list; state.lb.idx = idx;
+  state.lightboxOpen = true;          /* 压图队列让位，把带宽留给原图 */
+  $('lightbox').classList.add('is-open');
+  document.body.classList.add('no-scroll');
+  showLb();
+}
+function showLb(){
+  var it = state.lb.list[state.lb.idx];
+  if(!it){ closeLightbox(); return; }
+  var facts = [];
+  if(it.name) facts.push(it.name);
+  if(it.size) facts.push(fmtSize(it.size));
+  if(it.w && it.h) facts.push(it.w + ' × ' + it.h);
+  $('lbTitle').textContent = it.title;
+  $('lbDesc').textContent = it.desc || '';
+  $('lbDesc').style.display = it.desc ? '' : 'none';
+  $('lbPos').textContent = (state.lb.idx + 1) + ' / ' + state.lb.list.length;
+  $('lbPrev').style.visibility = state.lb.list.length > 1 ? 'visible' : 'hidden';
+  $('lbNext').style.visibility = state.lb.list.length > 1 ? 'visible' : 'hidden';
+  $('lbEdit').classList.toggle('hidden', !state.admin);
+  $('lbDel').classList.toggle('hidden', !state.admin);
+  paintFacts(facts.slice(), it);
+  loadLbImage(it, facts);
+  preloadNeighbors();
+}
+/* 渐进加载：同步先上小图（点击立刻有反馈），原图在后台解码完成后无缝替换 */
+var lbSeq = 0;
+function loadLbImage(it, facts){
+  var img = $('lbImg');
+  var seq = ++lbSeq;
+  var alive = function(){ return seq === lbSeq && state.lb.list[state.lb.idx] === it; };
+  var apply = function(w, h){
+    var f = facts.slice();
+    if(w && h && f.indexOf(w + ' × ' + h) < 0) f.push(w + ' × ' + h);
+    paintFacts(f, it);
+  };
+  img.alt = it.title;
+  img.decoding = 'async';
+  /* ① 同步先上内容：不等 IndexedDB、不等网络 */
+  var small = it.thumb || it._thumbUrl || '';
+  if(small){
+    img.style.opacity = '.55';
+    img.onload = function(){ apply(it.w, it.h); };
+    img.src = small;
+  }else if(it.src){
+    img.style.opacity = '1';
+    img.onload = function(){ apply(img.naturalWidth, img.naturalHeight); };
+    img.src = it.src;                    /* 无小图：直接上原图，渐进式 JPEG 会一行行显出来 */
+  }else{
+    img.style.opacity = '0';             /* 连地址都要按需取：先隐藏，避免残留上一张 */
+  }
+  if(it.w && it.h) apply(it.w, it.h);
+  /* ② 有小图时后台取原图并解码，就绪后替换 */
+  if(small && it.src){
+    (async function(){
+      var full = await ensureSrc(it);
+      if(!full || !alive() || full === small) return;
+      var pre = new Image();
+      pre.decoding = 'async';
+      pre.onload = function(){
+        var swap = function(){
+          if(!alive()) return;
+          img.style.opacity = '1';
+          img.onload = function(){ apply(pre.naturalWidth, pre.naturalHeight); };
+          img.src = full;
+        };
+        /* 先解码再替换：避免大图上屏时掉帧 */
+        if(pre.decode) pre.decode().then(swap, swap);
+        else swap();
+      };
+      pre.onerror = function(){ if(alive()) img.style.opacity = '1'; };
+      pre.src = full;
+    })();
+  }else if(!small && !it.src){
+    (async function(){
+      var full = await ensureSrc(it);
+      if(!full || !alive()) return;
+      img.style.opacity = '1';
+      img.onload = function(){ apply(img.naturalWidth, img.naturalHeight); };
+      img.src = full;
+    })();
+  }
+}
+/* 空闲时预取前后两张，翻页零等待 */
+var lbPreloaded = [];
+function preloadNeighbors(){
+  var n = state.lb.list.length;
+  if(n < 2) return;
+  [1, -1].forEach(function(d){
+    var it = state.lb.list[(state.lb.idx + d + n) % n];
+    if(!it) return;
+    var key = it.id || it.src;
+    if(lbPreloaded.indexOf(key) >= 0) return;
+    lbPreloaded.push(key);
+    if(lbPreloaded.length > 30) lbPreloaded.shift();
+    var run = function(){
+      var a = new Image(); a.decoding = 'async'; a.src = it.thumb || it.src;
+      ensureSrc(it).then(function(u){
+        if(u){ var b = new Image(); b.decoding = 'async'; b.src = u; }
+      });
+    };
+    if(window.requestIdleCallback) requestIdleCallback(run, {timeout: 1200});
+    else setTimeout(run, 250);
+  });
+}
+function paintFacts(facts, it){
+  var f = $('lbFacts'); f.innerHTML = '';
+  facts.filter(Boolean).forEach(function(x){ f.appendChild(el('span', null, x)); });
+  if(it.local) f.appendChild(el('span', null, '仅本机可见'));
+}
+function closeLightbox(){
+  $('lightbox').classList.remove('is-open');
+  document.body.classList.remove('no-scroll');
+  $('lbImg').removeAttribute('src');
+  state.lightboxOpen = false;
+  pumpThumbs();                        /* 关闭后继续后台压图 */
+}
+function lbMove(d){
+  var n = state.lb.list.length;
+  if(n < 2) return;
+  state.lb.idx = (state.lb.idx + d + n) % n;
+  showLb();
+}
+async function downloadItem(it){
+  var filename = it.name || (it.title || 'image') + '.jpg';
+  toast('正在准备下载…');
+  var src = await ensureSrc(it);
+  try{
+    if(!src) throw new Error('no-src');
+    var res = await fetch(src, {cache:'no-store'});
+    if(!res.ok) throw new Error('http');
+    var blob = await res.blob();
+    var url = URL.createObjectURL(blob);
+    var a = el('a'); a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 5000);
+  }catch(e){
+    var a = el('a'); a.href = src || it.thumb || ''; a.download = filename; a.target = '_blank'; a.rel = 'noopener';
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+  toast('已开始下载 ' + filename);
+}
+
+/* ---------- 管理：登录 ---------- */
+function openLogin(){
+  $('pwErr').classList.add('hidden');
+  $('pw').value = '';
+  $('modalLogin').classList.add('is-open');
+  setTimeout(function(){ $('pw').focus(); }, 60);
+}
+async function tryLogin(){
+  var ok = false;
+  var hash = await sha256($('pw').value || '');
+  ok = (hash === (state.cfg.adminHash || DEFAULT_CFG.adminHash));
+  if(!ok){
+    $('pwErr').classList.remove('hidden');
+    $('pw').select();
+    return;
+  }
+  state.admin = true;
+  $('modalLogin').classList.remove('is-open');
+  setAdminUI();
+  toast('已进入管理模式');
+  openPanel();
+}
+function setAdminUI(){
+  clearCards();                        /* 管理模式卡片带删除按钮，需重建节点 */
+  $('adminChip').classList.toggle('hidden', !state.admin);
+  $('btnPanel').classList.toggle('hidden', !state.admin);
+  $('btnAdmin').classList.toggle('is-on', state.admin);
+  $('btnAdmin').title = state.admin ? '退出管理模式' : '管理模式';
+  $('lbEdit').classList.toggle('hidden', !state.admin);
+  $('lbDel').classList.toggle('hidden', !state.admin);
+  route();
+}
+
+/* ---------- 管理：面板 ---------- */
+function openPanel(){
+  if(!state.admin) return;
+  var c = ghCfg();
+  $('ghToken').value = c.token || '';
+  $('ghOwner').value = c.owner || '';
+  $('ghBranch').value = c.branch || 'main';
+  $('ghDir').value = c.dir || 'images';
+  $('ghManifest').value = c.manifest || 'gallery.json';
+  $('panelHint').textContent = ghReady()
+    ? '当前为「仓库模式」：保存后将通过 GitHub 接口提交到 ' + c.owner + '（' + (c.branch||'main') + ' 分支）。'
+    : '当前为「本机模式」：改动只保存在这台设备上。填写下方 GitHub 接口设置后，即可把图片与清单直接提交到仓库。';
+  $('panelStat').textContent = '共 ' + state.items.length + ' 张图片，其中本机 ' +
+    state.items.filter(function(i){ return i.local; }).length + ' 张';
+  renderDraftNote();
+  renderQueue();
+  $('modalPanel').classList.add('is-open');
+}
+function renderDraftNote(){
+  var n = $('draftNote');
+  if(state.draft){
+    n.classList.remove('hidden');
+    n.innerHTML = '正在使用<b>本机草稿</b>（' + state.items.filter(function(i){return !i.local;}).length +
+      ' 项）。配置 GitHub 接口后保存即可上线，或点击「导出 gallery.json」手动提交到仓库。';
+  }else{
+    n.classList.add('hidden');
+  }
+}
+
+/* ---------- 缩略图管线（大图上传卡顿的关键：只解码一次，之后都用小图） ---------- */
+var THUMB_EDGE = 720;   /* 缩略图长边像素，足够 2x 屏的卡片预览 */
+async function makeThumb(fileOrBlob, maxEdge){
+  var edge = maxEdge || THUMB_EDGE;
+  var source = null, revoke = null;
+  try{
+    if(window.createImageBitmap){
+      /* 优先离主线程解码，且按 EXIF 方向自动转正 */
+      source = await createImageBitmap(fileOrBlob, {imageOrientation:'from-image'});
+    }
+  }catch(e){ source = null; }
+  if(!source){
+    var url = URL.createObjectURL(fileOrBlob); revoke = url;
+    source = await new Promise(function(res, rej){
+      var im = new Image();
+      im.decoding = 'async';
+      im.onload = function(){ res(im); };
+      im.onerror = function(){ rej(new Error('无法解码图片')); };
+      im.src = url;
+    });
+  }
+  var w = source.width || source.naturalWidth || 0;
+  var h = source.height || source.naturalHeight || 0;
+  var scale = w && h ? Math.min(1, edge / Math.max(w, h)) : 1;
+  var cw = Math.max(1, Math.round(w * scale)), ch = Math.max(1, Math.round(h * scale));
+  var cv = document.createElement('canvas');
+  cv.width = cw; cv.height = ch;
+  cv.getContext('2d').drawImage(source, 0, 0, cw, ch);
+  if(source.close) source.close();          /* 释放 ImageBitmap */
+  if(revoke) URL.revokeObjectURL(revoke);
+  var blob = await new Promise(function(res){
+    cv.toBlob(function(b){ res(b); }, 'image/jpeg', 0.82);
+  });
+  cv.width = cv.height = 0;                 /* 及时释放大画布内存 */
+  return {blob: blob, w: w, h: h, url: blob ? URL.createObjectURL(blob) : ''};
+}
+function thumbName(path){
+  var i = String(path).lastIndexOf('.');
+  var j = String(path).lastIndexOf('/');
+  return (i > j ? String(path).slice(0, i) : String(path)) + '.thumb.jpg';
+}
+
+/* ---------- 管理：上传队列 ---------- */
+function addFiles(files){
+  var added = 0;
+  Array.prototype.forEach.call(files, function(f){
+    if(!/^image\//.test(f.type) && !/\.(svg|png|jpe?g|gif|webp|avif)$/i.test(f.name)){
+      toast('已跳过非图片文件：' + f.name);
+      return;
+    }
+    state.queue.push({
+      file: f,
+      name: f.name,
+      size: f.size,
+      title: f.name.replace(/\.[a-z0-9]+$/i, '').replace(/[-_]+/g, ' ').trim() || '未命名',
+      desc: '',
+      tags: '',
+      state: '',
+      phase: '',
+      thumb: '',        /* 小图预览地址（生成一次后复用，不再解码原图） */
+      thumbBlob: null,
+      w: 0, h: 0,
+      thumbDone: false
+    });
+    added++;
+  });
+  if(added) toast('已加入 ' + added + ' 张，正在后台生成缩略图…');
+  renderQueue();
+  drainThumbs();
+}
+/* 后台逐张生成缩略图：一次只处理一张，避免大图批量解码把页面拖垮 */
+async function drainThumbs(){
+  if(state.thumbBusy) return;
+  state.thumbBusy = true;
+  try{
+    for(;;){
+      var q = null;
+      for(var i = 0; i < state.queue.length; i++){ if(!state.queue[i].thumbDone){ q = state.queue[i]; break; } }
+      if(!q) break;
+      q.thumbDone = true;
+      try{
+        var t = await makeThumb(q.file);
+        q.thumbBlob = t.blob;
+        q.thumb = t.url || URL.createObjectURL(q.file);
+        q.w = t.w; q.h = t.h;
+      }catch(e){
+        /* 解码失败（如浏览器不支持的格式）→ 退回原图预览 */
+        q.thumb = URL.createObjectURL(q.file);
+      }
+      renderQueue();
+      await new Promise(function(r){ setTimeout(r, 0); });   /* 让出主线程 */
+    }
+  }finally{
+    state.thumbBusy = false;
+  }
+}
+function renderQueue(){
+  var box = $('queue');
+  box.innerHTML = '';
+  state.queue.forEach(function(q, i){
+    var row = el('div','q-item');
+    var th = el('div','q-thumb' + (q.thumb ? '' : ' pending'));
+    if(q.thumb){
+      var img = el('img');
+      img.decoding = 'async';
+      img.src = q.thumb;          /* 用缓存的小图，不再反复解码原图 */
+      th.appendChild(img);
+    }
+    var body = el('div','q-body');
+
+    var head = el('div','q-head');
+    var nm = el('div','q-name', q.name + ' · ' + fmtSize(q.size) + (q.w && q.h ? ' · ' + q.w + ' × ' + q.h : ''));
+    var stTxt = q.phase === 'busy' ? '处理中…' : (q.phase === 'ok' ? (q.state || '已完成') : (q.phase === 'err' ? q.state : '待保存'));
+    var st = el('div', 'q-state' + (q.phase === 'ok' ? ' ok' : (q.phase === 'err' ? ' err' : '')), stTxt);
+    var x = el('button','q-x');
+    x.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+    x.addEventListener('click', function(){ state.queue.splice(i,1); renderQueue(); });
+    head.appendChild(nm); head.appendChild(st); head.appendChild(x);
+
+    var ti = el('input'); ti.placeholder = '标题'; ti.value = q.title;
+    ti.addEventListener('input', function(){ q.title = ti.value; });
+    var de = el('textarea'); de.placeholder = '描述（可留空）'; de.value = q.desc;
+    de.addEventListener('input', function(){ q.desc = de.value; });
+    var ta = el('input'); ta.placeholder = '标签，用逗号分隔（如 示例, 渐变）'; ta.value = q.tags;
+    ta.addEventListener('input', function(){ q.tags = ta.value; });
+
+    body.appendChild(head); body.appendChild(ti); body.appendChild(de); body.appendChild(ta);
+    row.appendChild(th); row.appendChild(body);
+    box.appendChild(row);
+  });
+  $('btnCommit').disabled = state.queue.length === 0;
+  $('btnCommit').textContent = state.queue.length ? ('保存 ' + state.queue.length + ' 张到图库') : '保存到图库';
+}
+async function commitQueue(){
+  if(!state.queue.length) return;
+  var c = ghCfg();
+  var mode = ghReady() ? 'github' : 'local';
+  $('btnCommit').disabled = true;
+
+  for(var i = 0; i < state.queue.length; i++){
+    var q = state.queue[i];
+    try{
+      q.phase = 'busy'; renderQueue();
+      var tags = q.tags.split(/[,，]/).map(function(s){ return s.trim(); }).filter(Boolean);
+      /* 缩略图：队列阶段已生成就直接复用，避免重复解码大图；生成失败也不影响原图上传 */
+      var t = null;
+      try{
+        t = (q.thumbBlob ? {blob:q.thumbBlob, w:q.w, h:q.h, url:q.thumb} : await makeThumb(q.file));
+      }catch(e){
+        t = {blob:null, w:q.w, h:q.h, url:q.thumb || ''};
+      }
+      var buf = await q.file.arrayBuffer();
+      var item = {
+        id: uid(), title: q.title || '未命名', desc: q.desc || '', tags: tags,
+        name: q.name, size: q.size, addedAt: new Date().toISOString(),
+        w: t.w || q.w || 0, h: t.h || q.h || 0
+      };
+      if(mode === 'github'){
+        var date = new Date();
+        var sub = date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2);
+        var path = (c.dir || 'images').replace(/\/+$/,'') + '/' + sub + '/' + safeName(q.name);
+        var put = await ghPutFile(path, buf, 'add ' + path);
+        if(!put.ok) throw new Error((put.data && put.data.message) || ('HTTP ' + put.status));
+        item.src = path;
+        item.file = path;
+        /* 原图旁生成缩略图文件，访客预览只加载它 */
+        if(t.blob){
+          var tpath = thumbName(path);
+          var putT = await ghPutFile(tpath, await t.blob.arrayBuffer(), 'add ' + tpath);
+          if(putT.ok) item.thumb = tpath;
+        }
+      }else{
+        await IDB.put(item.id, q.file);
+        if(t.blob) await IDB.put(item.id + ':thumb', t.blob);
+        var ids = lsGet(LS.localIds, []); ids.unshift(item.id); lsSet(LS.localIds, ids);
+        var meta = lsGet(LS.localMeta, {});
+        meta[item.id] = {title:item.title, desc:item.desc, tags:item.tags, name:item.name, w:item.w, h:item.h, addedAt:item.addedAt};
+        lsSet(LS.localMeta, meta);
+        item.thumb = t.url || q.thumb || '';
+        item.src = '';            /* 原图按需读取，避免大量大图常驻内存 */
+        item.local = true;
+      }
+      state.items.unshift(item);
+      q.state = mode === 'github' ? '已提交' : '已存本机'; q.phase = 'ok';
+    }catch(err){
+      q.state = '失败：' + (err && err.message ? err.message : '未知错误'); q.phase = 'err';
+    }
+    renderQueue();
+  }
+
+  var done = state.queue.filter(function(q){ return q.phase === 'ok'; }).length;
+  if(done){
+    await saveManifest('update gallery.json (+' + done + ' images)');
+    state.queue = state.queue.filter(function(q){ return q.phase !== 'ok'; });
+    renderQueue();
+    renderGallery();
+  }
+  $('btnCommit').disabled = state.queue.length === 0;
+  $('panelStat').textContent = '共 ' + state.items.length + ' 张图片，其中本机 ' +
+    state.items.filter(function(i){ return i.local; }).length + ' 张';
+}
+
+/* ---------- 管理：删除 / 编辑 ---------- */
+async function deleteItem(it){
+  if(!state.admin) return;
+  if(!confirm('确定删除「' + it.title + '」？此操作不可撤销。')) return;
+  try{
+    if(it.local){
+      await IDB.del(it.id);
+      try{ await IDB.del(it.id + ':thumb'); }catch(e){}
+      if(it.src && it.src.indexOf('blob:') === 0) URL.revokeObjectURL(it.src);
+      if(it.thumb && it.thumb.indexOf('blob:') === 0) URL.revokeObjectURL(it.thumb);
+      var ids = lsGet(LS.localIds, []).filter(function(x){ return x !== it.id; });
+      lsSet(LS.localIds, ids);
+      var meta = lsGet(LS.localMeta, {}); delete meta[it.id]; lsSet(LS.localMeta, meta);
+    }else if(it.file && ghReady()){
+      var r = await ghDelFile(it.file, 'delete ' + it.file);
+      if(!r.ok) throw new Error((r.data && r.data.message) || ('HTTP ' + r.status));
+    }
+    state.items = state.items.filter(function(x){ return x.id !== it.id; });
+    await saveManifest('remove ' + (it.file || it.title));
+    closeLightbox();
+    renderGallery();
+    toast('已删除「' + it.title + '」');
+  }catch(err){
+    toast('删除失败：' + (err && err.message ? err.message : '未知错误'));
+  }
+}
+var editing = null;
+function editItem(it){
+  if(!state.admin) return;
+  editing = it;
+  $('edTitle').value = it.title || '';
+  $('edDesc').value = it.desc || '';
+  $('edTags').value = (it.tags || []).join(', ');
+  $('modalEdit').classList.add('is-open');
+  setTimeout(function(){ $('edTitle').focus(); $('edTitle').select(); }, 60);
+}
+async function saveEdit(){
+  var it = editing;
+  if(!it){ $('modalEdit').classList.remove('is-open'); return; }
+  it.title = $('edTitle').value.trim() || it.title;
+  it.desc = $('edDesc').value.trim();
+  it.tags = $('edTags').value.split(/[,，]/).map(function(s){ return s.trim(); }).filter(Boolean);
+  if(it.local){
+    var meta = lsGet(LS.localMeta, {});
+    meta[it.id] = Object.assign({}, meta[it.id], {title:it.title, desc:it.desc, tags:it.tags, name:it.name, w:it.w, h:it.h, addedAt:it.addedAt});
+    lsSet(LS.localMeta, meta);
+  }
+  $('modalEdit').classList.remove('is-open');
+  await saveManifest('update meta of ' + (it.file || it.id));
+  showLb();
+  invalidateCard(it);                  /* 元数据变了，丢弃旧卡片节点 */
+  renderGallery();
+  toast('信息已更新');
+}
+
+/* 补齐缩略图：给旧数据（清单里没有 thumb 字段的图片）生成并提交缩略图 */
+async function backfillThumbs(){
+  if(!state.admin) return;
+  var targets = state.items.filter(function(it){ return !it.thumb && (it.src || it.local); });
+  if(!targets.length){ toast('所有图片都已有缩略图'); return; }
+  toast('开始为 ' + targets.length + ' 张图片生成缩略图…');
+  var done = 0;
+  for(var i = 0; i < targets.length; i++){
+    var it = targets[i];
+    try{
+      var t = null;
+      if(it._thumbBlob){                   /* 浏览时已压好：直接复用，不再下载原图 */
+        t = {blob: it._thumbBlob, w: it.w, h: it.h, url: it._thumbUrl || ''};
+      }else{
+        var src = await ensureSrc(it);
+        var blob = null;
+        if(it.local){
+          blob = await IDB.get(it.id);
+        }else if(src){
+          var res = await fetch(src, {cache:'no-store'});
+          if(res.ok) blob = await res.blob();
+        }
+        if(!blob) throw new Error('取不到原图');
+        t = await makeThumb(blob);
+      }
+      if(!t.blob) throw new Error('缩略图生成失败');
+      if(it.local){
+        await IDB.put(it.id + ':thumb', t.blob);
+        var meta = lsGet(LS.localMeta, {});
+        meta[it.id] = Object.assign({}, meta[it.id], {w:t.w, h:t.h});
+        lsSet(LS.localMeta, meta);
+        it.thumb = t.url;
+      }else if(ghReady() && (it.file || it.src)){
+        var tp = thumbName(it.file || it.src);
+        var r = await ghPutFile(tp, await t.blob.arrayBuffer(), 'add ' + tp);
+        if(!r.ok) throw new Error((r.data && r.data.message) || ('HTTP ' + r.status));
+        it.thumb = tp;
+      }else{
+        it.thumb = t.url;      /* 未连接仓库：本次会话生效，导出清单后需自行上传缩略图 */
+      }
+      it.w = t.w || it.w; it.h = t.h || it.h;
+      done++;
+      $('panelStat').textContent = '缩略图进度 ' + done + ' / ' + targets.length;
+    }catch(e){ /* 跳过失败项，继续处理下一张 */ }
+    await new Promise(function(r){ setTimeout(r, 0); });   /* 让出主线程，界面不卡 */
+  }
+  if(done) await saveManifest('add thumbnails (' + done + ')');
+  renderGallery();
+  toast('已补齐 ' + done + ' 张缩略图');
+}
+
+/* ---------- 导出 ---------- */
+function exportManifest(){
+  var payload = {
+    version: 1,
+    site: state.site,
+    config: state.cfg,
+    items: state.items.filter(function(it){ return !it.local; })
+  };
+  var blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = el('a'); a.href = url; a.download = 'gallery.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+  toast('已导出 gallery.json，可直接提交到仓库根目录');
+}
+
+/* ---------- 事件绑定 ---------- */
+function bind(){
+  $('btnAdmin').addEventListener('click', function(){
+    if(state.admin){ state.admin = false; setAdminUI(); toast('已退出管理模式'); }
+    else openLogin();
+  });
+  $('btnPanel').addEventListener('click', openPanel);
+  $('pwOk').addEventListener('click', tryLogin);
+  $('pwCancel').addEventListener('click', function(){ $('modalLogin').classList.remove('is-open'); });
+  $('pw').addEventListener('keydown', function(e){ if(e.key === 'Enter') tryLogin(); });
+  $('panelClose').addEventListener('click', function(){ $('modalPanel').classList.remove('is-open'); renderGallery(); });
+  $('btnCommit').addEventListener('click', commitQueue);
+  $('btnExport').addEventListener('click', exportManifest);
+  $('btnThumbs').addEventListener('click', backfillThumbs);
+  $('btnReload').addEventListener('click', async function(){
+    lsSet(LS.draft, null); state.draft = false;
+    await loadManifest(); clearCards(); renderGallery(); openPanel(); toast('已重新加载清单');
+  });
+  $('btnLogout').addEventListener('click', function(){
+    state.admin = false; $('modalPanel').classList.remove('is-open'); setAdminUI(); toast('已退出管理模式');
+  });
+  $('btnPw').addEventListener('click', async function(){
+    var v = $('newPw').value || '';
+    if(v.length < 4){ toast('口令至少 4 位'); return; }
+    state.cfg.adminHash = await sha256(v);
+    $('newPw').value = '';
+    await saveManifest('update admin hash');
+  });
+
+  /* 上传交互 */
+  var dz = $('dropzone'), fi = $('fileInput');
+  dz.addEventListener('click', function(){ fi.click(); });
+  dz.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' ') fi.click(); });
+  fi.addEventListener('change', function(){ addFiles(fi.files); fi.value = ''; });
+  ['dragenter','dragover'].forEach(function(ev){
+    dz.addEventListener(ev, function(e){ e.preventDefault(); dz.classList.add('is-over'); });
+  });
+  ['dragleave','drop'].forEach(function(ev){
+    dz.addEventListener(ev, function(e){ e.preventDefault(); dz.classList.remove('is-over'); });
+  });
+  dz.addEventListener('drop', function(e){
+    if(e.dataTransfer && e.dataTransfer.files) addFiles(e.dataTransfer.files);
+  });
+  document.addEventListener('paste', function(e){
+    if(!$('modalPanel').classList.contains('is-open')) return;
+    var files = [];
+    Array.prototype.forEach.call((e.clipboardData && e.clipboardData.items) || [], function(it){
+      if(it.kind === 'file'){ var f = it.getAsFile(); if(f) files.push(f); }
+    });
+    if(files.length){ addFiles(files); toast('已粘贴 ' + files.length + ' 张图片'); }
+  });
+
+  /* GitHub 设置 */
+  $('ghSave').addEventListener('click', function(){
+    lsSet(LS.gh, {
+      token: $('ghToken').value.trim(),
+      owner: $('ghOwner').value.trim(),
+      branch: $('ghBranch').value.trim() || 'main',
+      dir: $('ghDir').value.trim() || 'images',
+      manifest: $('ghManifest').value.trim() || 'gallery.json'
+    });
+    showGhMsg(ghReady() ? 'ok' : 'warn', ghReady() ? '已保存，之后的改动会直接提交到仓库。' : '已保存，但 Token 或仓库名为空，仍处于本机模式。');
+    openPanel();
+  });
+  $('ghTest').addEventListener('click', async function(){
+    $('ghSave').click();
+    if(!ghReady()){ showGhMsg('warn', '请先填写 Token 与仓库名。'); return; }
+    showGhMsg('ok', '正在连接…');
+    var r = await ghApi('', {method:'GET'});
+    if(r.ok) showGhMsg('ok', '连接成功：' + (r.data && r.data.full_name ? r.data.full_name : '仓库可访问') + '（权限 ' + (r.data && r.data.permissions && r.data.permissions.push ? '可写' : '只读，需要可写 Token') + '）');
+    else showGhMsg('err', '连接失败（' + r.status + '）：' + (r.data && r.data.message ? r.data.message : '请检查设置'));
+  });
+
+  /* 搜索 / 排序 */
+  var qTimer = null;
+  $('q').addEventListener('input', function(){
+    state.filter.q = $('q').value;
+    clearTimeout(qTimer);
+    qTimer = setTimeout(applyFilter, 120);   /* 输入防抖：筛选只切显隐，不重建 DOM */
+  });
+  $('sort').addEventListener('change', function(){ state.filter.sort = $('sort').value; renderGallery(); });
+  $('btnSearch').addEventListener('click', function(){
+    if(location.hash.indexOf('#/layout') !== 0){ location.hash = '#/layout'; }
+    setTimeout(function(){ $('q').focus(); $('q').select(); }, 80);
+  });
+  $('emptyAdminBtn').addEventListener('click', openLogin);
+
+  /* 灯箱 */
+  $('lbClose').addEventListener('click', closeLightbox);
+  $('lbPrev').addEventListener('click', function(){ lbMove(-1); });
+  $('lbNext').addEventListener('click', function(){ lbMove(1); });
+  $('lbDownload').addEventListener('click', function(){ downloadItem(state.lb.list[state.lb.idx]); });
+  $('lbDel').addEventListener('click', function(){ deleteItem(state.lb.list[state.lb.idx]); });
+  $('lbEdit').addEventListener('click', function(){ editItem(state.lb.list[state.lb.idx]); });
+  $('edOk').addEventListener('click', saveEdit);
+  $('edCancel').addEventListener('click', function(){ $('modalEdit').classList.remove('is-open'); });
+  $('edTitle').addEventListener('keydown', function(e){ if(e.key === 'Enter') saveEdit(); });
+  $('lightbox').addEventListener('click', function(e){ if(e.target === $('lightbox')) closeLightbox(); });
+
+  document.addEventListener('keydown', function(e){
+    if($('lightbox').classList.contains('is-open')){
+      if(e.key === 'Escape') closeLightbox();
+      else if(e.key === 'ArrowLeft') lbMove(-1);
+      else if(e.key === 'ArrowRight') lbMove(1);
+      return;
+    }
+    if(e.key === 'Escape'){
+      $('modalLogin').classList.remove('is-open');
+      $('modalPanel').classList.remove('is-open');
+      $('modalEdit').classList.remove('is-open');
+    }
+  });
+
+  /* 点击遮罩关闭 */
+  ['modalLogin','modalPanel','modalEdit'].forEach(function(id){
+    $(id).addEventListener('click', function(e){ if(e.target === $(id)) $(id).classList.remove('is-open'); });
+  });
+
+  window.addEventListener('hashchange', route);
+}
+
+/* ---------- 启动 ---------- */
+(async function init(){
+  buildNav();
+  bind();
+  await loadManifest();
+  route();
+})();
+
+})();
+</script>
+</body>
+</html>
