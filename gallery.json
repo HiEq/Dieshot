@@ -8,10 +8,10 @@
     "bg": "images/home-bg.jpg"
   },
   "config": {
-    "adminHash": "93cc00a38267dc95dd05804b0f07592fb7a8d5ee1bfbe9971b56f0a28cdf48c7",
+    "adminHash": "386cc1fc613bf00865387cd578cc5c5bfd188f0167516ac44e41cfcc2119f5ab",
     "github": {
       "token": "",
-      "owner": "",
+      "owner": "HiEq/Dieshot",
       "branch": "main",
       "dir": "images/dieshot",
       "manifest": "gallery.json"
