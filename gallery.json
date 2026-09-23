@@ -2,7 +2,9 @@
   "version": 1,
   "site": {
     "title": "Layout",
-    "sub": "Die Shot 裸片图库：26 家厂商 · 219 张裸片显微影像。浏览、搜索、下载，一切刚刚好。"
+    "sub": "Die Shot 裸片图库：26 家厂商 · 219 张裸片显微影像。浏览、搜索、下载，一切刚刚好。",
+    "brand": "HiEq",
+    "avatar": "https://github.com/HiEq.png?size=64"
   },
   "config": {
     "adminHash": "1dc5ae5b68174891b6aa9850aa05ee0d9ae8a20468d9517259951a2dd9e9c0f0",
