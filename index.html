@@ -201,7 +201,7 @@ main{flex:1 0 auto}
 /* 首页展示条样式已随轮播移除（个人主页为整屏背景图） */
 
 /* ---------- Layout 版块 ---------- */
-.section-head{padding:64px 0 26px}
+.section-head{padding-top:64px;padding-bottom:26px}   /* 只写纵向：左右留白交给 .wrap，简写会把左右清零 */
 .section-head h2{margin:0;font-size:clamp(36px,5.6vw,60px);letter-spacing:-.035em;font-weight:700;line-height:1.05}
 .section-head .sub{margin-top:10px;color:var(--fg2);font-size:19px}
 .tb-sentinel{height:1px;width:100%;margin-bottom:-1px}
@@ -686,7 +686,7 @@ footer .sep{opacity:.4}
   .search{flex:1 1 100%}
   .search input,.field input,.field textarea,.field select,
   .q-body input,.q-body textarea{font-size:16px}   /* iOS：字号<16px 聚焦会触发整页放大 */
-  .wrap.section-head{padding:100px 0 26px}           /* 标题与顶栏之间留出明显空白（提高特异性防覆盖） */
+  .wrap.section-head{padding-top:100px;padding-bottom:26px}  /* 明显留空；只写纵向，左右留白不受影响 */
   .gallery{flex-direction:column;gap:14px;padding-bottom:70px}
   .tag-side{position:static;width:100%;max-height:none;order:-1}
   .chips{flex-direction:row;overflow-x:auto;overflow-y:hidden;padding-bottom:4px}
