@@ -83,7 +83,7 @@ button{cursor:pointer;background:none;border:0;padding:0}
 .nav{
   height:var(--nav-h);
   margin:10px 12px 0;
-  border-radius:16px 16px 0 0;                  /* 底边常驻方角：与合体态一致的融合轮廓 */
+  border-radius:16px;                        /* 常驻圆角矩形（仅吸顶合体时底边才收成方角） */
   background:var(--glass-strong);
   -webkit-backdrop-filter:saturate(180%) blur(20px);
   backdrop-filter:saturate(180%) blur(20px);
@@ -204,19 +204,6 @@ main{flex:1 0 auto}
 .section-head{padding:64px 0 26px}
 .section-head h2{margin:0;font-size:clamp(36px,5.6vw,60px);letter-spacing:-.035em;font-weight:700;line-height:1.05}
 .section-head .sub{margin-top:10px;color:var(--fg2);font-size:19px}
-/* Layout 图片与顶部边缘的渐变模糊过渡：
-   从屏幕最上缘开始雾化（图片滑向顶栏时即被柔化），到栏底下方渐隐；
-   只覆盖右侧图库列（left = 实测图库列左缘，绝不碰左侧标签栏） */
-.bar-fade{
-  position:fixed;left:var(--main-left, 0px);right:0;top:0;
-  height:calc(var(--stack-bottom, 120px) + 90px);z-index:50;
-  pointer-events:none;opacity:0;transition:opacity .2s;
-  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
-  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,.9) 45%, transparent);
-  mask-image:linear-gradient(to bottom, rgba(0,0,0,.9) 45%, transparent);
-}
-/* 仅在顶栏与标签栏吸顶合体后启用（此前标题/副标题正处于该区域，不能模糊） */
-.nav-shell.is-merged ~ main .bar-fade{opacity:1}
 .tb-sentinel{height:1px;width:100%;margin-bottom:-1px}
 .toolbar{
   position:sticky;top:calc(var(--nav-h) + 14px);z-index:60;
@@ -728,7 +715,6 @@ footer .sep{opacity:.4}
 
   <!-- ================= Layout 版块 ================= -->
   <section class="view" id="view-layout">
-    <div class="bar-fade" aria-hidden="true"></div>
     <div class="wrap section-head">
       <h2>Layout</h2>
       <div class="sub" id="layoutSub">{tags} 家厂商 · {items} 张 Dieshot · 支持搜索与标签筛选</div>
