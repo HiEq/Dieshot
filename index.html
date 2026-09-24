@@ -544,6 +544,29 @@ footer .sep{opacity:.4}
 .sheet{border-radius:26px}
 .dd-menu{border-radius:18px}
 
+/* ---------- Live2D 桌宠（仅首页右下角；箭头可折叠到屏幕边缘） ---------- */
+.l2d{
+  position:fixed;right:24px;bottom:0;z-index:70;
+  width:300px;height:340px;pointer-events:none;
+  transition:transform .45s var(--spring);
+}
+.l2d[hidden]{display:none}
+.l2d canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:auto;cursor:grab}
+.l2d.is-hidden{transform:translateX(calc(100% + 24px))}   /* 折到右缘，只留箭头 */
+.l2d-tab{
+  position:absolute;left:-36px;bottom:28px;width:36px;height:64px;
+  pointer-events:auto;display:flex;align-items:center;justify-content:center;
+  border-radius:14px 0 0 14px;color:var(--fg);
+  background:var(--glass-strong);
+  -webkit-backdrop-filter:saturate(180%) blur(16px);backdrop-filter:saturate(180%) blur(16px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.3), inset 0 0 0 1px var(--hairline), -2px 2px 12px rgba(0,0,0,.12);
+  transition:color .2s;
+}
+.l2d-tab:hover{color:var(--blue)}
+.l2d-tab svg{width:18px;height:18px;transition:transform .35s var(--spring)}
+.l2d.is-hidden .l2d-tab svg{transform:rotate(180deg)}
+@media (max-width:640px){ .l2d{width:220px;height:250px;right:8px} }
+
 @media (max-width:640px){
   .nav-menu{gap:0}
   .nav-item{padding:6px 9px}
@@ -800,6 +823,14 @@ footer .sep{opacity:.4}
 
 <div class="toast" id="toast"></div>
 
+<!-- ================= Live2D 桌宠（仅首页右下角；侧边箭头可折叠到屏幕边缘） ================= -->
+<div class="l2d" id="l2d" hidden>
+  <canvas id="l2dCanvas"></canvas>
+  <button class="l2d-tab" id="l2dTab" title="折叠 / 展开模型" aria-label="折叠 / 展开模型">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6l6 6-6 6"/></svg>
+  </button>
+</div>
+
 <script>
 /* ============================================================
    Layout · 极简图库 —— 脚本
@@ -893,6 +924,7 @@ var EN = {
   /* 页脚 */
   '由 GitHub Pages 托管 · 单文件静态站':'Hosted on GitHub Pages · single-file static site',
   '厂商目录清单':'Catalog',
+  '折叠 / 展开模型':'Collapse / expand the model',
   /* 动态文案模板 */
   '{shown} / {total} 张':'{shown} / {total} photos', '待保存':'pending', '处理中…':'working…', '已完成':'done',
   '已提交':'committed', '已存本机':'saved locally',
@@ -1426,6 +1458,7 @@ function route(){
   });
   if(name === 'layout'){ renderGallery(); }
   else { renderHome(); }
+  l2dShow(name === 'home');          /* 桌宠仅首页显示 */
   window.scrollTo(0, 0);
 }
 
@@ -1762,6 +1795,70 @@ async function downloadItem(it){
     document.body.appendChild(a); a.click(); a.remove();
   }
   toast('已开始下载 ' + filename);
+}
+
+/* ============================================================
+   Live2D 桌宠（仅首页右下角）：Cubism 4 + PixiJS + pixi-live2d-display
+   - 鼠标跟踪：model.focus() 视线/头部跟随光标
+   - 折叠：点侧边箭头滑出屏幕边缘，再点滑回（并记忆状态）
+   - 非首页 / 折叠 / 页面隐藏时暂停渲染；首次进首页才加载库与模型
+   ============================================================ */
+var L2D = {app:null, model:null, state:'', timer:0};
+function l2dLoad(src){
+  return new Promise(function(res, rej){
+    var s = document.createElement('script');
+    s.src = src; s.async = true;
+    s.onload = res; s.onerror = function(){ rej(new Error('加载失败：' + src)); };
+    document.head.appendChild(s);
+  });
+}
+async function initLive2D(){
+  if(L2D.state) return;
+  L2D.state = 'loading';
+  try{
+    await l2dLoad('live2d/lib/live2dcubismcore.min.js');
+    await l2dLoad('live2d/lib/pixi.min.js');
+    await l2dLoad('live2d/lib/cubism4.min.js');
+    var PIXI = window.PIXI;
+    var host = $('l2d');
+    var app = new PIXI.Application({
+      view: $('l2dCanvas'), backgroundAlpha: 0, resizeTo: host,
+      autoDensity: true, resolution: Math.min(window.devicePixelRatio || 1, 2)
+    });
+    var model = await PIXI.live2d.Live2DModel.from('live2d/model/cat.model3.json', {autoInteract: false});
+    var fit = Math.min(host.clientWidth / model.width, host.clientHeight / model.height) * 1.08;
+    model.scale.set(fit);
+    model.anchor.set(0.5, 1);
+    model.position.set(host.clientWidth / 2, host.clientHeight + 6);
+    app.stage.addChild(model);
+    L2D.app = app; L2D.model = model; L2D.state = 'ready';
+    /* 鼠标跟踪：视线/头部跟随光标 */
+    window.addEventListener('mousemove', function(e){
+      if(!host.hidden) model.focus(e.clientX, e.clientY);
+    });
+    /* 点一下猫：随机动作 + 随机表情 */
+    $('l2dCanvas').addEventListener('click', function(){
+      try{ model.motion('CAT_motion', Math.floor(Math.random() * 2)); }catch(err){}
+      try{ model.expression(Math.floor(Math.random() * 3)); }catch(err){}
+    });
+    /* 待机动作：每 14 秒来一下（系统「减少动态效果」时不自动动） */
+    if(!REDUCED){
+      L2D.timer = setInterval(function(){
+        if(document.hidden || !L2D.app || $('l2d').hidden || $('l2d').classList.contains('is-hidden')) return;
+        try{ model.motion('CAT_motion', Math.floor(Math.random() * 2)); }catch(err){}
+      }, 14000);
+    }
+  }catch(err){
+    L2D.state = 'error';
+    $('l2d').hidden = true;      /* 加载失败就安静隐藏，绝不影响站点其余功能 */
+  }
+}
+function l2dShow(show){
+  var box = $('l2d');
+  if(!show){ box.hidden = true; if(L2D.app) L2D.app.stop(); return; }
+  box.hidden = false;
+  if(L2D.app){ if(!box.classList.contains('is-hidden')) L2D.app.start(); }
+  else initLive2D();
 }
 
 /* ---------- 管理：登录 ---------- */
@@ -2392,6 +2489,16 @@ function bind(){
   /* 中 / EN 并排切换 */
   Array.prototype.forEach.call(document.querySelectorAll('#langSeg .seg-opt'), function(o){
     o.addEventListener('click', function(){ setLang(o.dataset.lang); });
+  });
+
+  /* Live2D 桌宠：侧边箭头折叠 / 展开（记忆状态；折叠时停渲染省资源） */
+  var l2dHidden = false;
+  try{ l2dHidden = localStorage.getItem('layout.l2dHidden') === '1'; }catch(e){}
+  $('l2d').classList.toggle('is-hidden', l2dHidden);
+  $('l2dTab').addEventListener('click', function(){
+    var h = $('l2d').classList.toggle('is-hidden');
+    try{ localStorage.setItem('layout.l2dHidden', h ? '1' : '0'); }catch(e){}
+    if(L2D.app){ h ? L2D.app.stop() : L2D.app.start(); }
   });
 
   /* 点击遮罩关闭（编辑弹窗除外：只能用「取消」/「保存」关闭，防误触丢改动） */
