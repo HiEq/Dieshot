@@ -206,16 +206,15 @@ main{flex:1 0 auto}
 .section-head .sub{margin-top:10px;color:var(--fg2);font-size:19px}
 .tb-sentinel{height:1px;width:100%;margin-bottom:-1px}
 .toolbar{
-  position:sticky;top:calc(var(--nav-h) + 14px);z-index:60;
+  position:sticky;top:var(--nav-bottom, calc(var(--nav-h) + 14px));z-index:60;
   margin:0 12px;border-radius:16px;
   background:var(--glass-strong);
   -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
   border:1px solid var(--hairline);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.3), 0 4px 18px rgba(0,0,0,.08);
 }
-/* 吸顶后与顶栏融为一体：共享外轮廓（顶部两角收直、上边线隐藏） */
+/* 吸顶后与顶栏融为一体：共享外轮廓（顶部两角收直、上边线隐藏），-1px 重叠杜绝缝隙 */
 .toolbar.is-stuck{
-  top:calc(var(--nav-h) + 10px);
   margin-top:-1px;
   border-radius:0 0 16px 16px;
   border-top-color:transparent;
@@ -2963,6 +2962,9 @@ function syncStackMetrics(){
     else if(navShell) bottom = navShell.getBoundingClientRect().bottom + tb.offsetHeight;
   }
   document.documentElement.style.setProperty('--stack-bottom', Math.ceil(bottom) + 'px');
+  /* 顶栏视觉底边（含上边距）：标签栏吸顶位置按它对齐 —— 写死偏移在移动端会裂出缝隙 */
+  var navBottom = navShell ? navShell.getBoundingClientRect().bottom : 62;
+  document.documentElement.style.setProperty('--nav-bottom', Math.ceil(navBottom) + 'px');
   /* 页脚上边缘到视口底的距离（移动视图下 Live2D 与之对齐） */
   var foot = document.querySelector('footer');
   if(foot) document.documentElement.style.setProperty('--footer-stack', Math.ceil(window.innerHeight - foot.getBoundingClientRect().top) + 'px');
