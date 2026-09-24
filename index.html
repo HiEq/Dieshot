@@ -691,11 +691,15 @@ footer .sep{opacity:.4}
   .tag-side{position:static;width:100%;max-height:none;order:-1}
   .chips{flex-direction:row;overflow-x:auto;overflow-y:hidden;padding-bottom:4px}
   .chip{width:auto;flex:none;height:32px}
-  .grid{gap:16px}
-  .misc-wall{height:calc(100vh - 190px);height:calc(100dvh - 190px);min-height:340px;padding:0 12px 70px}
-  .misc-list{padding:0 12px 70px;grid-template-columns:repeat(2,1fr);gap:10px}
+  .grid{gap:12px}
+  .grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .grid{grid-template-columns:repeat(2,1fr);gap:12px}   /* 一排两个缩略预览 */
+  .wrap{padding:0 20px}                                /* 文字与屏幕边缘留出可读间距 */
+  .misc-wall{height:calc(100vh - 190px);height:calc(100dvh - 190px);min-height:340px;padding:0 16px 70px}
+  .misc-list{padding:0 16px 70px;grid-template-columns:repeat(2,1fr);gap:10px}
   .misc-cell .cap{font-size:12px}
-  .l2d{width:190px;height:225px;right:0}
+  .l2d{width:190px;height:225px;right:0;bottom:var(--footer-stack, 0px)}  /* 模型可见底边对齐页脚上缘 */
+  .l2d-tab{left:-34px;width:34px;height:56px;bottom:calc(18px + env(safe-area-inset-bottom))}
   .l2d-tab{left:-34px;width:34px;height:56px;bottom:calc(18px + env(safe-area-inset-bottom))}
   .modal{padding:12px}
   .sheet{max-height:92vh;padding:22px 18px;border-radius:20px}
@@ -1075,7 +1079,7 @@ var EN = {
   /* 顶栏与导航 */
   '首页':'Home', 'Layout 版块':'Layout section', '搜索图片':'Search images', '管理模式':'Admin',
   '打开管理面板':'Open admin panel', '夜间 / 日间模式':'Toggle dark / light', 'HiEq 的 GitHub 主页':'HiEq on GitHub',
-  '{tags} 家厂商 · {items} 张 Dieshot · 支持搜索与标签筛选':'{tags} makers · {items} Dieshot · search and filter by tags',
+  '{tags} 家厂商 · {items} 张 Dieshot · 支持搜索与标签筛选':'{tags} Manufactures · {items} Dieshot · search and filter by tags',
   /* Layout 版块 */
   '搜索标题、描述或标签':'Search title, description or tags', '最新在前':'Newest first', '最早在前':'Oldest first',
   '按标题排序':'Sort by title', '全部':'All',
@@ -2383,6 +2387,13 @@ async function initLive2D(){
     }catch(err){
       try{ console.warn('[Live2D] 互动绑定失败（模型仍正常显示）：', err); }catch(e){}
     }
+    /* 移动设备视图：随机表情切换（桌面保持安静：仅眨眼 + 视线跟踪） */
+    if(window.matchMedia && matchMedia('(max-width: 720px)').matches){
+      L2D.exprTimer = setInterval(function(){
+        if(document.hidden || $('l2d').hidden) return;
+        try{ model.expression(Math.floor(Math.random() * 6)); }catch(err){}
+      }, 8000);
+    }
   }catch(err){
     /* 只有「库或模型加载失败」才隐藏桌宠，且不影响站点其余功能 */
     L2D.state = 'error';
@@ -2918,6 +2929,9 @@ function syncStackMetrics(){
     else if(navShell) bottom = navShell.getBoundingClientRect().bottom + tb.offsetHeight;
   }
   document.documentElement.style.setProperty('--stack-bottom', Math.ceil(bottom) + 'px');
+  /* 页脚上边缘到视口底的距离（移动视图下 Live2D 与之对齐） */
+  var foot = document.querySelector('footer');
+  if(foot) document.documentElement.style.setProperty('--footer-stack', Math.ceil(window.innerHeight - foot.getBoundingClientRect().top) + 'px');
 }
 function scheduleStackMetrics(){
   if(stackPending) return;
