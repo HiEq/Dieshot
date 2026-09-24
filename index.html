@@ -584,7 +584,7 @@ footer .sep{opacity:.4}
 .misc-wall{
   position:relative;
   display:flex;gap:14px;align-items:flex-start;
-  height:calc(100vh - 250px);min-height:420px;
+  height:calc(100vh - 250px);height:calc(100dvh - 250px);min-height:420px;
   padding:0 24px 90px;overflow:hidden;
 }
 /* 上下边缘渐变模糊（遮罩渐隐的 backdrop 模糊，深浅色通吃） */
@@ -665,6 +665,55 @@ footer .sep{opacity:.4}
   .brand{margin-right:8px}
   .hero{padding:64px 0 40px}
 }
+/* ============================================================
+   移动端适配（仅小屏/触屏生效 —— 桌面排版保持不变）
+   ============================================================ */
+@media (max-width:720px){
+  .nav{margin:8px 8px 0}
+  .nav-inner{padding:0 10px;gap:0}
+  .brand{margin-right:2px}
+  .brand>span:last-child{display:none}          /* 窄屏顶栏只留头像，省出操作区 */
+  .nav-item{padding:6px 8px;font-size:13.5px}
+  .nav-right{gap:0}
+  .seg{height:28px;padding:2px}
+  .seg-opt{min-width:36px;height:24px;font-size:12px}
+  .seg-opt:active{transform:scale(.94)}
+  .icon-btn{width:30px;height:30px}
+  .dd-btn{height:30px;padding:0 10px;font-size:12.5px}
+  .dd-menu{min-width:150px;left:auto;right:0}
+  .toolbar{margin:0 8px}
+  .toolbar-inner{padding:10px 12px;gap:8px}
+  .search{flex:1 1 100%}
+  .search input,.field input,.field textarea,.field select,
+  .q-body input,.q-body textarea{font-size:16px}   /* iOS：字号<16px 聚焦会触发整页放大 */
+  .section-head{padding:34px 0 18px}
+  .gallery{flex-direction:column;gap:14px;padding-bottom:70px}
+  .tag-side{position:static;width:100%;max-height:none;order:-1}
+  .chips{flex-direction:row;overflow-x:auto;overflow-y:hidden;padding-bottom:4px}
+  .chip{width:auto;flex:none;height:32px}
+  .grid{gap:16px}
+  .misc-wall{height:calc(100vh - 190px);height:calc(100dvh - 190px);min-height:340px;padding:0 12px 70px}
+  .misc-list{padding:0 12px 70px;grid-template-columns:repeat(2,1fr);gap:10px}
+  .misc-cell .cap{font-size:12px}
+  .l2d{width:190px;height:225px;right:0}
+  .l2d-tab{left:-34px;width:34px;height:56px;bottom:calc(18px + env(safe-area-inset-bottom))}
+  .modal{padding:12px}
+  .sheet{max-height:92vh;padding:22px 18px;border-radius:20px}
+  .lb-stage{padding:14px 10px}
+  .lb-bar-inner{flex-direction:column;gap:12px}
+  .lb-actions{width:100%}
+  .lb-actions .btn{flex:1}
+  footer{margin:8px;margin-bottom:max(8px, env(safe-area-inset-bottom))}
+}
+/* 触屏（无 hover）：点按目标放大、悬停类交互改为点按 */
+@media (hover:none){
+  .icon-btn{width:38px;height:38px}
+  .seg-opt{min-width:44px;height:30px}          /* 44px 级点按区 */
+  .act{width:36px;height:36px}
+  .l2d .l2d-tab{opacity:1;pointer-events:auto}  /* 触屏无 hover：折叠按钮常显 */
+  .card:active,.misc-cell:active,.misc-tile:active{transform:scale(.98)}
+}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{
     animation-duration:.001ms !important;animation-iteration-count:1 !important;
@@ -2076,9 +2125,11 @@ function miscTile(it){
     var i = list.indexOf(it);
     openLightbox(list, i < 0 ? 0 : i);
   });
-  /* 悬停达到一定时长 → 弹出小预览并暂停循环（移动鼠标即退出） */
+  /* 悬停达到一定时长 → 弹出小预览并暂停循环（触屏无 hover，直接跳过） */
   var dwell = 0;
+  var isTouch = !!(window.matchMedia && matchMedia('(hover: none)').matches);
   tile.addEventListener('mouseenter', function(){
+    if(isTouch) return;
     clearTimeout(dwell);
     dwell = setTimeout(function(){ showPeek(it, tile); }, MISC_PEEK_MS);
   });
