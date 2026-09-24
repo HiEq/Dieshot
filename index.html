@@ -1804,7 +1804,6 @@ async function downloadItem(it){
    - 非首页 / 折叠 / 页面隐藏时暂停渲染；首次进首页才加载库与模型
    ============================================================ */
 var L2D = {app:null, model:null, state:'', timer:0};
-var L2D_REDUCE = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
 function l2dLoad(src, ready){
   if(ready && ready()) return Promise.resolve();   /* 运行库已就绪则跳过加载 */
   return new Promise(function(res, rej){
@@ -1834,24 +1833,12 @@ async function initLive2D(){
     model.position.set(host.clientWidth / 2, host.clientHeight + 6);
     app.stage.addChild(model);
     L2D.app = app; L2D.model = model; L2D.state = 'ready';
-    /* —— 以下互动绑定即使失败也绝不隐藏模型 —— */
+    /* —— 仅保留：鼠标视线跟踪 + 模型自带眨眼 ——
+       （随机表情 / 随机动作已移除：切换表情会在透明背景上留下黑块） */
     try{
-      /* 鼠标跟踪：视线/头部跟随光标 */
       window.addEventListener('mousemove', function(e){
         if(!host.hidden) model.focus(e.clientX, e.clientY);
       });
-      /* 点一下猫：随机动作 + 随机表情 */
-      $('l2dCanvas').addEventListener('click', function(){
-        try{ model.motion('CAT_motion', Math.floor(Math.random() * 2)); }catch(err){}
-        try{ model.expression(Math.floor(Math.random() * 3)); }catch(err){}
-      });
-      /* 待机动作：每 14 秒来一下（系统「减少动态效果」时不自动动） */
-      if(!L2D_REDUCE){
-        L2D.timer = setInterval(function(){
-          if(document.hidden || !L2D.app || host.hidden || host.classList.contains('is-hidden')) return;
-          try{ model.motion('CAT_motion', Math.floor(Math.random() * 2)); }catch(err){}
-        }, 14000);
-      }
     }catch(err){
       try{ console.warn('[Live2D] 互动绑定失败（模型仍正常显示）：', err); }catch(e){}
     }
