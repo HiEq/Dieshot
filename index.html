@@ -205,13 +205,14 @@ main{flex:1 0 auto}
 .section-head h2{margin:0;font-size:clamp(36px,5.6vw,60px);letter-spacing:-.035em;font-weight:700;line-height:1.05}
 .section-head .sub{margin-top:10px;color:var(--fg2);font-size:19px}
 .toolbar{
-  position:sticky;top:calc(var(--nav-h) + 10px);z-index:60;
-  background:var(--glass);
-  -webkit-backdrop-filter:saturate(160%) blur(12px);  /* 网格只画缩略图后，轻量毛玻璃不再卡顿 */
-  backdrop-filter:saturate(160%) blur(12px);
-  border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);
+  position:sticky;top:calc(var(--nav-h) + 14px);z-index:60;
+  margin:0 12px;border-radius:16px;
+  background:var(--glass-strong);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
+  border:1px solid var(--hairline);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.3), 0 4px 18px rgba(0,0,0,.08);
 }
-.toolbar-inner{max-width:var(--max);margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.toolbar-inner{max-width:var(--max);margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .search{
   position:relative;flex:0 1 280px;min-width:180px;
 }
