@@ -1114,6 +1114,15 @@ function setLang(l){
   route();
 }
 function uid(){ return 'i' + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+/* 标签 → 文件夹名（与 tools/import-dieshot.js 的 slug 规则一致：Apple Silicon → apple-silicon） */
+function dirSlug(s){
+  return String(s || '')
+    .normalize('NFKD')
+    .replace(/[^\w.-]+/g, '-')
+    .replace(/-{2,}/g, '-')
+    .replace(/^[-.]+|[-.]+$/g, '')
+    .toLowerCase() || '';
+}
 function safeName(name){
   /* 文件名规范为 ASCII 安全形式；下载时仍使用原始文件名（it.name） */
   var base = String(name||'image')
@@ -1854,12 +1863,13 @@ function renderChips(){
 var MOTION_REDUCE = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
 var MISC_SPEED = 0.18;      /* 每帧位移（px）：调小更慢 */
 var MISC_PEEK_MS = 600;     /* 悬停多久后弹出小预览并暂停循环 */
-var MW = {cols:[], map:{}, pos:[], dir:[], half:[], peek:null, px:0, py:0, on:false};
+var MISC_GAP = 14;          /* 瓦片间距（与 CSS gap 一致），用于计算节距 */
+var MW = {cols:[], map:{}, dir:[], y:[], step:[], peek:null, px:0, py:0, on:false};
 var MW_RAF = false;
 function renderMiscWall(){
   var wall = $('miscWall');
   wall.innerHTML = '';
-  MW = {cols:[], map:{}, pos:[], dir:[], half:[], peek:null, px:0, py:0, on:false};
+  MW = {cols:[], map:{}, dir:[], y:[], step:[], peek:null, px:0, py:0, on:false};
   renderCounts();
   var items = state.items;
   var empty = items.length === 0;
@@ -1876,16 +1886,18 @@ function renderMiscWall(){
     var col = el('div', 'misc-col');
     var track = el('div', 'misc-track');
     col.appendChild(track); wall.appendChild(col);
-    MW.cols.push(track); MW.pos.push(0); MW.dir.push(c % 2 === 0 ? 1 : -1); MW.half.push(0);
+    MW.cols.push(track); MW.dir.push(c % 2 === 0 ? 1 : -1); MW.y.push(0); MW.step.push(0);
     tracks.push(track);
   }
-  var dup = items.concat(items);                  /* 双份内容 → 无缝回绕 */
-  dup.forEach(function(it, i){ tracks[i % n].appendChild(miscTile(it)); });
+  /* 每张图只渲染一份 → 任何时刻都不会同图同屏；按清单顺序轮流分给各列 */
+  var pool = items.slice();
+  pool.forEach(function(it, i){ tracks[i % n].appendChild(miscTile(it)); });
   nextTick(function(){
     MW.cols.forEach(function(tr, i){
-      /* 回绕周期 = 第二份内容的起点（比 scrollHeight/2 精确：gap 会使两者不等 → 接缝卡顿） */
-      var n = Math.floor(tr.children.length / 2);
-      MW.half[i] = (tr.children[n] && tr.children[n].offsetTop) || (tr.scrollHeight / 2);
+      var f = tr.firstChild;
+      MW.step[i] = f ? (f.offsetHeight + MISC_GAP) : 0;   /* 统一节距 = 图高 + 间距 */
+      MW.y[i] = (i % 2 ? -MW.step[i] / 2 : 0);            /* 各列起点交错 */
+      tr.style.transform = 'translateY(' + MW.y[i] + 'px)';
     });
     MW.on = true;
     mwStart();
@@ -1956,13 +1968,29 @@ function mwStart(){
   (function tick(){
     requestAnimationFrame(tick);
     if(!MW.on || MW.peek || document.hidden) return;   /* 悬停预览时暂停循环 */
+    var colH = 0;
     for(var i = 0; i < MW.cols.length; i++){
-      var half = MW.half[i];
-      if(!half) continue;
-      MW.pos[i] += MISC_SPEED * MW.dir[i];           /* 相邻列方向相反 → 交错上下 */
-      if(MW.pos[i] >= half) MW.pos[i] -= half;
-      if(MW.pos[i] < 0) MW.pos[i] += half;
-      MW.cols[i].style.transform = 'translateY(' + (-MW.pos[i]) + 'px)';
+      var tr = MW.cols[i], step = MW.step[i];
+      if(!step || !tr.firstChild) continue;
+      if(!colH) colH = tr.parentNode.clientHeight || 480;
+      if(MW.dir[i] > 0){
+        MW.y[i] -= MISC_SPEED;
+        var f;
+        /* 首张完全出顶 → 搬到队尾：无限循环且全列只有一份副本，同图永不同屏 */
+        while((f = tr.firstChild) && MW.y[i] <= -step){
+          tr.appendChild(f);
+          MW.y[i] += step;
+        }
+      }else{
+        MW.y[i] += MISC_SPEED;
+        var l;
+        /* 末张出底 → 搬到队首 */
+        while((l = tr.lastChild) && (MW.y[i] + l.offsetTop) >= colH){
+          tr.insertBefore(l, tr.firstChild);
+          MW.y[i] -= step;
+        }
+      }
+      tr.style.transform = 'translateY(' + MW.y[i] + 'px)';
     }
   })();
 }
@@ -2402,7 +2430,12 @@ async function commitQueue(){
       if(mode === 'github'){
         var date = new Date();
         var sub = date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2);
-        var path = uploadDirFor(state.active).replace(/\/+$/,'') + '/' + sub + '/' + safeName(q.name);
+        var tag0 = (q.tags.split(/[,，]/)[0] || '').trim();
+        /* Dieshot → images/dieshot/<标签>/（无该文件夹则自动新建）；杂图 → images/misc/<年-月>/ 保持不变 */
+        var dirBase = state.active === 'misc'
+          ? ('images/misc/' + sub)
+          : ('images/dieshot/' + ((tag0 && dirSlug(tag0)) || sub));
+        var path = dirBase + '/' + safeName(q.name);
         var put = await ghPutFile(path, buf, 'add ' + path);
         if(!put.ok) throw new Error((put.data && put.data.message) || ('HTTP ' + put.status));
         item.src = path;
@@ -2584,7 +2617,11 @@ async function syncToGitHub(){
         }
         var date = new Date();
         var sub = date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2);
-        var path = uploadDirFor(it.coll).replace(/\/+$/,'') + '/' + sub + '/' + safeName(it.name || (it.id + '.png'));
+        var tag0 = ((it.tags && it.tags[0]) || '').trim();
+        var dirBase = (it.coll === 'misc')
+          ? ('images/misc/' + sub)
+          : ('images/dieshot/' + ((tag0 && dirSlug(tag0)) || sub));
+        var path = dirBase + '/' + safeName(it.name || (it.id + '.png'));
         var put = await ghPutFile(path, buf, 'sync ' + path);
         if(!put.ok) throw new Error((put.data && put.data.message) || ('HTTP ' + put.status));
         it.src = path; it.file = path; it.local = false;
