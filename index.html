@@ -620,7 +620,19 @@ footer .sep{opacity:.4}
 .misc-peek img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
 .misc-peek .cap{padding:10px 12px;font-size:12.5px;color:var(--fg2)}
 .misc-peek .cap b{display:block;color:var(--fg);font-size:13.5px;margin-bottom:2px;font-weight:600}
-@media (max-width:640px){ .misc-wall{padding:0 12px 70px} }
+/* 杂图「全部列表」子页面：静态网格，一屏尽览所有图片（无滚动留白问题） */
+.misc-modes{margin-top:14px}
+.misc-list{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+  gap:18px;padding:0 24px 90px;
+}
+.misc-cell{position:relative;border-radius:16px;overflow:hidden;cursor:zoom-in;background:transparent}
+.misc-cell .thumb{position:relative;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:var(--bg-alt)}
+.misc-cell .thumb.is-loading{animation:pulse 1.2s ease-in-out infinite}
+.misc-cell .thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s var(--spring)}
+.misc-cell:hover .thumb img{transform:scale(1.03)}
+.misc-cell .cap{margin-top:8px;font-size:13px;color:var(--fg2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:640px){ .misc-wall{padding:0 12px 70px} .misc-list{padding:0 12px 70px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))} }
 
 /* ---------- Live2D 桌宠（仅首页右下角；箭头可折叠到屏幕边缘） ---------- */
 .l2d{
@@ -762,8 +774,10 @@ footer .sep{opacity:.4}
     <div class="wrap section-head">
       <h2>杂图</h2>
       <div class="sub" id="miscSub">{items} 张杂图 · 点击查看大图</div>
+      <div class="misc-modes"><button class="btn ghost sm" id="miscMode">全部列表</button></div>
     </div>
     <div class="misc-wall" id="miscWall"></div>
+    <div class="misc-list hidden" id="miscList"></div>
     <div class="wrap">
       <div class="empty hidden" id="miscEmpty">
         <div class="orb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="8.5" cy="9.5" r="1.8"/><path d="M4 17l5-5 4 4 3-2 4 4"/></svg></div>
@@ -985,6 +999,7 @@ var state = {
   order:[],        /* 当前排序后的 items */
   visible:[],      /* 当前筛选后可见的 items（点击开灯箱直接取用） */
   lightboxOpen:false,
+  miscView: 'wall',   /* 杂图视图：wall=滚动墙 / list=全部列表 */
   draft:false      /* 是否在使用本机草稿 */
 };
 var LS = {
@@ -1047,6 +1062,7 @@ var EN = {
   '由 GitHub Pages 托管 · 单文件静态站':'Hosted on GitHub Pages · single-file static site',
   '厂商目录清单':'Catalog',
   '杂图':'Misc', '{items} 张杂图 · 点击查看大图':'{items} images · click to view',
+  '全部列表':'All images', '滚动墙':'Scroll wall',
   '暂无杂图':'No images yet', '进入管理模式，即可上传杂图。':'Enter admin mode to upload images.',
   '当前板块：{name}':'Active section: {name}',
   '主页背景':'Homepage background', '更换背景图…':'Change background…', '当前：{v}':'Current: {v}',
@@ -1930,18 +1946,15 @@ var MISC_GAP = 14;          /* 瓦片间距（与 CSS gap 一致），用于计�
 var MW = {cols:[], map:{}, dir:[], y:[], step:[], peek:null, px:0, py:0, on:false};
 var MW_RAF = false;
 function renderMiscWall(){
+  if(state.miscView === 'list'){ renderMiscList(); return; }   /* 全部列表子页面 */
   var wall = $('miscWall');
+  $('miscList').classList.add('hidden');
+  wall.classList.remove('hidden');
   wall.innerHTML = '';
   MW = {cols:[], map:{}, dir:[], y:[], step:[], peek:null, px:0, py:0, on:false};
-  renderCounts();
+  paintMiscChrome();
   var items = state.items;
-  var empty = items.length === 0;
-  $('miscEmpty').classList.toggle('hidden', !empty);
-  $('miscEmptyTitle').textContent = t('暂无杂图');
-  $('miscEmptyText').textContent = t('进入管理模式，即可上传杂图。');
-  $('miscAdminBtn').classList.toggle('hidden', state.admin);
-  wall.classList.toggle('hidden', empty);
-  if(empty) return;
+  if(!items.length) return;
   var w = wall.clientWidth || 1100;
   var colH = wall.clientHeight || 480;
   /* 自适应列数：保证每列的唯一图足够铺满一屏（图少就减列 → 杜绝滚动空白） */
@@ -1983,6 +1996,56 @@ function renderMiscWall(){
     MW.on = true;
     mwStart();
   });
+}
+function paintMiscChrome(){
+  renderCounts();
+  var empty = state.items.length === 0;
+  $('miscEmpty').classList.toggle('hidden', !empty);
+  $('miscEmptyTitle').textContent = t('暂无杂图');
+  $('miscEmptyText').textContent = t('进入管理模式，即可上传杂图。');
+  $('miscAdminBtn').classList.toggle('hidden', state.admin);
+  $('miscMode').textContent = t(state.miscView === 'list' ? '滚动墙' : '全部列表');
+}
+/* 全部列表子页面：一次性平铺所有图片（每张仅一份），点击开大图 */
+function renderMiscList(){
+  MW = {cols:[], map:{}, dir:[], y:[], step:[], peek:null, px:0, py:0, on:false};   /* 停掉滚动墙 */
+  $('miscWall').classList.add('hidden');
+  $('miscWall').innerHTML = '';
+  var list = $('miscList');
+  list.innerHTML = '';
+  list.classList.remove('hidden');
+  paintMiscChrome();
+  state.items.forEach(function(it){ list.appendChild(miscCell(it)); });
+}
+function miscCell(it){
+  var cell = el('div', 'misc-cell');
+  var th = el('div', 'thumb');
+  var img = el('img');
+  img.decoding = 'async'; img.loading = 'lazy'; img.alt = it.title;
+  var small = it.thumb || it._thumbUrl || '';
+  if(small){ img.src = small; }
+  else{
+    th.classList.add('is-loading'); img.classList.add('is-loading');
+    if(thumbObserver) thumbObserver.observe(cell); else queueThumb(it);
+  }
+  img.onerror = function(){
+    if(it._retried) return;
+    it._retried = true;
+    it.thumb = ''; it._thumbUrl = '';
+    th.classList.add('is-loading');
+    queueThumb(it);
+  };
+  th.appendChild(img); cell.appendChild(th);
+  cell.appendChild(el('div', 'cap', it.title));
+  cell._item = it;
+  MW.map[it.id] = MW.map[it.id] || [];
+  MW.map[it.id].push(cell);
+  cell.addEventListener('click', function(){
+    var all = state.items;
+    var i = all.indexOf(it);
+    openLightbox(all, i < 0 ? 0 : i);
+  });
+  return cell;
 }
 function miscTile(it){
   var tile = el('div', 'misc-tile');
@@ -2049,11 +2112,10 @@ function mwStart(){
   (function tick(){
     requestAnimationFrame(tick);
     if(!MW.on || MW.peek || document.hidden) return;   /* 悬停预览时暂停循环 */
-    var colH = 0;
+    var colH = ($('miscWall') && $('miscWall').clientHeight) || 480;   /* 可视窗口高：取墙体而非列（列高=内容高，会误判回收时机） */
     for(var i = 0; i < MW.cols.length; i++){
       var tr = MW.cols[i], step = MW.step[i];
       if(!step || !tr.firstChild) continue;
-      if(!colH) colH = tr.parentNode.clientHeight || 480;
       if(MW.dir[i] > 0){
         MW.y[i] -= MISC_SPEED;
         var f;
@@ -2934,6 +2996,11 @@ function bind(){
   });
   $('emptyAdminBtn').addEventListener('click', openLogin);
   $('miscAdminBtn').addEventListener('click', openLogin);
+  /* 杂图：滚动墙 / 全部列表 切换 */
+  $('miscMode').addEventListener('click', function(){
+    state.miscView = (state.miscView === 'list') ? 'wall' : 'list';
+    renderMiscWall();
+  });
   /* 更换主页背景 */
   $('btnBg').addEventListener('click', function(){ $('bgInput').click(); });
   $('bgInput').addEventListener('change', function(){
