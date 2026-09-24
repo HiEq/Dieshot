@@ -175,14 +175,6 @@ main{flex:1 0 auto}
 
 /* ---------- 首页 ---------- */
 /* 首页：整屏背景图（fixed 铺满整个视口，上下不留白；cover 只裁切不拉伸，比例不变） */
-.home-bg::before,.home-bg::after{
-  content:'';position:absolute;left:0;right:0;height:220px;pointer-events:none;
-  -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
-  -webkit-mask-image:linear-gradient(to bottom, #000 22%, transparent);
-  mask-image:linear-gradient(to bottom, #000 22%, transparent);
-}
-.home-bg::before{top:0}                       /* 壁纸上下缘的渐变模糊过渡（同杂图墙边缘） */
-.home-bg::after{bottom:0;transform:rotate(180deg)}
 .home-bg{
   position:fixed;inset:0;z-index:-1;
   background:var(--bg-alt) url("images/home-bg.jpg") center center / cover no-repeat;
@@ -212,6 +204,14 @@ main{flex:1 0 auto}
 .section-head{padding:64px 0 26px}
 .section-head h2{margin:0;font-size:clamp(36px,5.6vw,60px);letter-spacing:-.035em;font-weight:700;line-height:1.05}
 .section-head .sub{margin-top:10px;color:var(--fg2);font-size:19px}
+/* Layout 图片与吸顶栏重叠区的渐变模糊过渡（只作用于图片经过的交界带，栏内文字不受影响） */
+.bar-fade{
+  position:fixed;left:0;right:0;top:calc(var(--nav-h) + 64px);height:110px;z-index:50;
+  pointer-events:none;
+  -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
+  -webkit-mask-image:linear-gradient(to bottom, #000 18%, transparent);
+  mask-image:linear-gradient(to bottom, #000 18%, transparent);
+}
 .tb-sentinel{height:1px;width:100%;margin-bottom:-1px}
 .toolbar{
   position:sticky;top:calc(var(--nav-h) + 14px);z-index:60;
@@ -244,10 +244,11 @@ main{flex:1 0 auto}
 }
 .search input:focus{border-color:var(--blue);background:var(--bg)}
 .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:var(--fg2)}
-.chips{display:flex;gap:8px;align-items:center;flex:1;min-width:0;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none;padding:2px 0}
+.chips{display:flex;flex-direction:column;gap:8px;align-items:stretch;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;padding:2px 0}
 .chips::-webkit-scrollbar{display:none}
 .chip{
-  height:28px;padding:0 12px;border-radius:980px;font-size:13px;white-space:nowrap;flex:none;
+  height:38px;padding:0 14px;border-radius:12px;font-size:13.5px;white-space:nowrap;flex:none;width:100%;
+  justify-content:space-between;
   color:var(--fg);background:rgba(128,128,128,.10);
   display:inline-flex;align-items:center;gap:6px;transition:background .2s,color .2s;
 }
@@ -295,7 +296,17 @@ main{flex:1 0 auto}
 .dd-opt.is-on{font-weight:600}
 .dd-opt.is-on::after{content:'✓';font-size:12px;color:var(--blue)}
 
-.gallery{padding:26px 0 90px}
+.gallery{padding:26px 0 90px;display:flex;gap:24px;align-items:flex-start}
+.gallery-main{flex:1;min-width:0}
+.tag-side{
+  flex:none;width:210px;position:sticky;top:calc(var(--nav-h) + 68px);
+  max-height:calc(100vh - 240px);display:flex;flex-direction:column;
+}
+.tag-side .mini-title{margin-bottom:8px}
+@media (max-width:860px){
+  .gallery{flex-direction:column}
+  .tag-side{position:static;width:100%;max-height:230px}
+}
 .grid{
   display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:22px;
 }
@@ -712,6 +723,7 @@ footer .sep{opacity:.4}
 
   <!-- ================= Layout 版块 ================= -->
   <section class="view" id="view-layout">
+    <div class="bar-fade" aria-hidden="true"></div>
     <div class="wrap section-head">
       <h2>Layout</h2>
       <div class="sub" id="layoutSub">{tags} 家厂商 · {items} 张 Dieshot · 支持搜索与标签筛选</div>
@@ -723,7 +735,6 @@ footer .sep{opacity:.4}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
           <input id="q" type="search" placeholder="搜索标题、描述或标签" autocomplete="off">
         </div>
-        <div class="chips" id="chips"></div>
         <div class="dd" id="sortDD">
           <button class="dd-btn" id="sortBtn" aria-haspopup="true" aria-expanded="false">
             <span id="sortLabel">最新在前</span>
@@ -739,12 +750,18 @@ footer .sep{opacity:.4}
       </div>
     </div>
     <div class="wrap gallery">
+      <aside class="tag-side">
+        <div class="mini-title">标签</div>
+        <div class="chips" id="chips"></div>
+      </aside>
+      <div class="gallery-main">
       <div class="grid" id="grid"></div>
       <div class="empty hidden" id="empty">
         <div class="orb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="8.5" cy="9.5" r="1.8"/><path d="M4 17l5-5 4 4 3-2 4 4"/></svg></div>
         <h3 id="emptyTitle">还没有图片</h3>
         <p id="emptyText">切换到管理模式，点击右上角「＋」即可上传第一批图片。</p>
         <button class="btn tint sm hidden" id="emptyAdminBtn">进入管理模式</button>
+      </div>
       </div>
     </div>
   </section>
@@ -1537,8 +1554,9 @@ var STATS_KEY = 'hieq-dieshot-site';
 function fmtNum(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
 async function bumpViews(){
   try{
-    var d = await (await fetch(STATS_API + '/hit/' + STATS_KEY + '-views')).json();
-    if(d && typeof d.value === 'number') $('statViews').textContent = fmtNum(d.value);
+    var d = await (await fetch(STATS_API + '/hit/' + STATS_KEY + '-views?ts=' + Date.now(), {cache:'no-store', keepalive:true})).json();
+    var v = Number(d && d.value);
+    $('statViews').textContent = isNaN(v) ? '—' : fmtNum(v);
   }catch(e){ $('statViews').textContent = '—'; }
 }
 async function refreshOnline(){
@@ -1548,10 +1566,11 @@ async function refreshOnline(){
     try{ last = parseInt(localStorage.getItem('layout.presence') || '0', 10) || 0; }catch(e){}
     if(last !== bucket){                               /* 同一访客每窗口只计一次 */
       try{ localStorage.setItem('layout.presence', String(bucket)); }catch(e){}
-      await fetch(STATS_API + '/hit/' + STATS_KEY + '-on-' + bucket);
+      await fetch(STATS_API + '/hit/' + STATS_KEY + '-on-' + bucket + '?ts=' + Date.now(), {cache:'no-store', keepalive:true});
     }
-    var g = await (await fetch(STATS_API + '/get/' + STATS_KEY + '-on-' + bucket)).json();
-    $('statOnline').textContent = (g && typeof g.value === 'number') ? fmtNum(g.value) : '—';
+    var g = await (await fetch(STATS_API + '/get/' + STATS_KEY + '-on-' + bucket + '?ts=' + Date.now(), {cache:'no-store'})).json();
+    var ov = Number(g && g.value);
+    $('statOnline').textContent = isNaN(ov) ? '—' : fmtNum(ov);
   }catch(e){ $('statOnline').textContent = '—'; }
 }
 function firstImage(){
@@ -2937,14 +2956,12 @@ function bind(){
     }
   });
 
-  /* 标签条：竖向滚轮转横向滑动；指针停在标签区内时始终接管滚动（到底也不带动页面） */
+  /* 标签侧栏：竖向滚轮始终由列表接管（到底也不带动页面滚动） */
   $('chips').addEventListener('wheel', function(e){
-    if(Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
     var box = e.currentTarget;
-    var max = box.scrollWidth - box.clientWidth;
-    if(max <= 0) return;
+    if(box.scrollHeight <= box.clientHeight) return;
     e.preventDefault();
-    box.scrollLeft = Math.max(0, Math.min(max, box.scrollLeft + e.deltaY));
+    box.scrollTop = Math.max(0, Math.min(box.scrollHeight - box.clientHeight, box.scrollTop + e.deltaY));
   }, {passive:false});
 
   /* 夜间 / 日间切换（手动选择会记住，否则跟随系统） */
