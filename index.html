@@ -542,10 +542,10 @@ footer .sep{opacity:.4}
 .seg-opt.is-on{color:var(--fg)}
 .seg-opt:active{transform:scale(.93)}
 .seg-thumb{
-  position:absolute;top:3px;left:3px;z-index:0;height:26px;border-radius:980px;
+  position:absolute;top:0;left:0;z-index:0;height:100%;border-radius:980px;
   background:var(--bg-elev);
   box-shadow:0 1px 5px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.45);
-  transition:transform .34s var(--spring), width .34s var(--spring);
+  transition:transform .34s var(--spring), width .34s var(--spring), height .2s;
 }
 /* 液态玻璃矩形：镜面高光 + 发丝描边（悬浮层带真实模糊，平铺层用颜色模拟以免耗性能） */
 .dd-btn,.btn,.field input,.field textarea,.field select,.q-body input,.q-body textarea,.q-item,.dropzone,.note{
@@ -712,6 +712,7 @@ footer .sep{opacity:.4}
 /* 触屏（无 hover）：点按目标放大、悬停类交互改为点按 */
 @media (hover:none){
   a,button{-webkit-tap-highlight-color:transparent}   /* 全站去掉点按蓝色高亮方块 */
+  .seg{height:36px;padding:3px}                      /* 胶囊随触屏尺寸增高，与选项严格对齐 */
   .icon-btn{width:38px;height:38px}
   .seg-opt{min-width:44px;height:30px}          /* 44px 级点按区 */
   .act{width:36px;height:36px}
@@ -1252,8 +1253,10 @@ function setLang(l){
   });
   var act = document.querySelector('#langSeg .seg-opt.is-on');
   if(act && $('segThumb')){
+    /* 滑块几何完全跟随选中项实测值 —— 各断点尺寸不同，写死必然错位 */
     $('segThumb').style.width = act.offsetWidth + 'px';
-    $('segThumb').style.transform = 'translateX(' + (act.offsetLeft - 3) + 'px)';
+    $('segThumb').style.height = act.offsetHeight + 'px';
+    $('segThumb').style.transform = 'translate(' + act.offsetLeft + 'px,' + act.offsetTop + 'px)';
   }
   applyI18n();
   buildNav();
