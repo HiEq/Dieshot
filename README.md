@@ -16,11 +16,6 @@ tools/            工具脚本：import-dieshot.js（导入压缩）/ build-cata
 ```jsonc
 {
   "version": 1,
-  "site":  { "title": "Layout", "sub": "首页副标题" },
-  "config": {
-    "adminHash": "管理口令的 SHA-256（小写十六进制）",
-    "github": { "token": "", "owner": "", "branch": "main", "dir": "images", "manifest": "gallery.json" }
-  },
   "items": [
     {
       "id": "唯一 ID",
