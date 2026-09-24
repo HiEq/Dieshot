@@ -2565,7 +2565,7 @@
     {
       "id": "ds-wysn-160",
       "title": "Pascal GP102",
-      "desc": "TSMC 28nm",
+      "desc": "TSMC 16nm",
       "tags": [
         "NVIDIA"
       ],
