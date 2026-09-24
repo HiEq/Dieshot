@@ -1804,7 +1804,9 @@ async function downloadItem(it){
    - 非首页 / 折叠 / 页面隐藏时暂停渲染；首次进首页才加载库与模型
    ============================================================ */
 var L2D = {app:null, model:null, state:'', timer:0};
-function l2dLoad(src){
+var L2D_REDUCE = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+function l2dLoad(src, ready){
+  if(ready && ready()) return Promise.resolve();   /* 运行库已就绪则跳过加载 */
   return new Promise(function(res, rej){
     var s = document.createElement('script');
     s.src = src; s.async = true;
@@ -1815,12 +1817,12 @@ function l2dLoad(src){
 async function initLive2D(){
   if(L2D.state) return;
   L2D.state = 'loading';
+  var host = $('l2d');
   try{
-    await l2dLoad('live2d/lib/live2dcubismcore.min.js');
-    await l2dLoad('live2d/lib/pixi.min.js');
-    await l2dLoad('live2d/lib/cubism4.min.js');
+    await l2dLoad('live2d/lib/live2dcubismcore.min.js', function(){ return !!window.Live2DCubismCore; });
+    await l2dLoad('live2d/lib/pixi.min.js', function(){ return !!window.PIXI; });
+    await l2dLoad('live2d/lib/cubism4.min.js', function(){ return !!(window.PIXI && window.PIXI.live2d); });
     var PIXI = window.PIXI;
-    var host = $('l2d');
     var app = new PIXI.Application({
       view: $('l2dCanvas'), backgroundAlpha: 0, resizeTo: host,
       autoDensity: true, resolution: Math.min(window.devicePixelRatio || 1, 2)
@@ -1832,25 +1834,32 @@ async function initLive2D(){
     model.position.set(host.clientWidth / 2, host.clientHeight + 6);
     app.stage.addChild(model);
     L2D.app = app; L2D.model = model; L2D.state = 'ready';
-    /* 鼠标跟踪：视线/头部跟随光标 */
-    window.addEventListener('mousemove', function(e){
-      if(!host.hidden) model.focus(e.clientX, e.clientY);
-    });
-    /* 点一下猫：随机动作 + 随机表情 */
-    $('l2dCanvas').addEventListener('click', function(){
-      try{ model.motion('CAT_motion', Math.floor(Math.random() * 2)); }catch(err){}
-      try{ model.expression(Math.floor(Math.random() * 3)); }catch(err){}
-    });
-    /* 待机动作：每 14 秒来一下（系统「减少动态效果」时不自动动） */
-    if(!REDUCED){
-      L2D.timer = setInterval(function(){
-        if(document.hidden || !L2D.app || $('l2d').hidden || $('l2d').classList.contains('is-hidden')) return;
+    /* —— 以下互动绑定即使失败也绝不隐藏模型 —— */
+    try{
+      /* 鼠标跟踪：视线/头部跟随光标 */
+      window.addEventListener('mousemove', function(e){
+        if(!host.hidden) model.focus(e.clientX, e.clientY);
+      });
+      /* 点一下猫：随机动作 + 随机表情 */
+      $('l2dCanvas').addEventListener('click', function(){
         try{ model.motion('CAT_motion', Math.floor(Math.random() * 2)); }catch(err){}
-      }, 14000);
+        try{ model.expression(Math.floor(Math.random() * 3)); }catch(err){}
+      });
+      /* 待机动作：每 14 秒来一下（系统「减少动态效果」时不自动动） */
+      if(!L2D_REDUCE){
+        L2D.timer = setInterval(function(){
+          if(document.hidden || !L2D.app || host.hidden || host.classList.contains('is-hidden')) return;
+          try{ model.motion('CAT_motion', Math.floor(Math.random() * 2)); }catch(err){}
+        }, 14000);
+      }
+    }catch(err){
+      try{ console.warn('[Live2D] 互动绑定失败（模型仍正常显示）：', err); }catch(e){}
     }
   }catch(err){
+    /* 只有「库或模型加载失败」才隐藏桌宠，且不影响站点其余功能 */
     L2D.state = 'error';
-    $('l2d').hidden = true;      /* 加载失败就安静隐藏，绝不影响站点其余功能 */
+    try{ console.warn('[Live2D] 桌宠加载失败：', err); }catch(e){}
+    host.hidden = true;
   }
 }
 function l2dShow(show){
