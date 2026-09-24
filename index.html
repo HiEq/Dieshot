@@ -1880,7 +1880,15 @@ function renderMiscWall(){
   wall.classList.toggle('hidden', empty);
   if(empty) return;
   var w = wall.clientWidth || 1100;
-  var n = w < 700 ? 2 : (w < 1100 ? 3 : 4);      /* 列数随屏宽 */
+  var colH = wall.clientHeight || 480;
+  /* 自适应列数：保证每列的唯一图足够铺满一屏（图少就减列 → 杜绝滚动空白） */
+  var n = 1;
+  for(var t4 = 4; t4 >= 1; t4--){
+    var cw0 = (w - (t4 - 1) * MISC_GAP) / t4;
+    var step0 = cw0 * 0.75 + MISC_GAP;             /* 4:3 瓦片 + 间距 的估算节距 */
+    if(Math.floor(items.length / t4) >= Math.ceil(colH / step0) + 1){ n = t4; break; }
+  }
+  var stepEst = ((w - (n - 1) * MISC_GAP) / n) * 0.75 + MISC_GAP;
   var tracks = [];
   for(var c = 0; c < n; c++){
     var col = el('div', 'misc-col');
@@ -1889,9 +1897,19 @@ function renderMiscWall(){
     MW.cols.push(track); MW.dir.push(c % 2 === 0 ? 1 : -1); MW.y.push(0); MW.step.push(0);
     tracks.push(track);
   }
-  /* 每张图只渲染一份 → 任何时刻都不会同图同屏；按清单顺序轮流分给各列 */
+  /* 每列先放一轮唯一图（按清单顺序），不够铺满再整轮补位：
+     同图副本恰好间隔一整轮 → 视口高度内绝不重复，同时滚动全程无空白 */
   var pool = items.slice();
-  pool.forEach(function(it, i){ tracks[i % n].appendChild(miscTile(it)); });
+  var per = Math.max(1, Math.ceil(pool.length / n));
+  for(var ci = 0; ci < n; ci++){
+    var slice = pool.slice(ci * per, ci * per + per);
+    if(!slice.length) continue;
+    var copies = 1;
+    while(slice.length * copies * stepEst < colH + stepEst && copies < 8) copies++;
+    for(var k = 0; k < copies; k++){
+      slice.forEach(function(it){ tracks[ci].appendChild(miscTile(it)); });
+    }
+  }
   nextTick(function(){
     MW.cols.forEach(function(tr, i){
       var f = tr.firstChild;
