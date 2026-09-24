@@ -2629,7 +2629,7 @@
     {
       "id": "ds-1b3u-164",
       "title": "Tegra X2",
-      "desc": "TSMC 24nm",
+      "desc": "TSMC 16nm",
       "tags": [
         "NVIDIA"
       ],
