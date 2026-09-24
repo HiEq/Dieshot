@@ -1708,6 +1708,8 @@ function route(){
   else if(name === 'misc'){ renderMiscWall(); }
   else { renderHome(); }
   l2dShow(name === 'home');          /* 桌宠仅首页显示 */
+  if(name !== 'layout') setStuck(false);   /* 非 Layout 页：顶栏保持完整圆角矩形 */
+  else if(!('IntersectionObserver' in window)) setStuck(true);  /* 无 IO 环境在 Layout 页默认融合 */
   window.scrollTo(0, 0);
 }
 
@@ -1850,7 +1852,7 @@ function renderGallery(){
   renderCounts();
   renderChips();
   syncOrder();
-  if(typeof scheduleStackMetrics === 'function') scheduleStackMetrics();   /* 进页后重测几何 */
+  scheduleStackMetrics();   /* 进页后重测几何 */
 }
 function syncOrder(){
   var grid = $('grid');
@@ -2779,6 +2781,36 @@ function exportManifest(){
 }
 
 /* ---------- 事件绑定 ---------- */
+/* ---------- 吸顶/几何同步（模块级：renderGallery、route 也需调用） ----------
+   融合态（顶栏+标签栏合体、底边收方角）只在 Layout 页成立；
+   其它页面（主页/杂图）顶栏必须保持完整圆角矩形 —— 隐藏视图里的哨兵会被
+   IntersectionObserver 报成“不可见”，若不加页面守卫就会误入融合态 */
+var stackPending = false;
+function setStuck(on){
+  var active = !!document.querySelector('#view-layout.is-active');
+  on = !!on && active;
+  var tb = document.querySelector('.toolbar');
+  var navShell = document.querySelector('.nav-shell');
+  if(tb) tb.classList.toggle('is-stuck', on);
+  if(navShell) navShell.classList.toggle('is-merged', on);
+  syncStackMetrics();
+}
+function syncStackMetrics(){
+  var tb = document.querySelector('.toolbar');
+  var navShell = document.querySelector('.nav-shell');
+  var bottom = 120;
+  if(tb){
+    var r = tb.getBoundingClientRect();
+    if(tb.classList.contains('is-stuck')) bottom = r.bottom;
+    else if(navShell) bottom = navShell.getBoundingClientRect().bottom + tb.offsetHeight;
+  }
+  document.documentElement.style.setProperty('--stack-bottom', Math.ceil(bottom) + 'px');
+}
+function scheduleStackMetrics(){
+  if(stackPending) return;
+  stackPending = true;
+  (window.requestAnimationFrame || setTimeout)(function(){ stackPending = false; syncStackMetrics(); });
+}
 function bind(){
   $('btnAdmin').addEventListener('click', function(){
     if(state.admin){ state.admin = false; setAdminUI(); toast('已退出管理模式'); }
@@ -2966,47 +2998,19 @@ function bind(){
     o.addEventListener('click', function(){ setLang(o.dataset.lang); });
   });
 
-  /* 标签栏吸顶后与顶栏融为一体（用哨兵判定是否已吸顶） */
-  var tb = document.querySelector('.toolbar');
+  /* 标签栏吸顶后与顶栏融为一体（哨兵判定是否已吸顶；融合态仅 Layout 页生效） */
   var sentinel = document.querySelector('#view-layout .tb-sentinel');
-  var navShell = document.querySelector('.nav-shell');
-  function setStuck(on){
-    if(tb) tb.classList.toggle('is-stuck', on);
-    if(navShell) navShell.classList.toggle('is-merged', on);
-    syncStackMetrics();
-  }
-  /* 实测几何：合体栏底边 + 图库列左缘（全部用视口坐标 getBoundingClientRect，
-     并在滚动/窗口变化/进页时重算 —— 写死或过期的偏移会让模糊带飘到屏幕中间、压到标签栏） */
-  var stackPending = false;
-  function syncStackMetrics(){
-    var bottom = 120;
-    if(tb){
-      var r = tb.getBoundingClientRect();
-      if(tb.classList.contains('is-stuck')) bottom = r.bottom;
-      else if(navShell) bottom = navShell.getBoundingClientRect().bottom + tb.offsetHeight;
-    }
-    var ml = 0;
-    var gm = document.querySelector('#view-layout .gallery-main');
-    if(gm) ml = gm.getBoundingClientRect().left;
-    var st = document.documentElement.style;
-    st.setProperty('--stack-bottom', Math.ceil(bottom) + 'px');
-    st.setProperty('--main-left', Math.ceil(ml) + 'px');
-  }
-  function scheduleStackMetrics(){
-    if(stackPending) return;
-    stackPending = true;
-    (window.requestAnimationFrame || setTimeout)(function(){ stackPending = false; syncStackMetrics(); });
-  }
-  window.addEventListener('resize', scheduleStackMetrics);
-  window.addEventListener('scroll', scheduleStackMetrics, {passive:true});
-  syncStackMetrics();
-  if(tb && sentinel && 'IntersectionObserver' in window){
+  var tbEl = document.querySelector('.toolbar');
+  if(tbEl && sentinel && 'IntersectionObserver' in window){
     new IntersectionObserver(function(entries){
       setStuck(!entries[0].isIntersecting);   /* 哨兵滚出视口顶端 = 标签栏已吸顶 */
     }, {rootMargin: '-64px 0px 0px 0px'}).observe(sentinel);
   }else{
-    setStuck(true);                            /* 不支持时保持融合形态 */
+    setStuck(true);                            /* 无 IO 时交给 setStuck 自行判定页面 */
   }
+  window.addEventListener('resize', scheduleStackMetrics);
+  window.addEventListener('scroll', scheduleStackMetrics, {passive:true});
+  scheduleStackMetrics();
 
   /* Live2D 桌宠：侧边箭头折叠 / 展开（记忆状态；折叠时停渲染省资源） */
   var l2dHidden = false;
