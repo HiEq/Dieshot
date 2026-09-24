@@ -81,10 +81,13 @@ button{cursor:pointer;background:none;border:0;padding:0}
 .nav-shell{position:sticky;top:0;z-index:200}
 .nav{
   height:var(--nav-h);
-  background:var(--glass);
+  margin:10px 12px 0;
+  border-radius:16px;                       /* 独立圆角矩形顶栏 */
+  background:var(--glass-strong);
   -webkit-backdrop-filter:saturate(180%) blur(20px);
   backdrop-filter:saturate(180%) blur(20px);
-  border-bottom:1px solid var(--hairline);
+  border:1px solid var(--hairline);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.3), 0 4px 18px rgba(0,0,0,.08);
 }
 .nav-inner{
   max-width:var(--max);height:100%;margin:0 auto;padding:0 24px;
@@ -136,11 +139,13 @@ button{cursor:pointer;background:none;border:0;padding:0}
 
 /* 顶栏下拉超大菜单 */
 .megamenu{
-  position:absolute;left:0;right:0;top:var(--nav-h);
+  position:absolute;left:12px;right:12px;top:calc(var(--nav-h) + 14px);
+  border-radius:18px;
   background:var(--glass-strong);
   -webkit-backdrop-filter:saturate(180%) blur(24px);
   backdrop-filter:saturate(180%) blur(24px);
-  border-bottom:1px solid var(--hairline);
+  border:1px solid var(--hairline);
+  box-shadow:var(--shadow-elev);
   opacity:0;transform:translateY(-6px);pointer-events:none;
   transition:opacity .28s ease,transform .28s ease;
 }
@@ -199,7 +204,7 @@ main{min-height:calc(100vh - 200px)}
 .section-head h2{margin:0;font-size:clamp(36px,5.6vw,60px);letter-spacing:-.035em;font-weight:700;line-height:1.05}
 .section-head .sub{margin-top:10px;color:var(--fg2);font-size:19px}
 .toolbar{
-  position:sticky;top:var(--nav-h);z-index:60;
+  position:sticky;top:calc(var(--nav-h) + 10px);z-index:60;
   background:var(--glass);
   -webkit-backdrop-filter:saturate(160%) blur(12px);  /* 网格只画缩略图后，轻量毛玻璃不再卡顿 */
   backdrop-filter:saturate(160%) blur(12px);
@@ -546,19 +551,43 @@ footer .sep{opacity:.4}
 
 /* ---------- 杂图墙：平铺、各列交错上下无缝滚动 ---------- */
 .misc-wall{
+  position:relative;
   display:flex;gap:14px;align-items:flex-start;
   height:calc(100vh - 250px);min-height:420px;
   padding:0 24px 90px;overflow:hidden;
 }
+/* 上下边缘渐变模糊（遮罩渐隐的 backdrop 模糊，深浅色通吃） */
+.misc-wall::before,.misc-wall::after{
+  content:'';position:absolute;left:0;right:0;height:76px;z-index:5;pointer-events:none;
+  -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
+  -webkit-mask-image:linear-gradient(to bottom, #000 22%, transparent);
+  mask-image:linear-gradient(to bottom, #000 22%, transparent);
+}
+.misc-wall::before{top:0}
+.misc-wall::after{bottom:0;transform:rotate(180deg)}
 .misc-col{flex:1;min-width:0;overflow:hidden}
 .misc-track{display:flex;flex-direction:column;gap:14px;will-change:transform}
 .misc-tile{
   position:relative;flex:none;border-radius:16px;overflow:hidden;cursor:zoom-in;
-  aspect-ratio:4/3;background:var(--bg-alt);box-shadow:var(--shadow-card);
+  aspect-ratio:4/3;background:transparent;box-shadow:none;
   transition:transform .3s var(--spring);
 }
 .misc-tile:hover{transform:scale(1.03)}
 .misc-tile .thumb{width:100%;height:100%}
+.misc-tile .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+/* 悬停小预览卡片 */
+.misc-peek{
+  position:fixed;z-index:80;width:230px;border-radius:18px;overflow:hidden;
+  background:var(--glass-strong);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.3), inset 0 0 0 1px var(--hairline), var(--shadow-elev);
+  opacity:0;transform:scale(.94);pointer-events:none;
+  transition:opacity .18s var(--ease),transform .22s var(--spring);
+}
+.misc-peek.is-on{opacity:1;transform:none}
+.misc-peek img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.misc-peek .cap{padding:10px 12px;font-size:12.5px;color:var(--fg2)}
+.misc-peek .cap b{display:block;color:var(--fg);font-size:13.5px;margin-bottom:2px;font-weight:600}
 @media (max-width:640px){ .misc-wall{padding:0 12px 70px} }
 
 /* ---------- Live2D 桌宠（仅首页右下角；箭头可折叠到屏幕边缘） ---------- */
@@ -856,6 +885,12 @@ footer .sep{opacity:.4}
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- 杂图悬停小预览卡片 -->
+<div class="misc-peek" id="miscPeek">
+  <img id="miscPeekImg" alt="">
+  <div class="cap"><b id="miscPeekTitle"></b><span id="miscPeekMeta"></span></div>
+</div>
 
 <!-- ================= Live2D 桌宠（仅首页右下角；侧边箭头可折叠到屏幕边缘） ================= -->
 <div class="l2d" id="l2d" hidden>
@@ -1729,12 +1764,14 @@ function renderChips(){
    杂图墙：平铺 + 各列交错上下无缝滚动；点击开大图
    ============================================================ */
 var MOTION_REDUCE = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
-var MW = {cols:[], map:{}, pos:[], dir:[], half:[], hover:false, on:false};
+var MISC_SPEED = 0.18;      /* 每帧位移（px）：调小更慢 */
+var MISC_PEEK_MS = 600;     /* 悬停多久后弹出小预览并暂停循环 */
+var MW = {cols:[], map:{}, pos:[], dir:[], half:[], peek:null, px:0, py:0, on:false};
 var MW_RAF = false;
 function renderMiscWall(){
   var wall = $('miscWall');
   wall.innerHTML = '';
-  MW = {cols:[], map:{}, pos:[], dir:[], half:[], hover:false, on:false};
+  MW = {cols:[], map:{}, pos:[], dir:[], half:[], peek:null, px:0, py:0, on:false};
   renderCounts();
   var items = state.items;
   var empty = items.length === 0;
@@ -1757,7 +1794,11 @@ function renderMiscWall(){
   var dup = items.concat(items);                  /* 双份内容 → 无缝回绕 */
   dup.forEach(function(it, i){ tracks[i % n].appendChild(miscTile(it)); });
   nextTick(function(){
-    MW.cols.forEach(function(tr, i){ MW.half[i] = tr.scrollHeight / 2; });
+    MW.cols.forEach(function(tr, i){
+      /* 回绕周期 = 第二份内容的起点（比 scrollHeight/2 精确：gap 会使两者不等 → 接缝卡顿） */
+      var n = Math.floor(tr.children.length / 2);
+      MW.half[i] = (tr.children[n] && tr.children[n].offsetTop) || (tr.scrollHeight / 2);
+    });
     MW.on = true;
     mwStart();
   });
@@ -1782,18 +1823,46 @@ function miscTile(it){
     var i = list.indexOf(it);
     openLightbox(list, i < 0 ? 0 : i);
   });
+  /* 悬停达到一定时长 → 弹出小预览并暂停循环（移动鼠标即退出） */
+  var dwell = 0;
+  tile.addEventListener('mouseenter', function(){
+    clearTimeout(dwell);
+    dwell = setTimeout(function(){ showPeek(it, tile); }, MISC_PEEK_MS);
+  });
+  tile.addEventListener('mouseleave', function(){ clearTimeout(dwell); });
   return tile;
+}
+function showPeek(it, tile){
+  var pk = $('miscPeek');
+  var r = tile.getBoundingClientRect();
+  $('miscPeekImg').src = it.thumb || it._thumbUrl || it.src || '';
+  $('miscPeekTitle').textContent = it.title;
+  $('miscPeekMeta').textContent = (it.w && it.h) ? (it.w + ' × ' + it.h) : '';
+  var w = 230, h = 250;
+  var left = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), (window.innerWidth || 1200) - w - 8);
+  var top = r.top - h - 12;
+  if(top < 8) top = Math.min(r.bottom + 12, (window.innerHeight || 800) - h - 8);
+  pk.style.left = left + 'px';
+  pk.style.top = top + 'px';
+  pk.classList.add('is-on');
+  MW.peek = it.id;
+  MW.px = r.left + r.width / 2;
+  MW.py = r.top + r.height / 2;
+}
+function hidePeek(){
+  $('miscPeek').classList.remove('is-on');
+  MW.peek = null;
 }
 function mwStart(){
   if(MW_RAF || MOTION_REDUCE || !window.requestAnimationFrame) return;
   MW_RAF = true;
   (function tick(){
     requestAnimationFrame(tick);
-    if(!MW.on || MW.hover || document.hidden) return;
+    if(!MW.on || MW.peek || document.hidden) return;   /* 悬停预览时暂停循环 */
     for(var i = 0; i < MW.cols.length; i++){
       var half = MW.half[i];
       if(!half) continue;
-      MW.pos[i] += 0.35 * MW.dir[i];             /* 相邻列方向相反 → 交错上下 */
+      MW.pos[i] += MISC_SPEED * MW.dir[i];           /* 相邻列方向相反 → 交错上下 */
       if(MW.pos[i] >= half) MW.pos[i] -= half;
       if(MW.pos[i] < 0) MW.pos[i] += half;
       MW.cols[i].style.transform = 'translateY(' + (-MW.pos[i]) + 'px)';
@@ -2593,8 +2662,12 @@ function bind(){
   });
   $('emptyAdminBtn').addEventListener('click', openLogin);
   $('miscAdminBtn').addEventListener('click', openLogin);
-  $('miscWall').addEventListener('mouseenter', function(){ MW.hover = true; });
-  $('miscWall').addEventListener('mouseleave', function(){ MW.hover = false; });
+  /* 悬停小预览：鼠标移开（移动超过阈值）即退出并恢复循环 */
+  document.addEventListener('mousemove', function(e){
+    if(!MW.peek) return;
+    var dx = e.clientX - MW.px, dy = e.clientY - MW.py;
+    if(dx * dx + dy * dy > 28 * 28) hidePeek();
+  });
 
   /* 灯箱 */
   $('lbClose').addEventListener('click', closeLightbox);
