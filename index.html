@@ -1406,7 +1406,7 @@ async function discoverMisc(){
     var cached = lsGet('layout.miscScan', null);
     if(cached && Array.isArray(cached.items) && (Date.now() - cached.t) < 5 * 60 * 1000) return cached.items;
     var c = ghCfg();
-    var repo = c.owner || 'HiEq/Dieshot';
+    var repo = c.owner || 'HiEq/HOME';
     var ref = c.branch || 'main';
     var found = [], thumbs = {};
     async function list(dirPath){
