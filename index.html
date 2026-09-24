@@ -173,9 +173,9 @@ button{cursor:pointer;background:none;border:0;padding:0}
 main{min-height:calc(100vh - 200px)}
 
 /* ---------- 首页 ---------- */
-/* 首页：整屏背景图（个人主页，图可在 gallery.json 的 site.bg 里换） */
+/* 首页：整屏背景图（fixed 铺满整个视口，上下不留白；cover 只裁切不拉伸，比例不变） */
 .home-bg{
-  min-height:calc(100vh - var(--nav-h));
+  position:fixed;inset:0;z-index:-1;
   background:var(--bg-alt) url("images/home-bg.jpg") center center / cover no-repeat;
 }
 .section-head h2{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
@@ -488,7 +488,7 @@ kbd{
 
 /* ---------- 页脚 ---------- */
 footer{
-  border-top:1px solid var(--hairline);background:var(--bg-alt);
+  border-top:1px solid var(--hairline);background:transparent;
   color:var(--fg2);font-size:13px;
 }
 footer .wrap{padding-top:26px;padding-bottom:30px;display:flex;gap:18px;flex-wrap:wrap;align-items:center}
@@ -573,7 +573,8 @@ footer .sep{opacity:.4}
   transition:transform .3s var(--spring);
 }
 .misc-tile:hover{transform:scale(1.03)}
-.misc-tile .thumb{width:100%;height:100%}
+.misc-tile .thumb{position:absolute;inset:0}      /* 绝对铺满：不依赖百分比高度链 */
+.misc-tile .thumb.is-loading{background:var(--bg-alt)}
 .misc-tile .thumb img{width:100%;height:100%;object-fit:cover;display:block}
 /* 悬停小预览卡片 */
 .misc-peek{
@@ -865,6 +866,14 @@ footer .sep{opacity:.4}
     </details>
 
     <div class="divider"></div>
+    <div class="mini-title">主页背景</div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <button class="btn ghost sm" id="btnBg">更换背景图…</button>
+      <span class="count" id="bgHint"></span>
+      <input type="file" id="bgInput" accept="image/*" hidden>
+    </div>
+
+    <div class="divider"></div>
     <div class="row2">
       <div>
         <div class="mini-title">修改管理口令</div>
@@ -999,6 +1008,8 @@ var EN = {
   '杂图':'Misc', '{items} 张杂图 · 点击查看大图':'{items} images · click to view',
   '暂无杂图':'No images yet', '进入管理模式，即可上传杂图。':'Enter admin mode to upload images.',
   '当前板块：{name}':'Active section: {name}',
+  '主页背景':'Homepage background', '更换背景图…':'Change background…', '当前：{v}':'Current: {v}',
+  '主页背景已更新':'Background updated',
   '折叠 / 展开模型':'Collapse / expand the model',
   /* 动态文案模板 */
   '{shown} / {total} 张':'{shown} / {total} photos', '待保存':'pending', '处理中…':'working…', '已完成':'done',
@@ -1032,6 +1043,7 @@ var DYN = [
   [/^连接失败（(\d+)）：(.+)$/, 'Connection failed ($1): $2'],
   [/^连接成功：(.+)（权限 (.+)）$/, 'Connected: $1 (access: $2)'],
   [/^开始为 (\d+) 张图片生成缩略图…$/, 'Generating thumbnails for $1 images…'],
+  [/^背景更新失败：(.+)$/, 'Background update failed: $1'],
   [/^已补齐 (\d+) 张缩略图$/, 'Backfilled $1 thumbnails'],
   [/^正在准备下载…$/, 'Preparing download…'],
   [/^信息已更新$/, 'Info updated'],
@@ -1434,8 +1446,13 @@ function renderCounts(){
   $('miscSub').textContent = fmtTpl(t(MISC_SUB_TPL), null, state.misc);
 }
 function firstImage(){
-  var it = filteredItems()[0] || state.items[0];
-  return it ? (it.thumb || it._thumbUrl || it.src) : 'images/demo-01.svg';
+  /* 下拉菜单缩略图 = 最新一张 Dieshot */
+  var src = state.dieshot.length ? state.dieshot : state.items;
+  var best = null;
+  src.forEach(function(it){
+    if(!best || (Date.parse(it.addedAt) || 0) > (Date.parse(best.addedAt) || 0)) best = it;
+  });
+  return best ? (best.thumb || best._thumbUrl || best.src) : (state.site.bg || '');
 }
 /* 原图地址：本机模式的大图按需从 IndexedDB 取一次，取到后缓存在 item.src */
 async function ensureSrc(it){
@@ -1524,12 +1541,18 @@ async function ensureThumb(it){
   }
 }
 function applyThumb(it, url){
-  var node = state.cards[it.id] || (MW.map && MW.map[it.id]) || null;
-  if(!node || !url) return;
-  var img = node.querySelector('.thumb img');
-  var th = node.querySelector('.thumb');
-  if(img){ img.src = url; img.classList.remove('is-loading'); }
-  if(th) th.classList.remove('is-loading');
+  if(!url) return;
+  var nodes = [];
+  if(state.cards[it.id]) nodes.push(state.cards[it.id]);
+  var lst = (MW.map && MW.map[it.id]) || [];
+  nodes = nodes.concat(lst);            /* 杂图每张有两份（回绕用）→ 必须全部更新 */
+  nodes.forEach(function(node){
+    if(!node) return;
+    var img = node.querySelector('.thumb img');
+    var th = node.querySelector('.thumb');
+    if(img){ img.src = url; img.classList.remove('is-loading'); }
+    if(th) th.classList.remove('is-loading');
+  });
 }
 /* 首页 / 顶栏的少量预览：先有啥用啥，压好后换成小图 */
 function previewInto(img, it){
@@ -1574,7 +1597,22 @@ function renderHome(){
   renderCounts();
   $('brandName').textContent = state.site.brand || 'HiEq';
   if(state.site.avatar) $('brandAvatar').src = state.site.avatar;
-  if(state.site.bg) $('homeBg').style.backgroundImage = 'url("' + state.site.bg + '")';
+  if(state.site.bg){
+    if(state.site.bg === 'idb:site:bg'){
+      /* 本机模式存的背景：从 IndexedDB 取一次并缓存 */
+      if(state._bgUrl){ $('homeBg').style.backgroundImage = 'url("' + state._bgUrl + '")'; }
+      else{
+        IDB.get('site:bg').then(function(b){
+          if(!b) return;
+          var blob = (b instanceof Blob) ? b : new Blob([b], {type: 'image/*'});
+          state._bgUrl = URL.createObjectURL(blob);
+          $('homeBg').style.backgroundImage = 'url("' + state._bgUrl + '")';
+        }, function(){});
+      }
+    }else{
+      $('homeBg').style.backgroundImage = 'url("' + state.site.bg + '")';
+    }
+  }
   $('footName').textContent = state.site.title || 'Layout';
   $('footYear').textContent = '© ' + new Date().getFullYear();
 }
@@ -1807,7 +1845,7 @@ function miscTile(it){
   var tile = el('div', 'misc-tile');
   var th = el('div', 'thumb');   /* 与 Layout 卡片同结构 → 缩略图管线直接复用 */
   var img = el('img');
-  img.decoding = 'async'; img.loading = 'lazy'; img.alt = it.title;
+  img.decoding = 'async'; img.alt = it.title;   /* 不用 lazy：transform 滚动容器里懒加载不触发 */
   var small = it.thumb || it._thumbUrl || '';
   if(small){ img.src = small; }
   else{
@@ -1815,9 +1853,18 @@ function miscTile(it){
     if(it._thumbFail && it.src) img.src = it.src;
     if(thumbObserver) thumbObserver.observe(tile); else queueThumb(it);
   }
+  /* 图片加载失败（如失效的 blob 地址）→ 重新走缩略图管线自愈 */
+  img.onerror = function(){
+    if(it._retried) return;
+    it._retried = true;
+    it.thumb = ''; it._thumbUrl = '';
+    th.classList.add('is-loading');
+    queueThumb(it);
+  };
   th.appendChild(img); tile.appendChild(th);
   tile._item = it;
-  MW.map[it.id] = tile;
+  MW.map[it.id] = MW.map[it.id] || [];
+  MW.map[it.id].push(tile);              /* 同一张图的多份副本都要登记 */
   tile.addEventListener('click', function(){
     var list = state.items;
     var i = list.indexOf(it);
@@ -2127,6 +2174,7 @@ function openPanel(){
     : t('当前为「本机模式」：改动只保存在这台设备上。填写下方 GitHub 接口设置后，即可把图片与清单直接提交到仓库。'));
   $('panelStat').textContent = fmtTpl(t('共 {n} 张图片，其中本机 {m} 张'),
     {n: state.items.length, m: state.items.filter(function(i){ return i.local; }).length});
+  $('bgHint').textContent = fmtTpl(t('当前：{v}'), {v: state.site.bg || 'images/home-bg.jpg'});
   renderDraftNote();
   renderQueue();
   $('modalPanel').classList.add('is-open');
@@ -2518,6 +2566,32 @@ async function syncToGitHub(){
 }
 
 /* ---------- 导出 ---------- */
+/* 更换主页背景：立即本地预览；仓库模式上传到 images/bg/ 并写入 site.bg，本机模式存 IndexedDB */
+async function applyHomeBg(file){
+  try{
+    var localUrl = URL.createObjectURL(file);
+    $('homeBg').style.backgroundImage = 'url("' + localUrl + '")';   /* 秒级预览 */
+    if(ghReady()){
+      var ext = (String(file.name).match(/\.[a-z0-9]+$/i) || ['.jpg'])[0].toLowerCase();
+      var path = 'images/bg/home-bg-' + Date.now().toString(36) + ext;
+      var put = await ghPutFile(path, await file.arrayBuffer(), 'update home background');
+      if(!put.ok) throw new Error((put.data && put.data.message) || ('HTTP ' + put.status));
+      state.site.bg = path;
+      state._bgUrl = localUrl;
+    }else{
+      await IDB.put('site:bg', await file.arrayBuffer());
+      state.site.bg = 'idb:site:bg';
+      state._bgUrl = localUrl;
+    }
+    await saveManifest('update site.bg');
+    $('bgHint').textContent = fmtTpl(t('当前：{v}'), {v: state.site.bg});
+    renderHome();
+    toast('主页背景已更新');
+  }catch(err){
+    toast('背景更新失败：' + (err && err.message ? err.message : '未知错误'));
+  }
+}
+
 function exportManifest(){
   var gc = ghCfg();
   var payload = {
@@ -2662,6 +2736,13 @@ function bind(){
   });
   $('emptyAdminBtn').addEventListener('click', openLogin);
   $('miscAdminBtn').addEventListener('click', openLogin);
+  /* 更换主页背景 */
+  $('btnBg').addEventListener('click', function(){ $('bgInput').click(); });
+  $('bgInput').addEventListener('change', function(){
+    var f = $('bgInput').files && $('bgInput').files[0];
+    $('bgInput').value = '';
+    if(f) applyHomeBg(f);
+  });
   /* 悬停小预览：鼠标移开（移动超过阈值）即退出并恢复循环 */
   document.addEventListener('mousemove', function(e){
     if(!MW.peek) return;
