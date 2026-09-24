@@ -80,14 +80,6 @@ button{cursor:pointer;background:none;border:0;padding:0}
 
 /* ---------- 顶栏 ---------- */
 .nav-shell{position:sticky;top:0;z-index:200}
-/* 顶栏/标签栏背后的壁纸：渐变高斯模糊过渡（模糊从上缘向下消隐） */
-.nav-shell::before{
-  content:'';position:absolute;left:0;right:0;top:0;height:calc(var(--nav-h) + 150px);
-  z-index:-1;pointer-events:none;
-  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
-  -webkit-mask-image:linear-gradient(to bottom, #000 42%, transparent);
-  mask-image:linear-gradient(to bottom, #000 42%, transparent);
-}
 .nav{
   height:var(--nav-h);
   margin:10px 12px 0;
@@ -183,6 +175,14 @@ main{flex:1 0 auto}
 
 /* ---------- 首页 ---------- */
 /* 首页：整屏背景图（fixed 铺满整个视口，上下不留白；cover 只裁切不拉伸，比例不变） */
+.home-bg::before,.home-bg::after{
+  content:'';position:absolute;left:0;right:0;height:220px;pointer-events:none;
+  -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
+  -webkit-mask-image:linear-gradient(to bottom, #000 22%, transparent);
+  mask-image:linear-gradient(to bottom, #000 22%, transparent);
+}
+.home-bg::before{top:0}                       /* 壁纸上下缘的渐变模糊过渡（同杂图墙边缘） */
+.home-bg::after{bottom:0;transform:rotate(180deg)}
 .home-bg{
   position:fixed;inset:0;z-index:-1;
   background:var(--bg-alt) url("images/home-bg.jpg") center center / cover no-repeat;
@@ -231,6 +231,7 @@ main{flex:1 0 auto}
 .nav-shell.is-merged .nav{
   border-bottom-left-radius:0;
   border-bottom-right-radius:0;
+  border-bottom-color:transparent;      /* 融合后去掉中间分隔线 */
 }
 .toolbar-inner{max-width:var(--max);margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .search{
@@ -517,13 +518,7 @@ footer{
   box-shadow:inset 0 1px 0 rgba(255,255,255,.3), 0 4px 18px rgba(0,0,0,.08);
   color:var(--fg2);font-size:13px;
 }
-footer::before{                    /* 页脚圆角矩形后面的壁纸：同款渐变模糊过渡 */
-  content:'';position:absolute;left:-12px;right:-12px;bottom:-12px;height:180px;
-  z-index:-1;pointer-events:none;
-  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
-  -webkit-mask-image:linear-gradient(to top, #000 42%, transparent);
-  mask-image:linear-gradient(to top, #000 42%, transparent);
-}
+footer .fstats b{color:var(--fg);font-weight:600;font-variant-numeric:tabular-nums}
 footer .wrap{padding-top:14px;padding-bottom:14px;display:flex;gap:18px;flex-wrap:wrap;align-items:center}
 footer .sep{opacity:.4}
 
@@ -779,6 +774,8 @@ footer .sep{opacity:.4}
     <span>由 GitHub Pages 托管 · 单文件静态站</span>
     <span class="sep">|</span>
     <a href="CATALOG.md">厂商目录清单</a>
+    <span class="sep">|</span>
+    <span class="fstats">总访问 <b id="statViews">—</b> · 当前在线 <b id="statOnline">—</b></span>
     <span class="sep">|</span>
     <span id="footYear"></span>
   </div>
@@ -1045,6 +1042,7 @@ var EN = {
   '暂无杂图':'No images yet', '进入管理模式，即可上传杂图。':'Enter admin mode to upload images.',
   '当前板块：{name}':'Active section: {name}',
   '主页背景':'Homepage background', '更换背景图…':'Change background…', '当前：{v}':'Current: {v}',
+  '总访问':'Visits', '当前在线':'Online now',
   '主页背景已更新':'Background updated',
   '折叠 / 展开模型':'Collapse / expand the model',
   /* 动态文案模板 */
@@ -1532,6 +1530,29 @@ function fmtTpl(s, extra, list){
 function renderCounts(){
   $('layoutSub').textContent = fmtTpl(t(LAYOUT_SUB_TPL), null, state.dieshot);
   $('miscSub').textContent = fmtTpl(t(MISC_SUB_TPL), null, state.misc);
+}
+/* ---------- 站点统计：总访问次数 + 当前在线（15 分钟窗口去重计数，CountAPI 公共计数器） ---------- */
+var STATS_API = 'https://countapi.mileshilliard.com/api/v1';
+var STATS_KEY = 'hieq-dieshot-site';
+function fmtNum(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+async function bumpViews(){
+  try{
+    var d = await (await fetch(STATS_API + '/hit/' + STATS_KEY + '-views')).json();
+    if(d && typeof d.value === 'number') $('statViews').textContent = fmtNum(d.value);
+  }catch(e){ $('statViews').textContent = '—'; }
+}
+async function refreshOnline(){
+  try{
+    var bucket = Math.floor(Date.now() / 900000);      /* 15 分钟一桶 */
+    var last = 0;
+    try{ last = parseInt(localStorage.getItem('layout.presence') || '0', 10) || 0; }catch(e){}
+    if(last !== bucket){                               /* 同一访客每窗口只计一次 */
+      try{ localStorage.setItem('layout.presence', String(bucket)); }catch(e){}
+      await fetch(STATS_API + '/hit/' + STATS_KEY + '-on-' + bucket);
+    }
+    var g = await (await fetch(STATS_API + '/get/' + STATS_KEY + '-on-' + bucket)).json();
+    $('statOnline').textContent = (g && typeof g.value === 'number') ? fmtNum(g.value) : '—';
+  }catch(e){ $('statOnline').textContent = '—'; }
 }
 function firstImage(){
   /* 下拉菜单缩略图 = 最新一张 Dieshot */
@@ -2978,6 +2999,9 @@ function bind(){
   var savedLang = '';
   try{ savedLang = localStorage.getItem('layout.lang') || ''; }catch(e){}
   setLang(savedLang || ((navigator.language || '').toLowerCase().indexOf('en') === 0 ? 'en' : 'zh'));
+  bumpViews();                              /* 总访问 +1 并显示 */
+  refreshOnline();                          /* 当前在线 */
+  setInterval(refreshOnline, 60000);        /* 每分钟刷新在线人数 */
 })();
 
 })();
