@@ -2387,13 +2387,12 @@ async function initLive2D(){
     }catch(err){
       try{ console.warn('[Live2D] 互动绑定失败（模型仍正常显示）：', err); }catch(e){}
     }
-    /* 移动设备视图：随机表情切换（桌面保持安静：仅眨眼 + 视线跟踪） */
-    if(window.matchMedia && matchMedia('(max-width: 720px)').matches){
-      L2D.exprTimer = setInterval(function(){
-        if(document.hidden || $('l2d').hidden) return;
-        try{ model.expression(Math.floor(Math.random() * 6)); }catch(err){}
-      }, 8000);
-    }
+    /* 移动设备视图：随机表情切换（点按或每 8 秒）；非默认表情时自动停眨眼。桌面保持安静 */
+    $('l2dCanvas').addEventListener('click', l2dCycleExpression);
+    L2D.exprTimer = setInterval(function(){
+      if(document.hidden || $('l2d').hidden) return;
+      l2dCycleExpression();
+    }, 8000);
   }catch(err){
     /* 只有「库或模型加载失败」才隐藏桌宠，且不影响站点其余功能 */
     L2D.state = 'error';
@@ -2407,6 +2406,40 @@ function l2dShow(show){
   box.hidden = false;
   if(L2D.app){ if(!box.classList.contains('is-hidden')) L2D.app.start(); }
   else initLive2D();
+}
+
+/* 移动设备视图的表情/眨眼联动：
+   点按或每 8 秒在「随机表情 ↔ 默认表情」间切换；只要不是默认表情就停掉眨眼
+   （否则眨眼会覆写眼部参数、破坏表情造型） */
+function l2dCycleExpression(){
+  if(!(window.matchMedia && matchMedia('(max-width: 720px)').matches)) return;   /* 仅移动设备视图 */
+  var model = L2D.model;
+  if(!model) return;
+  try{
+    if(L2D.exprActive){
+      var em = model.internalModel && model.internalModel.expressionManager;
+      if(em && em.resetExpression) em.resetExpression();      /* 回默认表情 */
+      L2D.exprActive = false;
+    }else{
+      model.expression(Math.floor(Math.random() * 6));        /* 随机 6 组表情 */
+      L2D.exprActive = true;
+    }
+  }catch(err){}
+  l2dBlink(!L2D.exprActive);
+}
+function l2dBlink(on){
+  var im = L2D.model && L2D.model.internalModel;
+  var mgr = im && (im.eyeBlink || im.blink || null);
+  if(!mgr && im){                                            /* 按特征方法兜底查找眨眼管理器 */
+    for(var k in im){
+      var v = im[k];
+      if(v && typeof v.setBlinkingInterval === 'function'){ mgr = v; break; }
+    }
+  }
+  if(!mgr) return;
+  try{ mgr.setBlinkingInterval(on ? 4 : 1e9); }catch(e){}     /* 4s=正常眨眼；1e9≈永不 */
+  var box = $('l2d');
+  if(box) box.dataset.blink = on ? 'on' : 'off';
 }
 
 /* ---------- 管理：登录 ---------- */
