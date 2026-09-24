@@ -718,6 +718,37 @@ footer .sep{opacity:.4}
   .card:active,.misc-cell:active,.misc-tile:active{transform:scale(.98)}
 }
 
+/* ---------- 移动端底部 Dock：高斯模糊液态玻璃大圆角（桌面隐藏） ---------- */
+.dock{display:none}
+.dock-inner{position:relative;display:flex;gap:4px}
+.dock-thumb{
+  position:absolute;top:0;left:0;height:100%;border-radius:22px;z-index:0;
+  background:var(--bg-elev);
+  box-shadow:0 1px 5px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.45);
+  transition:transform .32s var(--spring), width .32s var(--spring);
+}
+.dock-item{
+  position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  min-width:66px;padding:8px 14px;border-radius:22px;color:var(--fg2);
+  transition:color .2s,transform .18s var(--spring);
+}
+.dock-item svg{width:22px;height:22px}
+.dock-item span{font-size:11px;font-weight:600}
+.dock-item.is-on{color:var(--fg)}
+.dock-item:active{transform:scale(.94)}
+@media (max-width:720px){
+  .dock{
+    display:block;position:fixed;left:50%;transform:translateX(-50%);
+    bottom:calc(10px + env(safe-area-inset-bottom));z-index:150;
+    padding:6px;border-radius:28px;
+    background:var(--glass-strong);
+    -webkit-backdrop-filter:saturate(180%) blur(22px);backdrop-filter:saturate(180%) blur(22px);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.35), inset 0 0 0 1px var(--hairline), 0 12px 32px rgba(0,0,0,.2);
+  }
+  .nav-menu{display:none}                                     /* 版块入口移至底部 Dock */
+  body{padding-bottom:calc(86px + env(safe-area-inset-bottom))} /* 内容不被 Dock 遮挡 */
+}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{
     animation-duration:.001ms !important;animation-iteration-count:1 !important;
@@ -1003,6 +1034,13 @@ footer .sep{opacity:.4}
 
 <div class="toast" id="toast"></div>
 
+<!-- 移动端底部 Dock（桌面隐藏） -->
+<nav class="dock" id="dock" aria-label="主导航 / Navigation">
+  <div class="dock-inner" id="dockInner">
+    <span class="dock-thumb" id="dockThumb"></span>
+  </div>
+</nav>
+
 <!-- 杂图悬停小预览卡片 -->
 <div class="misc-peek" id="miscPeek">
   <img id="miscPeekImg" alt="">
@@ -1215,6 +1253,7 @@ function setLang(l){
   }
   applyI18n();
   buildNav();
+  buildDock();
   route();
 }
 function uid(){ return 'i' + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
@@ -1776,6 +1815,7 @@ function route(){
   if(name === 'layout'){ renderGallery(); }
   else if(name === 'misc'){ renderMiscWall(); }
   else { renderHome(); }
+  syncDock();                            /* 底部 Dock 高亮当前版块 */
   l2dShow(name === 'home');          /* 桌宠仅首页显示 */
   if(name !== 'layout') setStuck(false);   /* 非 Layout 页：顶栏保持完整圆角矩形 */
   else if(!('IntersectionObserver' in window)) setStuck(true);  /* 无 IO 环境在 Layout 页默认融合 */
@@ -2440,6 +2480,46 @@ function l2dBlink(on){
   try{ mgr.setBlinkingInterval(on ? 4 : 1e9); }catch(e){}     /* 4s=正常眨眼；1e9≈永不 */
   var box = $('l2d');
   if(box) box.dataset.blink = on ? 'on' : 'off';
+}
+
+/* ---------- 移动端底部 Dock（由 NAV 数据生成） ---------- */
+var DOCK_ICONS = {
+  home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/></svg>',
+  layout: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg>',
+  misc: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 15l5-4 4 3 3-2 6 4"/></svg>'
+};
+function buildDock(){
+  var inner = $('dockInner');
+  if(!inner) return;
+  Array.prototype.forEach.call(inner.querySelectorAll('.dock-item'), function(n){ n.remove(); });
+  NAV.forEach(function(n){
+    var a = el('a', 'dock-item');
+    a.href = n.href;
+    a.dataset.nav = n.id;
+    a.innerHTML = (DOCK_ICONS[n.id] || '') + '<span></span>';
+    a.querySelector('span').textContent = t(n.label);
+    a.addEventListener('click', function(){ setTimeout(syncDock, 0); });
+    inner.appendChild(a);
+  });
+  syncDock();
+}
+function syncDock(){
+  var inner = $('dockInner');
+  if(!inner) return;
+  var h = (location.hash || '#/').replace(/^#/, '');
+  var name = h.indexOf('/layout') === 0 ? 'layout' : (h.indexOf('/misc') === 0 ? 'misc' : 'home');
+  var on = null;
+  Array.prototype.forEach.call(inner.querySelectorAll('.dock-item'), function(o){
+    var isOn = o.dataset.nav === name;
+    o.classList.toggle('is-on', isOn);
+    o.setAttribute('aria-current', isOn ? 'page' : 'false');
+    if(isOn) on = o;
+  });
+  var th = $('dockThumb');
+  if(th && on){
+    th.style.width = on.offsetWidth + 'px';
+    th.style.transform = 'translateX(' + on.offsetLeft + 'px)';
+  }
 }
 
 /* ---------- 管理：登录 ---------- */
