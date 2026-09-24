@@ -651,8 +651,9 @@ footer .sep{opacity:.4}
   box-shadow:inset 0 1px 0 rgba(255,255,255,.3), inset 0 0 0 1px var(--hairline), -2px 2px 12px rgba(0,0,0,.12);
   opacity:0;transition:opacity .2s,color .2s;
 }
-.l2d:hover .l2d-tab{opacity:1;pointer-events:auto}        /* 悬停桌宠才显示按钮 */
+.l2d:hover .l2d-tab{opacity:1;pointer-events:auto}        /* 桌面：悬停桌宠才显示按钮 */
 .l2d.is-hidden .l2d-tab{opacity:1;pointer-events:auto}    /* 折叠后常显，否则找不回来 */
+.l2d.show-tab .l2d-tab{opacity:1;pointer-events:auto}     /* 触屏：点按桌宠时临时显示 */
 .l2d-tab:hover{color:var(--blue)}
 .l2d-tab svg{width:18px;height:18px;transition:transform .35s var(--spring)}
 .l2d.is-hidden .l2d-tab svg{transform:rotate(180deg)}
@@ -700,7 +701,6 @@ footer .sep{opacity:.4}
   .misc-cell .cap{font-size:12px}
   .l2d{width:190px;height:225px;right:0;bottom:var(--footer-stack, 0px)}  /* 模型可见底边对齐页脚上缘 */
   .l2d-tab{left:-34px;width:34px;height:56px;bottom:calc(18px + env(safe-area-inset-bottom))}
-  .l2d-tab{left:-34px;width:34px;height:56px;bottom:calc(18px + env(safe-area-inset-bottom))}
   .modal{padding:12px}
   .sheet{max-height:92vh;padding:22px 18px;border-radius:20px}
   .lb-stage{padding:14px 10px}
@@ -713,10 +713,8 @@ footer .sep{opacity:.4}
 @media (hover:none){
   a,button{-webkit-tap-highlight-color:transparent}   /* 全站去掉点按蓝色高亮方块 */
   .seg{height:36px;padding:3px}                      /* 胶囊随触屏尺寸增高，与选项严格对齐 */
-  .icon-btn{width:38px;height:38px}
-  .seg-opt{min-width:44px;height:30px}          /* 44px 级点按区 */
+  .icon-btn{width:38px;height:38px}  .seg-opt{min-width:44px;height:30px}          /* 44px 级点按区 */
   .act{width:36px;height:36px}
-  .l2d .l2d-tab{opacity:1;pointer-events:auto}  /* 触屏无 hover：折叠按钮常显 */
   .card:active,.misc-cell:active,.misc-tile:active{transform:scale(.98)}
 }
 
@@ -3271,6 +3269,13 @@ function bind(){
   var l2dHidden = false;
   try{ l2dHidden = localStorage.getItem('layout.l2dHidden') === '1'; }catch(e){}
   $('l2d').classList.toggle('is-hidden', l2dHidden);
+  /* 触屏点按桌宠 → 临时显示折叠按钮（桌面仍为悬停显示，不常驻） */
+  var l2dTabTimer = 0;
+  $('l2dCanvas').addEventListener('pointerdown', function(){
+    $('l2d').classList.add('show-tab');
+    clearTimeout(l2dTabTimer);
+    l2dTabTimer = setTimeout(function(){ $('l2d').classList.remove('show-tab'); }, 2500);
+  });
   $('l2dTab').addEventListener('click', function(){
     var h = $('l2d').classList.toggle('is-hidden');
     try{ localStorage.setItem('layout.l2dHidden', h ? '1' : '0'); }catch(e){}
