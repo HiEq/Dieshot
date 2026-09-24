@@ -206,11 +206,11 @@ main{flex:1 0 auto}
 .section-head .sub{margin-top:10px;color:var(--fg2);font-size:19px}
 /* Layout 图片与吸顶栏重叠区的渐变模糊过渡（只作用于图片经过的交界带，栏内文字/标题不受影响） */
 .bar-fade{
-  position:fixed;left:0;right:0;top:calc(var(--nav-h) + 68px);height:110px;z-index:50;
+  position:fixed;left:0;right:0;top:calc(var(--stack-bottom, 120px) + 2px);height:96px;z-index:50;
   pointer-events:none;opacity:0;transition:opacity .2s;
-  -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
-  -webkit-mask-image:linear-gradient(to bottom, #000 18%, transparent);
-  mask-image:linear-gradient(to bottom, #000 18%, transparent);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,.85) 30%, transparent);
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,.85) 30%, transparent);
 }
 /* 仅在顶栏与标签栏吸顶合体后启用（此前标题/副标题正处于该区域，不能模糊） */
 .nav-shell.is-merged ~ main .bar-fade{opacity:1}
@@ -301,8 +301,8 @@ main{flex:1 0 auto}
 .gallery{padding:26px 0 90px;display:flex;gap:24px;align-items:flex-start}
 .gallery-main{flex:1;min-width:0}
 .tag-side{
-  flex:none;width:210px;position:sticky;top:calc(var(--nav-h) + 88px);
-  max-height:calc(100vh - 260px);display:flex;flex-direction:column;
+  flex:none;width:210px;position:sticky;top:calc(var(--stack-bottom, 120px) + 22px);
+  max-height:calc(100vh - 280px);display:flex;flex-direction:column;
 }
 .tag-side .mini-title{margin-bottom:8px}
 @media (max-width:860px){
@@ -2983,7 +2983,18 @@ function bind(){
   function setStuck(on){
     if(tb) tb.classList.toggle('is-stuck', on);
     if(navShell) navShell.classList.toggle('is-merged', on);
+    syncStackMetrics();
   }
+  /* 实测「顶栏+标签栏」合体后的底边位置（工具条高度随换行变化，不能写死） */
+  function syncStackMetrics(){
+    var bottom = 120;
+    if(tb && navShell){
+      bottom = (navShell.offsetTop || 10) + navShell.offsetHeight + tb.offsetHeight;
+    }
+    document.documentElement.style.setProperty('--stack-bottom', Math.ceil(bottom) + 'px');
+  }
+  window.addEventListener('resize', syncStackMetrics);
+  syncStackMetrics();
   if(tb && sentinel && 'IntersectionObserver' in window){
     new IntersectionObserver(function(entries){
       setStuck(!entries[0].isIntersecting);   /* 哨兵滚出视口顶端 = 标签栏已吸顶 */
