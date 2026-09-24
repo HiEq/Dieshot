@@ -544,15 +544,32 @@ footer .sep{opacity:.4}
 .sheet{border-radius:26px}
 .dd-menu{border-radius:18px}
 
+/* ---------- 杂图墙：平铺、各列交错上下无缝滚动 ---------- */
+.misc-wall{
+  display:flex;gap:14px;align-items:flex-start;
+  height:calc(100vh - 250px);min-height:420px;
+  padding:0 24px 90px;overflow:hidden;
+}
+.misc-col{flex:1;min-width:0;overflow:hidden}
+.misc-track{display:flex;flex-direction:column;gap:14px;will-change:transform}
+.misc-tile{
+  position:relative;flex:none;border-radius:16px;overflow:hidden;cursor:zoom-in;
+  aspect-ratio:4/3;background:var(--bg-alt);box-shadow:var(--shadow-card);
+  transition:transform .3s var(--spring);
+}
+.misc-tile:hover{transform:scale(1.03)}
+.misc-tile .thumb{width:100%;height:100%}
+@media (max-width:640px){ .misc-wall{padding:0 12px 70px} }
+
 /* ---------- Live2D 桌宠（仅首页右下角；箭头可折叠到屏幕边缘） ---------- */
 .l2d{
-  position:fixed;right:24px;bottom:0;z-index:70;
+  position:fixed;right:2px;bottom:0;z-index:70;
   width:300px;height:340px;pointer-events:none;
   transition:transform .45s var(--spring);
 }
 .l2d[hidden]{display:none}
 .l2d canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:auto;cursor:grab}
-.l2d.is-hidden{transform:translateX(calc(100% + 24px))}   /* 折到右缘，只留箭头 */
+.l2d.is-hidden{transform:translateX(calc(100% + 6px))}   /* 折到右缘，只留箭头 */
 .l2d-tab{
   position:absolute;left:-36px;bottom:28px;width:36px;height:64px;
   pointer-events:auto;display:flex;align-items:center;justify-content:center;
@@ -637,7 +654,7 @@ footer .sep{opacity:.4}
   <section class="view" id="view-layout">
     <div class="wrap section-head">
       <h2>Layout</h2>
-      <div class="sub" id="layoutSub">{tags} 家厂商 · {items} 张裸片影像 · 支持搜索与标签筛选</div>
+      <div class="sub" id="layoutSub">{tags} 家厂商 · {items} 张 Dieshot · 支持搜索与标签筛选</div>
     </div>
     <div class="toolbar">
       <div class="toolbar-inner">
@@ -667,6 +684,23 @@ footer .sep{opacity:.4}
         <h3 id="emptyTitle">还没有图片</h3>
         <p id="emptyText">切换到管理模式，点击右上角「＋」即可上传第一批图片。</p>
         <button class="btn tint sm hidden" id="emptyAdminBtn">进入管理模式</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 杂图版块（平铺 + 各列交错上下滚动） ================= -->
+  <section class="view" id="view-misc">
+    <div class="wrap section-head">
+      <h2>杂图</h2>
+      <div class="sub" id="miscSub">{items} 张杂图 · 点击查看大图</div>
+    </div>
+    <div class="misc-wall" id="miscWall"></div>
+    <div class="wrap">
+      <div class="empty hidden" id="miscEmpty">
+        <div class="orb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="8.5" cy="9.5" r="1.8"/><path d="M4 17l5-5 4 4 3-2 4 4"/></svg></div>
+        <h3 id="miscEmptyTitle">暂无杂图</h3>
+        <p id="miscEmptyText">进入管理模式，即可上传杂图。</p>
+        <button class="btn tint sm hidden" id="miscAdminBtn">进入管理模式</button>
       </div>
     </div>
   </section>
@@ -841,7 +875,7 @@ footer .sep{opacity:.4}
 'use strict';
 
 /* ---------- 内置默认清单（gallery.json 读取失败时兜底，如 file:// 直开） ---------- */
-/* 真实内容在 gallery.json（219 张 Die Shot）；示例图已随图库上线移除 */
+/* 真实内容在 gallery.json（219 张 Dieshot）；示例图已随图库上线移除 */
 var FALLBACK_ITEMS = [];
 var DEFAULT_CFG = {
   adminHash:'1dc5ae5b68174891b6aa9850aa05ee0d9ae8a20468d9517259951a2dd9e9c0f0', /* 口令 layout */
@@ -850,9 +884,13 @@ var DEFAULT_CFG = {
 
 /* ---------- 状态 ---------- */
 var state = {
-  site:{title:'Layout', sub:'Die Shot 裸片图库：{tags} 家厂商 · {items} 张Dieshot。', brand:'HiEq', avatar:'https://github.com/HiEq.png?size=64'},
+  site:{title:'Layout', sub:'Dieshot 图库：{tags} 家厂商 · {items} 张 Dieshot。', brand:'HiEq', avatar:'https://github.com/HiEq.png?size=64'},
   cfg: JSON.parse(JSON.stringify(DEFAULT_CFG)),
-  items: [],
+  items: [],       /* 当前版块的条目（由 enterCollection 指向下面两个集合之一） */
+  dieshot: [],     /* Dieshot 条目（gallery.json + images/dieshot） */
+  misc: [],        /* 杂图条目（misc.json + images/misc，与 Dieshot 完全分开） */
+  active: 'dieshot',
+  manifestName: 'gallery.json',
   filter:{q:'', tag:'', sort:'new'},
   admin:false,
   lb:{list:[], idx:0},
@@ -865,7 +903,7 @@ var state = {
   draft:false      /* 是否在使用本机草稿 */
 };
 var LS = {
-  gh:'layout.githubCfg', draft:'layout.draftItems', localMeta:'layout.localMeta', localIds:'layout.localIds'
+  gh:'layout.githubCfg', draft:'layout.draftItems', draftMisc:'layout.draftMisc', localMeta:'layout.localMeta', localIds:'layout.localIds'
 };
 
 /* ---------- 小工具 ---------- */
@@ -888,8 +926,7 @@ var EN = {
   /* 顶栏与导航 */
   '首页':'Home', 'Layout 版块':'Layout section', '搜索图片':'Search images', '管理模式':'Admin',
   '打开管理面板':'Open admin panel', '夜间 / 日间模式':'Toggle dark / light', 'HiEq 的 GitHub 主页':'HiEq on GitHub',
-  '{tags} 家厂商 · {items} 张 Die Shot · 支持搜索与标签筛选':'{tags} makers · {items} die shots · search and filter by tags',
-  '{tags} 家厂商 · {items} 张裸片影像 · 支持搜索与标签筛选':'{tags} makers · {items} die shots · search and filter by tags',
+  '{tags} 家厂商 · {items} 张 Dieshot · 支持搜索与标签筛选':'{tags} makers · {items} Dieshot · search and filter by tags',
   /* Layout 版块 */
   '搜索标题、描述或标签':'Search title, description or tags', '最新在前':'Newest first', '最早在前':'Oldest first',
   '按标题排序':'Sort by title', '全部':'All',
@@ -924,6 +961,9 @@ var EN = {
   /* 页脚 */
   '由 GitHub Pages 托管 · 单文件静态站':'Hosted on GitHub Pages · single-file static site',
   '厂商目录清单':'Catalog',
+  '杂图':'Misc', '{items} 张杂图 · 点击查看大图':'{items} images · click to view',
+  '暂无杂图':'No images yet', '进入管理模式，即可上传杂图。':'Enter admin mode to upload images.',
+  '当前板块：{name}':'Active section: {name}',
   '折叠 / 展开模型':'Collapse / expand the model',
   /* 动态文案模板 */
   '{shown} / {total} 张':'{shown} / {total} photos', '待保存':'pending', '处理中…':'working…', '已完成':'done',
@@ -1179,9 +1219,9 @@ async function loadManifest(){
   if(got){
     if(got.site) state.site = Object.assign(state.site, got.site);
     if(got.config) state.cfg = Object.assign(state.cfg, got.config);
-    state.items = normalizeItems(got.items);
+    state.dieshot = normalizeItems(got.items);
   }else{
-    state.items = normalizeItems(FALLBACK_ITEMS);
+    state.dieshot = normalizeItems(FALLBACK_ITEMS);
   }
 
   /* 2) 本机草稿（离线管理时保存在 localStorage）：只覆盖「图片条目」，
@@ -1189,7 +1229,7 @@ async function loadManifest(){
         口令哈希例外——草稿里改过口令要继续生效 */
   var draft = lsGet(LS.draft, null);
   if(draft && Array.isArray(draft.items)){
-    state.items = normalizeItems(draft.items);
+    state.dieshot = normalizeItems(draft.items);
     state.draft = true;
     if(draft.config && draft.config.adminHash) state.cfg.adminHash = draft.config.adminHash;
   }
@@ -1208,7 +1248,7 @@ async function loadManifest(){
         try{ tb = await IDB.get(ids[i] + ':thumb'); }catch(e){}
         var mkBlob = function(b, type){ return (b instanceof Blob) ? b : new Blob([b], {type: type || 'image/*'}); };
         localItems.push({
-          id: ids[i], local:true,
+          id: ids[i], local:true, coll: (m.coll || 'dieshot'),
           title: m.title || '未命名', desc: m.desc || '', tags: m.tags || [],
           src: '',                                   /* 原图按需读取（ensureSrc） */
           thumb: URL.createObjectURL(tb ? mkBlob(tb, 'image/jpeg') : mkBlob(buf, m.type)),
@@ -1218,14 +1258,30 @@ async function loadManifest(){
         });
       }
       localItems.reverse();
-      state.items = localItems.concat(state.items);
     }
   }catch(e){}
+
+  /* 3) 杂图清单（misc.json）：与 Dieshot 完全分开存储 */
+  try{
+    var r2 = await fetch('misc.json?t=' + Date.now(), {cache:'no-store'});
+    if(r2.ok){ state.misc = normalizeItems((await r2.json()).items); }
+  }catch(e){}
+  var mdraft = lsGet(LS.draftMisc, null);
+  if(mdraft && Array.isArray(mdraft.items)) state.misc = normalizeItems(mdraft.items);
+
+  /* 本机图片按所属版块归位（须在清单之后，避免被覆盖） */
+  (localItems || []).forEach(function(li){ (li.coll === 'misc' ? state.misc : state.dieshot).unshift(li); });
+  enterCollection('dieshot');
 }
-async function saveManifest(message){
-  /* 仓库模式 → 直接写回 gallery.json；否则存本机草稿 */
+async function saveManifest(message, coll){
+  /* 写回当前版块的清单（gallery.json 或 misc.json）；否则存本机草稿 */
+  coll = coll || state.active;
+  var isMisc = (coll === 'misc');
   var gc = ghCfg();
-  var payload = {
+  var list = (isMisc ? state.misc : state.dieshot).filter(function(it){ return !it.local; });
+  var payload = isMisc
+    ? {version: 1, items: list}
+    : {
     version: 1,
     site: state.site,
     config: {
@@ -1233,15 +1289,16 @@ async function saveManifest(message){
       /* 安全：Token 绝不写进清单/仓库，只存在你自己的浏览器 localStorage 里 */
       github: {token:'', owner: gc.owner || '', branch: gc.branch || 'main', dir: gc.dir || 'images', manifest: gc.manifest || 'gallery.json'}
     },
-    items: state.items.filter(function(it){ return !it.local; })
+    items: list
   };
+  var name = isMisc ? 'misc.json' : (gc.manifest || 'gallery.json');
   if(ghReady()){
-    var r = await ghPutFile(ghCfg().manifest, new TextEncoder().encode(JSON.stringify(payload, null, 2)), message || 'update gallery.json');
-    if(r.ok){ state.draft=false; lsSet(LS.draft, null); toast('已同步到 GitHub 仓库'); return true; }
+    var r = await ghPutFile(name, new TextEncoder().encode(JSON.stringify(payload, null, 2)), message || ('update ' + name));
+    if(r.ok){ state.draft=false; lsSet(isMisc ? LS.draftMisc : LS.draft, null); toast('已同步到 GitHub 仓库'); return true; }
     toast('同步失败（' + r.status + '）：' + (r.data && r.data.message ? r.data.message : '请检查 Token 与仓库设置'));
     return false;
   }
-  lsSet(LS.draft, {items:payload.items, site:payload.site, config:payload.config});
+  lsSet(isMisc ? LS.draftMisc : LS.draft, {items:payload.items, site:payload.site, config:payload.config});
   state.draft = true;
   toast('已保存到本机草稿（未连接 GitHub）');
   renderDraftNote();
@@ -1254,8 +1311,9 @@ var NAV = [
   {id:'layout', label:'Layout', href:'#/layout', menu:{
       title:'Layout 版块',
       lead:'陈列、浏览与下载全部图片',
-      links:[{id:'layout', name:'Layout', desc:'{tags} 家厂商 · {items} 张 Die Shot · 支持搜索与标签筛选'}]
-  }}
+      links:[{id:'layout', name:'Layout', desc:'{tags} 家厂商 · {items} 张 Dieshot · 支持搜索与标签筛选'}]
+  }},
+  {id:'misc',   label:'杂图',  href:'#/misc',  menu:false}
   /* 以后新增版块：在这里追加一项，并新建对应的视图区块 */
 ];
 
@@ -1312,21 +1370,33 @@ function closeMenu(){
   Array.prototype.forEach.call(document.querySelectorAll('.nav-item'), function(a){ a.classList.remove('is-open'); });
 }
 /* ---------- 实时统计：{tags} 厂商数 / {items} 图片数，随增删即时更新 ---------- */
-var LAYOUT_SUB_TPL = '{tags} 家厂商 · {items} 张裸片影像 · 支持搜索与标签筛选';
-function stats(){
-  var tags = {};
-  state.items.forEach(function(it){ (it.tags || []).forEach(function(t){ tags[t] = 1; }); });
-  return {items: state.items.length, tags: Object.keys(tags).length};
+var LAYOUT_SUB_TPL = '{tags} 家厂商 · {items} 张 Dieshot · 支持搜索与标签筛选';
+var MISC_SUB_TPL = '{items} 张杂图 · 点击查看大图';
+/* 写操作目标随版块切换：Dieshot（gallery.json + images/dieshot）↔ 杂图（misc.json + images/misc） */
+function enterCollection(which){
+  state.active = (which === 'misc') ? 'misc' : 'dieshot';
+  state.items = state.active === 'misc' ? state.misc : state.dieshot;
+  state.manifestName = state.active === 'misc' ? 'misc.json' : (ghCfg().manifest || 'gallery.json');
 }
-function fmtTpl(s, extra){
-  var st = stats();
+function uploadDirFor(coll){
+  return ((coll || state.active) === 'misc') ? 'images/misc' : (ghCfg().dir || 'images/dieshot');
+}
+function stats(list){
+  var src = list || state.items;
+  var tags = {};
+  src.forEach(function(it){ (it.tags || []).forEach(function(t){ tags[t] = 1; }); });
+  return {items: src.length, tags: Object.keys(tags).length};
+}
+function fmtTpl(s, extra, list){
+  var st = stats(list);
   return String(s || '').replace(/\{(\w+)\}/g, function(m, k){
     if(extra && extra[k] != null) return String(extra[k]);
     return st[k] != null ? String(st[k]) : m;
   });
 }
 function renderCounts(){
-  $('layoutSub').textContent = fmtTpl(t(LAYOUT_SUB_TPL));
+  $('layoutSub').textContent = fmtTpl(t(LAYOUT_SUB_TPL), null, state.dieshot);
+  $('miscSub').textContent = fmtTpl(t(MISC_SUB_TPL), null, state.misc);
 }
 function firstImage(){
   var it = filteredItems()[0] || state.items[0];
@@ -1419,7 +1489,7 @@ async function ensureThumb(it){
   }
 }
 function applyThumb(it, url){
-  var node = state.cards[it.id];
+  var node = state.cards[it.id] || (MW.map && MW.map[it.id]) || null;
   if(!node || !url) return;
   var img = node.querySelector('.thumb img');
   var th = node.querySelector('.thumb');
@@ -1449,7 +1519,8 @@ var thumbObserver = ('IntersectionObserver' in window)
 function route(){
   closeMenu();
   var h = (location.hash || '#/').replace(/^#/, '');
-  var name = h.indexOf('/layout') === 0 ? 'layout' : 'home';
+  var name = h.indexOf('/layout') === 0 ? 'layout' : (h.indexOf('/misc') === 0 ? 'misc' : 'home');
+  enterCollection(name === 'misc' ? 'misc' : 'dieshot');   /* 写操作目标随版块切换 */
   Array.prototype.forEach.call(document.querySelectorAll('.view'), function(v){
     v.classList.toggle('is-active', v.id === 'view-' + name);
   });
@@ -1457,6 +1528,7 @@ function route(){
     a.classList.toggle('is-current', a.dataset.nav === name);
   });
   if(name === 'layout'){ renderGallery(); }
+  else if(name === 'misc'){ renderMiscWall(); }
   else { renderHome(); }
   l2dShow(name === 'home');          /* 桌宠仅首页显示 */
   window.scrollTo(0, 0);
@@ -1582,6 +1654,7 @@ function getCard(it){
   return card;
 }
 function renderGallery(){
+  if(state.active === 'misc'){ renderMiscWall(); return; }   /* 杂图版块走滚动墙渲染 */
   renderCounts();
   renderChips();
   syncOrder();
@@ -1650,6 +1723,82 @@ function renderChips(){
     c.addEventListener('click', function(){ state.filter.tag = (state.filter.tag === t ? '' : t); renderChips(); applyFilter(); });
     box.appendChild(c);
   });
+}
+
+/* ============================================================
+   杂图墙：平铺 + 各列交错上下无缝滚动；点击开大图
+   ============================================================ */
+var MOTION_REDUCE = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+var MW = {cols:[], map:{}, pos:[], dir:[], half:[], hover:false, on:false};
+var MW_RAF = false;
+function renderMiscWall(){
+  var wall = $('miscWall');
+  wall.innerHTML = '';
+  MW = {cols:[], map:{}, pos:[], dir:[], half:[], hover:false, on:false};
+  renderCounts();
+  var items = state.items;
+  var empty = items.length === 0;
+  $('miscEmpty').classList.toggle('hidden', !empty);
+  $('miscEmptyTitle').textContent = t('暂无杂图');
+  $('miscEmptyText').textContent = t('进入管理模式，即可上传杂图。');
+  $('miscAdminBtn').classList.toggle('hidden', state.admin);
+  wall.classList.toggle('hidden', empty);
+  if(empty) return;
+  var w = wall.clientWidth || 1100;
+  var n = w < 700 ? 2 : (w < 1100 ? 3 : 4);      /* 列数随屏宽 */
+  var tracks = [];
+  for(var c = 0; c < n; c++){
+    var col = el('div', 'misc-col');
+    var track = el('div', 'misc-track');
+    col.appendChild(track); wall.appendChild(col);
+    MW.cols.push(track); MW.pos.push(0); MW.dir.push(c % 2 === 0 ? 1 : -1); MW.half.push(0);
+    tracks.push(track);
+  }
+  var dup = items.concat(items);                  /* 双份内容 → 无缝回绕 */
+  dup.forEach(function(it, i){ tracks[i % n].appendChild(miscTile(it)); });
+  nextTick(function(){
+    MW.cols.forEach(function(tr, i){ MW.half[i] = tr.scrollHeight / 2; });
+    MW.on = true;
+    mwStart();
+  });
+}
+function miscTile(it){
+  var tile = el('div', 'misc-tile');
+  var th = el('div', 'thumb');   /* 与 Layout 卡片同结构 → 缩略图管线直接复用 */
+  var img = el('img');
+  img.decoding = 'async'; img.loading = 'lazy'; img.alt = it.title;
+  var small = it.thumb || it._thumbUrl || '';
+  if(small){ img.src = small; }
+  else{
+    th.classList.add('is-loading'); img.classList.add('is-loading');
+    if(it._thumbFail && it.src) img.src = it.src;
+    if(thumbObserver) thumbObserver.observe(tile); else queueThumb(it);
+  }
+  th.appendChild(img); tile.appendChild(th);
+  tile._item = it;
+  MW.map[it.id] = tile;
+  tile.addEventListener('click', function(){
+    var list = state.items;
+    var i = list.indexOf(it);
+    openLightbox(list, i < 0 ? 0 : i);
+  });
+  return tile;
+}
+function mwStart(){
+  if(MW_RAF || MOTION_REDUCE || !window.requestAnimationFrame) return;
+  MW_RAF = true;
+  (function tick(){
+    requestAnimationFrame(tick);
+    if(!MW.on || MW.hover || document.hidden) return;
+    for(var i = 0; i < MW.cols.length; i++){
+      var half = MW.half[i];
+      if(!half) continue;
+      MW.pos[i] += 0.35 * MW.dir[i];             /* 相邻列方向相反 → 交错上下 */
+      if(MW.pos[i] >= half) MW.pos[i] -= half;
+      if(MW.pos[i] < 0) MW.pos[i] += half;
+      MW.cols[i].style.transform = 'translateY(' + (-MW.pos[i]) + 'px)';
+    }
+  })();
 }
 
 /* ---------- 灯箱 ---------- */
@@ -1804,8 +1953,9 @@ async function downloadItem(it){
    - 非首页 / 折叠 / 页面隐藏时暂停渲染；首次进首页才加载库与模型
    ============================================================ */
 var L2D = {app:null, model:null, state:'', timer:0};
-var L2D_ZOOM = 1.22;   /* 放大倍率：调大 = 模型更大（四周透明边距被裁掉更多） */
-var L2D_DROP  = 0.07;  /* 向下偏移（按模型高度比例）：吃掉底部透明边距、减小与底边的间距 */
+var L2D_ZOOM = 1.30;   /* 放大倍率：调大 = 模型更大（四周透明边距被裁掉更多） */
+var L2D_DROP  = 0.12;  /* 向下偏移（按模型高度比例）：吃掉底部透明边距、贴近屏幕底边 */
+var L2D_SHIFT = 0.05;  /* 向右偏移（按模型宽度比例）：贴近屏幕右边距 */
 function l2dLoad(src, ready){
   if(ready && ready()) return Promise.resolve();   /* 运行库已就绪则跳过加载 */
   return new Promise(function(res, rej){
@@ -1833,7 +1983,7 @@ async function initLive2D(){
     var fit = Math.min(host.clientWidth / model.width, host.clientHeight / model.height) * L2D_ZOOM;
     model.scale.set(fit);
     model.anchor.set(0.5, 1);
-    model.position.set(host.clientWidth / 2, host.clientHeight + model.height * fit * L2D_DROP);
+    model.position.set(host.clientWidth / 2 + model.width * fit * L2D_SHIFT, host.clientHeight + model.height * fit * L2D_DROP);
     app.stage.addChild(model);
     L2D.app = app; L2D.model = model; L2D.state = 'ready';
     /* —— 仅保留：鼠标视线跟踪 + 模型自带眨眼 ——
@@ -1902,9 +2052,10 @@ function openPanel(){
   $('ghBranch').value = c.branch || 'main';
   $('ghDir').value = c.dir || 'images';
   $('ghManifest').value = c.manifest || 'gallery.json';
-  $('panelHint').textContent = ghReady()
+  var where = fmtTpl(t('当前板块：{name}'), {name: t(state.active === 'misc' ? '杂图' : 'Dieshot')});
+  $('panelHint').textContent = where + ' · ' + (ghReady()
     ? fmtTpl(t('当前为「仓库模式」：保存后将通过 GitHub 接口提交到 {repo}（{branch} 分支）。'), {repo: c.owner, branch: c.branch || 'main'})
-    : t('当前为「本机模式」：改动只保存在这台设备上。填写下方 GitHub 接口设置后，即可把图片与清单直接提交到仓库。');
+    : t('当前为「本机模式」：改动只保存在这台设备上。填写下方 GitHub 接口设置后，即可把图片与清单直接提交到仓库。'));
   $('panelStat').textContent = fmtTpl(t('共 {n} 张图片，其中本机 {m} 张'),
     {n: state.items.length, m: state.items.filter(function(i){ return i.local; }).length});
   renderDraftNote();
@@ -2077,14 +2228,14 @@ async function commitQueue(){
       }
       var buf = await q.file.arrayBuffer();
       var item = {
-        id: uid(), title: q.title || '未命名', desc: q.desc || '', tags: tags,
+        id: uid(), coll: state.active, title: q.title || '未命名', desc: q.desc || '', tags: tags,
         name: q.name, size: q.size, addedAt: new Date().toISOString(),
         w: th.w || q.w || 0, h: th.h || q.h || 0
       };
       if(mode === 'github'){
         var date = new Date();
         var sub = date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2);
-        var path = (c.dir || 'images').replace(/\/+$/,'') + '/' + sub + '/' + safeName(q.name);
+        var path = uploadDirFor(state.active).replace(/\/+$/,'') + '/' + sub + '/' + safeName(q.name);
         var put = await ghPutFile(path, buf, 'add ' + path);
         if(!put.ok) throw new Error((put.data && put.data.message) || ('HTTP ' + put.status));
         item.src = path;
@@ -2100,7 +2251,7 @@ async function commitQueue(){
         if(th.blob) await IDB.put(item.id + ':thumb', await th.blob.arrayBuffer());
         var ids = lsGet(LS.localIds, []); ids.unshift(item.id); lsSet(LS.localIds, ids);
         var meta = lsGet(LS.localMeta, {});
-        meta[item.id] = {title:item.title, desc:item.desc, tags:item.tags, name:item.name, type:q.file.type || '', w:item.w, h:item.h, addedAt:item.addedAt};
+        meta[item.id] = {title:item.title, desc:item.desc, tags:item.tags, name:item.name, type:q.file.type || '', coll:state.active, w:item.w, h:item.h, addedAt:item.addedAt};
         lsSet(LS.localMeta, meta);
         item.thumb = th.url || q.thumb || '';
         item.src = '';            /* 原图按需读取，避免大量大图常驻内存 */
@@ -2143,7 +2294,9 @@ async function deleteItem(it){
       var r = await ghDelFile(it.file, 'delete ' + it.file);
       if(!r.ok) throw new Error((r.data && r.data.message) || ('HTTP ' + r.status));
     }
-    state.items = state.items.filter(function(x){ return x.id !== it.id; });
+    var k = -1;
+    for(var q = 0; q < state.items.length; q++){ if(state.items[q].id === it.id){ k = q; break; } }
+    if(k >= 0) state.items.splice(k, 1);   /* 原地删除：保持与 state.dieshot/state.misc 同一引用 */
     await saveManifest('remove ' + (it.file || it.title));
     closeLightbox();
     renderGallery();
@@ -2246,7 +2399,8 @@ async function syncToGitHub(){
   btn.disabled = true;
   try{
     /* 1) 先把仅本机的图片连同缩略图上传，转为仓库条目 */
-    var locals = state.items.filter(function(i){ return i.local; });
+    var all = state.dieshot.concat(state.misc);
+    var locals = all.filter(function(i){ return i.local; });
     var up = 0, fail = 0, c = ghCfg();
     for(var i = 0; i < locals.length; i++){
       var it = locals[i];
@@ -2263,7 +2417,7 @@ async function syncToGitHub(){
         }
         var date = new Date();
         var sub = date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2);
-        var path = (c.dir || 'images').replace(/\/+$/,'') + '/' + sub + '/' + safeName(it.name || (it.id + '.png'));
+        var path = uploadDirFor(it.coll).replace(/\/+$/,'') + '/' + sub + '/' + safeName(it.name || (it.id + '.png'));
         var put = await ghPutFile(path, buf, 'sync ' + path);
         if(!put.ok) throw new Error((put.data && put.data.message) || ('HTTP ' + put.status));
         it.src = path; it.file = path; it.local = false;
@@ -2282,7 +2436,8 @@ async function syncToGitHub(){
       }catch(e){ fail++; }
     }
     /* 2) 写回清单（gallery.json） */
-    var okSave = await saveManifest('sync gallery.json (' + up + ' images)');
+    var okSave = await saveManifest('sync manifests (' + up + ' images)', 'dieshot');
+    okSave = (await saveManifest('sync manifests (' + up + ' images)', 'misc')) && okSave;
     if(okSave){
       showGhMsg('ok', fmtTpl(tr('同步完成：gallery.json + {n} 张本机图片 → {branch}'), {n: up, branch: c.branch || 'main'}));
     }
@@ -2437,6 +2592,9 @@ function bind(){
     setTimeout(function(){ $('q').focus(); $('q').select(); }, 80);
   });
   $('emptyAdminBtn').addEventListener('click', openLogin);
+  $('miscAdminBtn').addEventListener('click', openLogin);
+  $('miscWall').addEventListener('mouseenter', function(){ MW.hover = true; });
+  $('miscWall').addEventListener('mouseleave', function(){ MW.hover = false; });
 
   /* 灯箱 */
   $('lbClose').addEventListener('click', closeLightbox);
