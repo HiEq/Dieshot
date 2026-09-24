@@ -204,9 +204,11 @@ main{flex:1 0 auto}
 .section-head{padding:64px 0 26px}
 .section-head h2{margin:0;font-size:clamp(36px,5.6vw,60px);letter-spacing:-.035em;font-weight:700;line-height:1.05}
 .section-head .sub{margin-top:10px;color:var(--fg2);font-size:19px}
-/* Layout 图片与吸顶栏重叠区的渐变模糊过渡（只作用于图片经过的交界带，栏内文字/标题不受影响） */
+/* Layout 图片与吸顶栏重叠区的渐变模糊过渡：
+   只覆盖右侧图库列（left = 实测图库列左缘，绝不碰左侧标签栏），top = 实测合体栏底边 */
 .bar-fade{
-  position:fixed;left:0;right:0;top:calc(var(--stack-bottom, 120px) + 2px);height:96px;z-index:50;
+  position:fixed;left:var(--main-left, 0px);right:0;top:calc(var(--stack-bottom, 120px) + 2px);
+  height:96px;z-index:50;
   pointer-events:none;opacity:0;transition:opacity .2s;
   -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
   -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,.85) 30%, transparent);
@@ -1861,6 +1863,7 @@ function renderGallery(){
   renderCounts();
   renderChips();
   syncOrder();
+  if(typeof scheduleStackMetrics === 'function') scheduleStackMetrics();   /* 进页后重测几何 */
 }
 function syncOrder(){
   var grid = $('grid');
@@ -2985,15 +2988,30 @@ function bind(){
     if(navShell) navShell.classList.toggle('is-merged', on);
     syncStackMetrics();
   }
-  /* 实测「顶栏+标签栏」合体后的底边位置（工具条高度随换行变化，不能写死） */
+  /* 实测几何：合体栏底边 + 图库列左缘（全部用视口坐标 getBoundingClientRect，
+     并在滚动/窗口变化/进页时重算 —— 写死或过期的偏移会让模糊带飘到屏幕中间、压到标签栏） */
+  var stackPending = false;
   function syncStackMetrics(){
     var bottom = 120;
-    if(tb && navShell){
-      bottom = (navShell.offsetTop || 10) + navShell.offsetHeight + tb.offsetHeight;
+    if(tb){
+      var r = tb.getBoundingClientRect();
+      if(tb.classList.contains('is-stuck')) bottom = r.bottom;
+      else if(navShell) bottom = navShell.getBoundingClientRect().bottom + tb.offsetHeight;
     }
-    document.documentElement.style.setProperty('--stack-bottom', Math.ceil(bottom) + 'px');
+    var ml = 0;
+    var gm = document.querySelector('#view-layout .gallery-main');
+    if(gm) ml = gm.getBoundingClientRect().left;
+    var st = document.documentElement.style;
+    st.setProperty('--stack-bottom', Math.ceil(bottom) + 'px');
+    st.setProperty('--main-left', Math.ceil(ml) + 'px');
   }
-  window.addEventListener('resize', syncStackMetrics);
+  function scheduleStackMetrics(){
+    if(stackPending) return;
+    stackPending = true;
+    (window.requestAnimationFrame || setTimeout)(function(){ stackPending = false; syncStackMetrics(); });
+  }
+  window.addEventListener('resize', scheduleStackMetrics);
+  window.addEventListener('scroll', scheduleStackMetrics, {passive:true});
   syncStackMetrics();
   if(tb && sentinel && 'IntersectionObserver' in window){
     new IntersectionObserver(function(entries){
