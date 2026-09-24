@@ -60,6 +60,7 @@ body{
   background:var(--bg);
   color:var(--fg);
   touch-action:manipulation;            /* 触屏点击免去双击缩放判定延迟 */
+  display:flex;flex-direction:column;min-height:100vh;   /* footer 沉底 */
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
   font-size:17px;
   line-height:1.5;
@@ -170,7 +171,7 @@ button{cursor:pointer;background:none;border:0;padding:0}
 /* ---------- 视图 ---------- */
 .view{display:none}
 .view.is-active{display:block}
-main{min-height:calc(100vh - 200px)}
+main{flex:1 0 auto}
 
 /* ---------- 首页 ---------- */
 /* 首页：整屏背景图（fixed 铺满整个视口，上下不留白；cover 只裁切不拉伸，比例不变） */
@@ -488,10 +489,14 @@ kbd{
 
 /* ---------- 页脚 ---------- */
 footer{
-  border-top:1px solid var(--hairline);background:transparent;
+  flex:none;margin:12px;border-radius:16px;
+  border:1px solid var(--hairline);
+  background:var(--glass-strong);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.3), 0 4px 18px rgba(0,0,0,.08);
   color:var(--fg2);font-size:13px;
 }
-footer .wrap{padding-top:26px;padding-bottom:30px;display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+footer .wrap{padding-top:14px;padding-bottom:14px;display:flex;gap:18px;flex-wrap:wrap;align-items:center}
 footer .sep{opacity:.4}
 
 /* ---------- 液态玻璃质感 + Apple 式动效（覆写层） ---------- */
@@ -602,13 +607,15 @@ footer .sep{opacity:.4}
 .l2d.is-hidden{transform:translateX(calc(100% + 6px))}   /* 折到右缘，只留箭头 */
 .l2d-tab{
   position:absolute;left:-36px;bottom:28px;width:36px;height:64px;
-  pointer-events:auto;display:flex;align-items:center;justify-content:center;
+  pointer-events:none;display:flex;align-items:center;justify-content:center;
   border-radius:14px 0 0 14px;color:var(--fg);
   background:var(--glass-strong);
   -webkit-backdrop-filter:saturate(180%) blur(16px);backdrop-filter:saturate(180%) blur(16px);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.3), inset 0 0 0 1px var(--hairline), -2px 2px 12px rgba(0,0,0,.12);
-  transition:color .2s;
+  opacity:0;transition:opacity .2s,color .2s;
 }
+.l2d:hover .l2d-tab{opacity:1;pointer-events:auto}        /* 悬停桌宠才显示按钮 */
+.l2d.is-hidden .l2d-tab{opacity:1;pointer-events:auto}    /* 折叠后常显，否则找不回来 */
 .l2d-tab:hover{color:var(--blue)}
 .l2d-tab svg{width:18px;height:18px;transition:transform .35s var(--spring)}
 .l2d.is-hidden .l2d-tab svg{transform:rotate(180deg)}
@@ -1236,6 +1243,43 @@ async function ghProbeWrite(){
   })});
 }
 
+/* 杂图自动发现：扫描仓库 images/misc/ 目录（免鉴权公开 API，放图即显示，5 分钟本地缓存） */
+async function discoverMisc(){
+  try{
+    var cached = lsGet('layout.miscScan', null);
+    if(cached && Array.isArray(cached.items) && (Date.now() - cached.t) < 5 * 60 * 1000) return cached.items;
+    var c = ghCfg();
+    var repo = c.owner || 'HiEq/Dieshot';
+    var ref = c.branch || 'main';
+    var found = [], thumbs = {};
+    async function list(dirPath){
+      var r = await fetch('https://api.github.com/repos/' + repo + '/contents/' + dirPath + '?ref=' + ref);
+      if(!r.ok) return;
+      var arr = await r.json();
+      if(!Array.isArray(arr)) return;
+      for(var i = 0; i < arr.length; i++){
+        var e = arr[i];
+        if(e.type === 'dir'){ await list(e.path); continue; }
+        if(/\.thumb\.jpe?g$/i.test(e.name)){ thumbs[e.path.replace(/\.thumb\.jpe?g$/i, '')] = e.path; continue; }
+        if(!/\.(jpe?g|png|gif|webp|svg|avif)$/i.test(e.name)) continue;
+        found.push({
+          id: 'repo-' + (e.sha || e.path).slice(0, 12),
+          title: e.name.replace(/\.[a-z0-9]+$/i, ''),
+          desc: '', tags: [], src: e.path, thumb: '', file: e.path, name: e.name,
+          size: e.size || 0, w: 0, h: 0, addedAt: '1970-01-01T00:00:00.000Z'
+        });
+      }
+    }
+    await list('images/misc');
+    found.forEach(function(it){                       /* 命中同名 .thumb.jpg 就直接用 */
+      var stem = it.src.replace(/\.[a-z0-9]+$/i, '');
+      if(thumbs[stem]) it.thumb = thumbs[stem];
+    });
+    lsSet('layout.miscScan', {t: Date.now(), items: found});
+    return found;
+  }catch(e){ return []; }
+}
+
 /* ---------- 清单加载 / 保存 ---------- */
 function normalizeItems(list){
   return (list || []).map(function(it){
@@ -1315,6 +1359,12 @@ async function loadManifest(){
   }catch(e){}
   var mdraft = lsGet(LS.draftMisc, null);
   if(mdraft && Array.isArray(mdraft.items)) state.misc = normalizeItems(mdraft.items);
+
+  /* 杂图自动发现：仓库 images/misc/ 里放了图就会出现（与 misc.json 去重合并） */
+  var seen = {};
+  state.misc.forEach(function(it){ if(it.src) seen[it.src] = 1; });
+  var found = await discoverMisc();
+  found.forEach(function(d){ if(d.src && !seen[d.src]){ seen[d.src] = 1; state.misc.push(d); } });
 
   /* 本机图片按所属版块归位（须在清单之后，避免被覆盖） */
   (localItems || []).forEach(function(li){ (li.coll === 'misc' ? state.misc : state.dieshot).unshift(li); });
