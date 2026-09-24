@@ -1804,6 +1804,8 @@ async function downloadItem(it){
    - 非首页 / 折叠 / 页面隐藏时暂停渲染；首次进首页才加载库与模型
    ============================================================ */
 var L2D = {app:null, model:null, state:'', timer:0};
+var L2D_ZOOM = 1.22;   /* 放大倍率：调大 = 模型更大（四周透明边距被裁掉更多） */
+var L2D_DROP  = 0.07;  /* 向下偏移（按模型高度比例）：吃掉底部透明边距、减小与底边的间距 */
 function l2dLoad(src, ready){
   if(ready && ready()) return Promise.resolve();   /* 运行库已就绪则跳过加载 */
   return new Promise(function(res, rej){
@@ -1827,10 +1829,11 @@ async function initLive2D(){
       autoDensity: true, resolution: Math.min(window.devicePixelRatio || 1, 2)
     });
     var model = await PIXI.live2d.Live2DModel.from('live2d/model/cat.model3.json', {autoInteract: false});
-    var fit = Math.min(host.clientWidth / model.width, host.clientHeight / model.height) * 1.08;
+    /* 透明边距裁切：放大到溢出画布，超出部分被 canvas 自然裁掉 → 模型更大、间距更小 */
+    var fit = Math.min(host.clientWidth / model.width, host.clientHeight / model.height) * L2D_ZOOM;
     model.scale.set(fit);
     model.anchor.set(0.5, 1);
-    model.position.set(host.clientWidth / 2, host.clientHeight + 6);
+    model.position.set(host.clientWidth / 2, host.clientHeight + model.height * fit * L2D_DROP);
     app.stage.addChild(model);
     L2D.app = app; L2D.model = model; L2D.state = 'ready';
     /* —— 仅保留：鼠标视线跟踪 + 模型自带眨眼 ——
