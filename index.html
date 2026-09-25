@@ -633,11 +633,12 @@ footer .sep{opacity:.4}
 .misc-cell .cap{margin-top:8px;font-size:13px;color:var(--fg2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 @media (max-width:640px){ .misc-wall{padding:0 12px 70px} .misc-list{padding:0 12px 70px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))} }
 
-/* ---------- Live2D 桌宠（仅首页右下角；箭头可折叠到屏幕边缘） ---------- */
+/* ---------- Live2D 桌宠（仅首页右下角；箭头可折叠到屏幕边缘） ----------
+   位置可由管理模式鼠标拖拽微调：--l2d-x=右移（%视口宽，负=左移）、--l2d-y=上移（%视口高，负=下移） */
 .l2d{
-  position:fixed;right:2px;bottom:0;z-index:70;
+  position:fixed;right:calc(2px - var(--l2d-x, 0px));bottom:calc(0px + var(--l2d-y, 0px));z-index:70;
   width:300px;height:340px;pointer-events:none;
-  transition:transform .45s var(--spring);
+  transition:transform .45s var(--spring), right .25s var(--ease), bottom .25s var(--ease);
 }
 .l2d[hidden]{display:none}
 .l2d canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:auto;cursor:grab}
@@ -657,7 +658,36 @@ footer .sep{opacity:.4}
 .l2d-tab:hover{color:var(--blue)}
 .l2d-tab svg{width:18px;height:18px;transition:transform .35s var(--spring)}
 .l2d.is-hidden .l2d-tab svg{transform:rotate(180deg)}
-@media (max-width:640px){ .l2d{width:220px;height:250px;right:8px} }
+/* ---------- Live2D 编辑模式（管理模式）：鼠标拖拽调位置 + 切换表情 ---------- */
+.l2d.is-editing{transition:transform .45s var(--spring)}   /* 拖拽时不给动画插值，模型跟手 */
+.l2d.is-editing.is-dragging{transition:none}
+.l2d.is-editing canvas{cursor:grab;touch-action:none}
+.l2d.is-editing.is-dragging canvas{cursor:grabbing}
+.l2d.is-editing::after{
+  content:"";position:absolute;inset:8px;border-radius:20px;pointer-events:none;
+  border:1.5px dashed var(--blue);opacity:.8;
+}
+.l2d-editbar{
+  position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%);
+  z-index:200;display:flex;flex-direction:column;gap:10px;align-items:center;
+  max-width:calc(100vw - 24px);padding:14px 16px;border-radius:20px;
+  background:var(--glass-strong);
+  -webkit-backdrop-filter:saturate(180%) blur(22px);backdrop-filter:saturate(180%) blur(22px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35), inset 0 0 0 1px var(--hairline), 0 12px 32px rgba(0,0,0,.2);
+}
+.l2d-editbar.hidden{display:none}
+.l2d-editbar .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center}
+.l2d-editbar .ttl{font-size:13px;color:var(--fg2)}
+.l2d-editbar .ttl b{color:var(--fg);font-weight:600;font-variant-numeric:tabular-nums}
+.l2d-expr-chips{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.l2d-chip{
+  height:30px;padding:0 12px;border-radius:999px;font-size:12.5px;font-weight:600;cursor:pointer;
+  color:var(--fg2);background:var(--bg-elev);border:1px solid var(--hairline);
+  transition:color .18s,background .18s,transform .18s var(--spring);
+}
+.l2d-chip:hover{transform:translateY(-1px);color:var(--fg)}
+.l2d-chip.is-on{color:#fff;background:var(--blue);border-color:transparent}
+@media (max-width:640px){ .l2d{width:220px;height:250px;right:calc(8px - var(--l2d-x, 0px))} }
 
 @media (max-width:640px){
   .nav-menu{gap:0}
@@ -699,7 +729,7 @@ footer .sep{opacity:.4}
   .misc-wall{height:calc(100vh - 190px);height:calc(100dvh - 190px);min-height:340px;padding:0 28px 70px}
   .misc-list{padding:0 28px 70px;grid-template-columns:repeat(2,1fr);gap:10px}
   .misc-cell .cap{font-size:12px}
-  .l2d{width:190px;height:225px;right:0;bottom:var(--footer-stack, 0px)}  /* 模型可见底边对齐页脚上缘 */
+  .l2d{width:190px;height:225px;right:calc(0px - var(--l2d-x, 0px));bottom:calc(var(--footer-stack, 0px) + var(--l2d-y, 0px))}  /* 模型可见底边对齐页脚上缘 */
   .l2d-tab{left:-34px;width:34px;height:56px;bottom:calc(18px + env(safe-area-inset-bottom))}
   .modal{padding:12px}
   .sheet{max-height:92vh;padding:22px 18px;border-radius:20px}
@@ -1016,6 +1046,15 @@ footer .sep{opacity:.4}
     </div>
 
     <div class="divider"></div>
+    <div class="mini-title">主页 Live2D 桌宠</div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <button class="btn tint sm" id="btnL2dEdit">调整位置与表情…</button>
+      <button class="btn ghost sm" id="btnL2dReset">恢复默认位置</button>
+    </div>
+    <div class="count" id="l2dHint" style="margin-top:8px"></div>
+    <p class="hint" style="margin-top:8px">进入编辑模式后，直接用鼠标拖拽桌宠即可调整它在首页的位置，工具条里还能切换表情（桌面端）。</p>
+
+    <div class="divider"></div>
     <div class="row2">
       <div>
         <div class="mini-title">修改管理口令</div>
@@ -1056,6 +1095,20 @@ footer .sep{opacity:.4}
   <button class="l2d-tab" id="l2dTab" title="折叠 / 展开模型" aria-label="折叠 / 展开模型">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6l6 6-6 6"/></svg>
   </button>
+</div>
+
+<!-- ============ Live2D 编辑模式工具条（拖拽调位置 + 切换表情，仅管理模式可见） ============ -->
+<div class="l2d-editbar hidden" id="l2dEditBar">
+  <div class="ttl"><span id="l2dEditTip">拖拽桌宠调整位置</span> · <b id="l2dPosText">x +0% · y +0%</b></div>
+  <div class="row">
+    <span class="ttl">表情</span>
+    <div class="l2d-expr-chips" id="l2dExprChips"></div>
+  </div>
+  <div class="row">
+    <button class="btn ghost sm" id="l2dEditReset">恢复默认</button>
+    <button class="btn ghost sm" id="l2dEditCancel">取消</button>
+    <button class="btn tint sm" id="l2dEditSave">保存位置</button>
+  </div>
 </div>
 
 <script>
@@ -1160,6 +1213,19 @@ var EN = {
   '暂无杂图':'No images yet', '进入管理模式，即可上传杂图。':'Enter admin mode to upload images.',
   '当前板块：{name}':'Active section: {name}',
   '主页背景':'Homepage background', '更换背景图…':'Change background…', '当前：{v}':'Current: {v}',
+  /* 主页 Live2D（位置 / 表情编辑） */
+  '主页 Live2D 桌宠':'Homepage Live2D pet',
+  '调整位置与表情…':'Adjust position & expression…',
+  '恢复默认位置':'Reset position',
+  '进入编辑模式后，直接用鼠标拖拽桌宠即可调整它在首页的位置，工具条里还能切换表情（桌面端）。':'In edit mode, drag the pet with your mouse to place it on the homepage; the toolbar also lets you switch its expression (desktop).',
+  '位置 {p} · 表情：{e}':'Position {p} · Expression: {e}',
+  '拖拽桌宠调整位置':'Drag the pet to reposition', '表情':'Expression',
+  '默认':'Default', '表情{n}':'Expression {n}',
+  '表情1':'Expression 1', '表情2':'Expression 2', '表情3':'Expression 3',
+  '表情4':'Expression 4', '表情5':'Expression 5', '表情6':'Expression 6',
+  '恢复默认':'Reset', '保存位置':'Save position',
+  '已恢复默认位置':'Position reset to default', '已放弃 Live2D 的改动':'Live2D changes discarded',
+  '先进入管理模式':'Enter admin mode first',
   '总访问':'Visits', '当前在线':'Online now',
   '主页背景已更新':'Background updated',
   '折叠 / 展开模型':'Collapse / expand the model',
@@ -1260,6 +1326,7 @@ function setLang(l){
   buildNav();
   buildDock();
   route();
+  l2dSyncUI();          /* 动态文案（位置 / 表情）随语言重绘 */
 }
 function uid(){ return 'i' + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
 /* 标签 → 文件夹名（与 tools/import-dieshot.js 的 slug 规则一致：Apple Silicon → apple-silicon） */
@@ -1821,6 +1888,7 @@ function route(){
   else if(name === 'misc'){ renderMiscWall(); }
   else { renderHome(); }
   syncDock();                            /* 底部 Dock 高亮当前版块 */
+  if(L2D_EDIT && L2D_EDIT.editing && name !== 'home') l2dEditClose(true);  /* 离开首页 = 认可改动 */
   l2dShow(name === 'home');          /* 桌宠仅首页显示 */
   if(name !== 'layout') setStuck(false);   /* 非 Layout 页：顶栏保持完整圆角矩形 */
   else if(!('IntersectionObserver' in window)) setStuck(true);  /* 无 IO 环境在 Layout 页默认融合 */
@@ -2389,7 +2457,7 @@ async function downloadItem(it){
    - 折叠：点侧边箭头滑出屏幕边缘，再点滑回（并记忆状态）
    - 非首页 / 折叠 / 页面隐藏时暂停渲染；首次进首页才加载库与模型
    ============================================================ */
-var L2D = {app:null, model:null, state:'', timer:0};
+var L2D = {app:null, model:null, state:'', timer:0, expr:-1, blinkMgr:null, exprTimer:0};
 var L2D_ZOOM = 1.30;   /* 放大倍率：调大 = 模型更大（四周透明边距被裁掉更多） */
 var L2D_DROP  = 0.12;  /* 向下偏移（按模型高度比例）：吃掉底部透明边距、贴近屏幕底边 */
 var L2D_SHIFT = 0.05;  /* 向右偏移（按模型宽度比例）：贴近屏幕右边距 */
@@ -2423,6 +2491,9 @@ async function initLive2D(){
     model.position.set(host.clientWidth / 2 + model.width * fit * L2D_SHIFT, host.clientHeight + model.height * fit * L2D_DROP);
     app.stage.addChild(model);
     L2D.app = app; L2D.model = model; L2D.state = 'ready';
+    applyL2dLayout();                        /* 套用已保存的位置微调 */
+    buildL2dExprChips();                     /* 模型就绪后按真实表情数重建表情按钮 */
+    l2dSetExpression(l2dActiveCfg().expr);   /* 套用默认表情（编辑模式中则跟随待存的选择） */
     /* —— 仅保留：鼠标视线跟踪 + 模型自带眨眼 ——
        （随机表情 / 随机动作已移除：切换表情会在透明背景上留下黑块） */
     try{
@@ -2454,37 +2525,229 @@ function l2dShow(show){
 }
 
 /* 移动设备视图的表情/眨眼联动：
-   点按或每 8 秒在「随机表情 ↔ 默认表情」间切换；只要不是默认表情就停掉眨眼
-   （否则眨眼会覆写眼部参数、破坏表情造型） */
+   点按或每 8 秒在「随机表情 ↔ 基准表情」间切换；只要不是空白表情就彻底停眨眼
+   （否则眨眼会覆写眼部参数、叠在表情造型上） */
 function l2dCycleExpression(){
+  if(L2D_EDIT && L2D_EDIT.editing) return;                       /* 编辑模式下不自动切表情 */
   if(!(window.matchMedia && matchMedia('(max-width: 720px)').matches)) return;   /* 仅移动设备视图 */
-  var model = L2D.model;
-  if(!model) return;
-  try{
-    if(L2D.exprActive){
-      var em = model.internalModel && model.internalModel.expressionManager;
-      if(em && em.resetExpression) em.resetExpression();      /* 回默认表情 */
-      L2D.exprActive = false;
-    }else{
-      model.expression(Math.floor(Math.random() * 6));        /* 随机 6 组表情 */
-      L2D.exprActive = true;
-    }
-  }catch(err){}
-  l2dBlink(!L2D.exprActive);
+  if(!L2D.model) return;
+  var base = l2dCfgClean().expr;
+  if(L2D.expr !== base){ l2dSetExpression(base); return; }       /* 回到基准表情 */
+  var pool = [], i;
+  for(i = 0; i < l2dExprCount(); i++) if(i !== base && !l2dExprIsBlank(i)) pool.push(i);
+  if(!pool.length) for(i = 0; i < l2dExprCount(); i++) if(i !== base) pool.push(i);
+  l2dSetExpression(pool.length ? pool[Math.floor(Math.random() * pool.length)] : base);
 }
+
+/* ---------- 表情切换（-1 = 模型自带默认表情） ----------
+   注意：表情管理器挂在 internalModel.motionManager.expressionManager 上，
+   internalModel.expressionManager 并不存在 —— 取不到时 resetExpression 会静默失效，
+   表情没退回去、眨眼却又被打开了，这正是移动端「眨眼叠在表情上」的元凶之一 */
+function l2dExprManager(){
+  var im = L2D.model && L2D.model.internalModel;
+  if(!im) return null;
+  return (im.motionManager && im.motionManager.expressionManager) || im.expressionManager || null;
+}
+function l2dExprCount(){
+  var em = l2dExprManager();
+  var defs = em && em.definitions;
+  return (defs && defs.length) ? defs.length : 6;
+}
+function l2dExprIsBlank(idx){
+  if(idx == null || idx < 0) return true;                        /* -1 = 默认表情 */
+  try{
+    var em = l2dExprManager();
+    var ex = em && em.expressions ? em.expressions[idx] : null;   /* 加载后才拿得到 */
+    if(ex){
+      var p = ex._parameters || ex.parameters || (typeof ex.getParameters === 'function' ? ex.getParameters() : null);
+      if(p && typeof p.length === 'number') return p.length === 0;
+    }
+  }catch(e){}
+  return idx === 0;   /* 兜底：本模型的 expression1 是空参数（视觉等同默认表情） */
+}
+async function l2dSetExpression(idx){
+  var n = parseInt(idx, 10);
+  if(isNaN(n)) n = -1;
+  n = Math.max(-1, Math.min(l2dExprCount() - 1, n));
+  L2D.expr = n;
+  if(L2D.model){
+    try{
+      var em = l2dExprManager();
+      if(n < 0){
+        if(em && em.resetExpression){
+          em.resetExpression();
+          /* 库的坑：resetExpression 不更新 currentExpression，
+             之后再切回旧表情会被 setExpression 的「已是该表情」守卫拦下 → 归位 */
+          em.currentExpression = em.defaultExpression;
+        }
+      }
+      else if(L2D.model.expression) await L2D.model.expression(n);
+    }catch(err){}
+  }
+  l2dBlink(l2dExprIsBlank(n));   /* 非空白表情：眨眼必须完全停写 */
+  l2dSyncUI();
+}
+
+/* 眨眼开关。关键点：光调大 setBlinkingInterval 不够 ——
+   1) 已排期的那次眨眼照样会走完整个闭眼过程；
+   2) 眨眼参数每帧写在表情之后，会把表情的眼部造型盖掉。
+   所以关闭时直接让它的 updateParameters 不再写任何眼部参数，并复位状态机。 */
 function l2dBlink(on){
   var im = L2D.model && L2D.model.internalModel;
-  var mgr = im && (im.eyeBlink || im.blink || null);
-  if(!mgr && im){                                            /* 按特征方法兜底查找眨眼管理器 */
+  if(!im) return;
+  var mgr = im.eyeBlink || im.blink || L2D.blinkMgr || null;
+  if(!mgr){                                            /* 按特征方法兜底查找眨眼管理器 */
     for(var k in im){
       var v = im[k];
       if(v && typeof v.setBlinkingInterval === 'function'){ mgr = v; break; }
     }
   }
   if(!mgr) return;
-  try{ mgr.setBlinkingInterval(on ? 4 : 1e9); }catch(e){}     /* 4s=正常眨眼；1e9≈永不 */
+  L2D.blinkMgr = mgr;
+  if(!mgr._l2dUpdate) mgr._l2dUpdate = mgr.updateParameters;   /* 记下原方法，随时可开回来 */
+  if(on){
+    mgr.updateParameters = mgr._l2dUpdate;
+    try{
+      mgr.setBlinkingInterval(4);
+      /* 复位到「刚加载」的干净状态：不把停掉前排期的那次眨眼补回来 */
+      mgr._blinkingState = 0;          /* EyeState_First */
+      mgr._nextBlinkingTime = 0;
+      mgr._stateStartTimeSeconds = 0;
+      mgr._userTimeSeconds = 0;
+    }catch(e){}
+  }else{
+    mgr.updateParameters = function(){};   /* 关掉期间一帧都不写眼部参数 */
+    try{
+      mgr._blinkingState = 1;          /* EyeState_Interval */
+      mgr._nextBlinkingTime = Number.MAX_VALUE;
+    }catch(e){}
+  }
   var box = $('l2d');
   if(box) box.dataset.blink = on ? 'on' : 'off';
+}
+
+/* ---------- Live2D 编辑模式（管理模式）：鼠标拖拽调整首页位置 + 切换表情 ----------
+   位置按「视口百分比」记忆（换屏宽 / 手机上也不跑位）：x 右移为正、y 上移为正 */
+var L2D_EDIT = {editing:false, cfg:null, backup:null, drag:null};
+var L2D_LIMIT = {xMin:-70, xMax:12, yMin:-25, yMax:45};
+function l2dCfg(){
+  var s = state.site.l2d;
+  if(s && typeof s === 'object') return s;
+  return lsGet('layout.l2d', null) || {};   /* 本机模式兜底（草稿不回写 site） */
+}
+function l2dActiveCfg(){ return (L2D_EDIT.editing && L2D_EDIT.cfg) ? L2D_EDIT.cfg : l2dCfg(); }
+function l2dCfgClean(src){
+  var c = src || l2dCfg();
+  var e = parseInt(c.expr, 10);
+  if(isNaN(e)) e = -1;
+  return {
+    x: Math.max(L2D_LIMIT.xMin, Math.min(L2D_LIMIT.xMax, Math.round((Number(c.x) || 0) * 10) / 10)),
+    y: Math.max(L2D_LIMIT.yMin, Math.min(L2D_LIMIT.yMax, Math.round((Number(c.y) || 0) * 10) / 10)),
+    expr: Math.max(-1, Math.min(l2dExprCount() - 1, e))
+  };
+}
+function applyL2dLayout(cfg){
+  var c = l2dCfgClean(cfg || l2dActiveCfg());
+  var root = document.documentElement;
+  root.style.setProperty('--l2d-x', ((Number(c.x) || 0) / 100 * window.innerWidth).toFixed(1) + 'px');
+  root.style.setProperty('--l2d-y', ((Number(c.y) || 0) / 100 * window.innerHeight).toFixed(1) + 'px');
+  return c;
+}
+function l2dSyncUI(){
+  var c = l2dCfgClean(l2dActiveCfg());
+  var posTxt = 'x ' + (c.x >= 0 ? '+' : '') + c.x + '% · y ' + (c.y >= 0 ? '+' : '') + c.y + '%';
+  var pt = $('l2dPosText');
+  if(pt) pt.textContent = posTxt;
+  var name = (c.expr < 0) ? t('默认') : fmtTpl(t('表情{n}'), {n: c.expr + 1});
+  var hint = $('l2dHint');
+  if(hint) hint.textContent = fmtTpl(t('位置 {p} · 表情：{e}'), {p: posTxt, e: name});
+  Array.prototype.forEach.call(document.querySelectorAll('#l2dExprChips .l2d-chip'), function(b){
+    b.classList.toggle('is-on', Number(b.dataset.expr) === c.expr);
+  });
+}
+function buildL2dExprChips(){
+  var box = $('l2dExprChips');
+  if(!box) return;
+  box.innerHTML = '';
+  for(var i = -1; i < l2dExprCount(); i++){
+    (function(idx){
+      var zh = (idx < 0) ? '默认' : fmtTpl('表情{n}', {n: idx + 1});
+      var b = el('button', 'l2d-chip');
+      b.type = 'button';
+      b.dataset.expr = String(idx);
+      b.textContent = t(zh);
+      if(b.firstChild) b.firstChild._zh = zh;   /* 语言切换时可从中文原句重译 */
+      b.addEventListener('click', function(){
+        if(L2D_EDIT.editing) L2D_EDIT.cfg.expr = idx;
+        l2dSetExpression(idx);
+      });
+      box.appendChild(b);
+    })(i);
+  }
+  l2dSyncUI();
+}
+function l2dEditOpen(){
+  if(!state.admin){ toast('先进入管理模式'); return; }
+  $('modalPanel').classList.remove('is-open');
+  if(location.hash !== '#/' && location.hash !== '') location.hash = '#/';  /* 回首页才看得到桌宠 */
+  l2dShow(true);
+  if($('l2d').classList.contains('is-hidden')) $('l2dTab').click();          /* 折叠着没法拖 */
+  L2D_EDIT.editing = true;
+  L2D_EDIT.backup = l2dCfgClean();
+  L2D_EDIT.cfg = l2dCfgClean();
+  $('l2d').classList.add('is-editing');
+  $('l2dEditBar').classList.remove('hidden');
+  applyL2dLayout();
+  l2dSyncUI();
+}
+function l2dEditClose(save){
+  if(!L2D_EDIT.editing) return;
+  L2D_EDIT.editing = false;
+  L2D_EDIT.drag = null;
+  $('l2d').classList.remove('is-editing', 'is-dragging');
+  $('l2dEditBar').classList.add('hidden');
+  if(save){
+    var c = l2dCfgClean(L2D_EDIT.cfg);
+    state.site.l2d = c;
+    lsSet('layout.l2d', c);
+    applyL2dLayout(c);
+    saveManifest('update site.l2d', 'dieshot');   /* 自行提示「已同步到 GitHub 仓库」/「已保存到本机草稿」 */
+  }else{
+    applyL2dLayout(L2D_EDIT.backup);
+    l2dSetExpression(L2D_EDIT.backup.expr);
+    toast('已放弃 Live2D 的改动');
+  }
+  L2D_EDIT.cfg = null;
+  l2dSyncUI();
+}
+function l2dDragStart(e){
+  if(!L2D_EDIT.editing || !e.isPrimary) return;
+  if(e.pointerType === 'mouse' && e.button !== 0) return;
+  e.preventDefault();
+  L2D_EDIT.drag = {id: e.pointerId, x0: e.clientX, y0: e.clientY, base: l2dCfgClean(L2D_EDIT.cfg)};
+  $('l2d').classList.add('is-dragging');
+  try{ $('l2dCanvas').setPointerCapture(e.pointerId); }catch(err){}
+}
+function l2dDragMove(e){
+  var d = L2D_EDIT.drag;
+  if(!d || e.pointerId !== d.id) return;
+  e.preventDefault();
+  var cfg = l2dCfgClean({
+    x: d.base.x + (e.clientX - d.x0) / window.innerWidth * 100,
+    y: d.base.y - (e.clientY - d.y0) / window.innerHeight * 100,
+    expr: L2D_EDIT.cfg.expr
+  });
+  L2D_EDIT.cfg.x = cfg.x;
+  L2D_EDIT.cfg.y = cfg.y;
+  applyL2dLayout(cfg);
+  l2dSyncUI();
+}
+function l2dDragEnd(e){
+  var d = L2D_EDIT.drag;
+  if(!d || (e && e.pointerId !== d.id)) return;
+  L2D_EDIT.drag = null;
+  $('l2d').classList.remove('is-dragging');
+  try{ if(e && e.pointerId != null) $('l2dCanvas').releasePointerCapture(e.pointerId); }catch(err){}
 }
 
 /* ---------- 移动端底部 Dock（由 NAV 数据生成） ---------- */
@@ -2576,6 +2839,7 @@ function openPanel(){
   $('panelStat').textContent = fmtTpl(t('共 {n} 张图片，其中本机 {m} 张'),
     {n: state.items.length, m: state.items.filter(function(i){ return i.local; }).length});
   $('bgHint').textContent = fmtTpl(t('当前：{v}'), {v: state.site.bg || 'images/home-bg.jpg'});
+  l2dSyncUI();   /* 主页 Live2D 当前位置 / 表情 */
   renderDraftNote();
   renderQueue();
   $('modalPanel').classList.add('is-open');
@@ -3227,6 +3491,7 @@ function bind(){
       return;
     }
     if(e.key === 'Escape'){
+      if(L2D_EDIT.editing){ l2dEditClose(false); return; }   /* 编辑模式：Esc = 放弃改动 */
       closeDD();
       $('modalLogin').classList.remove('is-open');
       $('modalPanel').classList.remove('is-open');
@@ -3282,6 +3547,33 @@ function bind(){
     if(L2D.app){ h ? L2D.app.stop() : L2D.app.start(); }
   });
 
+  /* Live2D 编辑模式（管理模式）：拖拽调整首页位置 + 切换表情 */
+  $('btnL2dEdit').addEventListener('click', l2dEditOpen);
+  $('btnL2dReset').addEventListener('click', function(){
+    var c = l2dCfgClean();
+    c.x = 0; c.y = 0;
+    state.site.l2d = c;
+    lsSet('layout.l2d', c);
+    applyL2dLayout(c);
+    l2dSyncUI();
+    saveManifest('reset site.l2d position', 'dieshot');
+    toast('已恢复默认位置');
+  });
+  $('l2dEditSave').addEventListener('click', function(){ l2dEditClose(true); });
+  $('l2dEditCancel').addEventListener('click', function(){ l2dEditClose(false); });
+  $('l2dEditReset').addEventListener('click', function(){
+    if(!L2D_EDIT.editing) return;
+    L2D_EDIT.cfg = {x:0, y:0, expr:-1};   /* 先只改待存的配置，点「保存位置」才落盘 */
+    applyL2dLayout();
+    l2dSetExpression(-1);
+  });
+  var l2dCanvas = $('l2dCanvas');
+  l2dCanvas.addEventListener('pointerdown', l2dDragStart);
+  window.addEventListener('pointermove', l2dDragMove);
+  window.addEventListener('pointerup', l2dDragEnd);
+  window.addEventListener('pointercancel', l2dDragEnd);
+  window.addEventListener('resize', function(){ applyL2dLayout(); });
+
   /* 点击遮罩关闭（编辑弹窗除外：只能用「取消」/「保存」关闭，防误触丢改动） */
   ['modalLogin','modalPanel'].forEach(function(id){
     $(id).addEventListener('click', function(e){ if(e.target === $(id)) $(id).classList.remove('is-open'); });
@@ -3295,6 +3587,8 @@ function bind(){
   buildNav();
   bind();
   await loadManifest();
+  applyL2dLayout();                        /* 套用已保存的 Live2D 位置（模型未加载也先把框摆好） */
+  buildL2dExprChips();                     /* 表情按钮（模型就绪后会按真实表情数重建一次） */
   var savedLang = '';
   try{ savedLang = localStorage.getItem('layout.lang') || ''; }catch(e){}
   setLang(savedLang || ((navigator.language || '').toLowerCase().indexOf('en') === 0 ? 'en' : 'zh'));
