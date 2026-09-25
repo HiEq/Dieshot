@@ -5,22 +5,10 @@
     "sub": "Die Shot 裸片图库：{tags} 家厂商 · {items} 张裸片显微影像。",
     "brand": "HiEq",
     "avatar": "https://github.com/HiEq.png?size=64",
-    "bg": "images/home-bg.jpg",
-    "l2d": {
-      "desktop": {
-        "x": -0.2,
-        "y": 0,
-        "expr": -1
-      },
-      "mobile": {
-        "x": 5.2,
-        "y": -6.2,
-        "expr": -1
-      }
-    }
+    "bg": "images/home-bg.jpg"
   },
   "config": {
-    "adminHash": "386cc1fc613bf00865387cd578cc5c5bfd188f0167516ac44e41cfcc2119f5ab",
+    "adminHash": "90248665dd7a50717e26ddc4bfa9922d8d373096c968238564fcd591216d61ba",
     "github": {
       "token": "",
       "owner": "HiEq/Dieshot",
