@@ -635,19 +635,21 @@ footer .sep{opacity:.4}
 
 /* ---------- Live2D 桌宠（仅首页右下角；箭头可折叠到屏幕边缘） ----------
    位置可由管理模式鼠标拖拽微调：--l2d-x=右移（%视口宽，负=左移）、--l2d-y=上移（%视口高，负=下移）；
-   --l2d-right 是各断点的默认贴边距离，位置与折叠隐藏都用它换算；
-   --l2d-scale 是大小倍率（编辑模式可调，各端各存一份） */
+   --l2d-right 是各断点的默认贴边距离，--l2d-half 是盒宽的一半（大小补偿用），
+   --l2d-right-px = 实际右偏移（位置 + 大小补偿），定位与折叠隐藏共用，保证改大小不跑位 */
 .l2d{
   --l2d-right:2px;
-  position:fixed;right:calc(var(--l2d-right) - var(--l2d-x, 0px));bottom:calc(0px + var(--l2d-y, 0px));z-index:70;
+  --l2d-half:150px;
+  --l2d-right-px: calc(var(--l2d-right) - var(--l2d-x, 0px) - (var(--l2d-scale, 1) - 1) * var(--l2d-half));
+  position:fixed;right:var(--l2d-right-px);bottom:calc(0px + var(--l2d-y, 0px));z-index:70;
   width:calc(300px * var(--l2d-scale, 1));height:calc(340px * var(--l2d-scale, 1));pointer-events:none;
   transition:transform .45s var(--spring), right .25s var(--ease), bottom .25s var(--ease);
 }
 .l2d[hidden]{display:none}
 .l2d canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:auto;cursor:grab}
-/* 折叠隐藏：整箱推到屏幕右缘之外 —— 位移 = 自身宽度 + 当前贴边距离 + 4px 安全缝，
-   即「把自己左边缘送到视口右边缘外」，与拖到哪、屏宽多少都无关，藏起来只剩侧边箭头 */
-.l2d.is-hidden{transform:translateX(calc(100% + 4px + var(--l2d-right) - var(--l2d-x, 0px)))}
+/* 折叠隐藏：整箱推到屏幕右缘之外 —— 位移 = 自身宽度 + 当前右偏移 + 4px 安全缝，
+   即「把自己左边缘送到视口右边缘外」，与拖到哪、屏宽多少、多大尺寸都无关 */
+.l2d.is-hidden{transform:translateX(calc(100% + 4px + var(--l2d-right-px)))}
 .l2d-tab{
   position:absolute;left:-36px;bottom:28px;width:36px;height:64px;
   pointer-events:none;display:flex;align-items:center;justify-content:center;
@@ -693,7 +695,7 @@ footer .sep{opacity:.4}
 .l2d-chip:hover{transform:translateY(-1px);color:var(--fg)}
 .l2d-chip.is-on{color:#fff;background:var(--blue);border-color:transparent}
 .l2d-editbar input[type=range]{width:150px;accent-color:var(--blue);cursor:pointer}
-@media (max-width:640px){ .l2d{--l2d-right:8px;width:calc(220px * var(--l2d-scale, 1));height:calc(250px * var(--l2d-scale, 1))} }
+@media (max-width:640px){ .l2d{--l2d-right:8px;--l2d-half:110px;width:calc(220px * var(--l2d-scale, 1));height:calc(250px * var(--l2d-scale, 1))} }
 
 @media (max-width:640px){
   .nav-menu{gap:0}
@@ -735,7 +737,7 @@ footer .sep{opacity:.4}
   .misc-wall{height:calc(100vh - 190px);height:calc(100dvh - 190px);min-height:340px;padding:0 28px 70px}
   .misc-list{padding:0 28px 70px;grid-template-columns:repeat(2,1fr);gap:10px}
   .misc-cell .cap{font-size:12px}
-  .l2d{--l2d-right:0px;width:calc(190px * var(--l2d-scale, 1));height:calc(225px * var(--l2d-scale, 1));bottom:calc(var(--footer-stack, 0px) + var(--l2d-y, 0px))}  /* 模型可见底边对齐页脚上缘 */
+  .l2d{--l2d-right:0px;--l2d-half:95px;width:calc(190px * var(--l2d-scale, 1));height:calc(225px * var(--l2d-scale, 1));bottom:calc(var(--footer-stack, 0px) + var(--l2d-y, 0px))}  /* 模型可见底边对齐页脚上缘 */
   .l2d-tab{left:-34px;width:34px;height:56px;bottom:calc(18px + env(safe-area-inset-bottom))}
   .modal{padding:12px}
   .sheet{max-height:92vh;padding:22px 18px;border-radius:20px}
@@ -2848,10 +2850,14 @@ function l2dDragMove(e){
   var cfg = l2dCfgClean({
     x: d.base.x + (e.clientX - d.x0) / window.innerWidth * 100,
     y: d.base.y - (e.clientY - d.y0) / window.innerHeight * 100,
-    expr: L2D_EDIT.cfg.expr
+    expr: L2D_EDIT.cfg.expr,
+    /* 关键：拖拽时必须带上当前大小 —— 少了它会被默认成 1，
+       拖的过程中桌宠缩回默认尺寸、保存又跳回原大小，看着就是「位置对不上」 */
+    size: L2D_EDIT.cfg.size
   });
   L2D_EDIT.cfg.x = cfg.x;
   L2D_EDIT.cfg.y = cfg.y;
+  L2D_EDIT.cfg.size = cfg.size;
   applyL2dLayout(cfg);
   l2dSyncUI();
 }
@@ -3668,7 +3674,7 @@ function bind(){
   $('btnL2dReset').addEventListener('click', function(){
     var dev = l2dActiveDev();
     var s = l2dCfgClean(l2dSlotOf(dev));
-    var out = l2dSaveCfg({x:0, y:0, expr: s.expr}, dev);   /* 只重置本端的位置，表情与另一端不动 */
+    var out = l2dSaveCfg({x:0, y:0, expr: s.expr, size: s.size}, dev);   /* 只重置本端的位置，表情 / 大小与另一端不动 */
     applyL2dLayout(out[dev]);
     l2dSyncUI();
     toast('已恢复默认位置');
