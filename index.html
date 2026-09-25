@@ -1052,7 +1052,7 @@ footer .sep{opacity:.4}
       <button class="btn ghost sm" id="btnL2dReset">恢复默认位置</button>
     </div>
     <div class="count" id="l2dHint" style="margin-top:8px"></div>
-    <p class="hint" style="margin-top:8px">进入编辑模式后，直接用鼠标拖拽桌宠即可调整它在首页的位置，工具条里还能切换表情（桌面端）。</p>
+    <p class="hint" style="margin-top:8px">进入编辑模式后，直接用鼠标拖拽桌宠即可调整它在首页的位置，工具条里还能切换表情。电脑端与移动端各存一份、互不影响（想调手机上的效果请用手机打开本页）。</p>
 
     <div class="divider"></div>
     <div class="row2">
@@ -1217,9 +1217,10 @@ var EN = {
   '主页 Live2D 桌宠':'Homepage Live2D pet',
   '调整位置与表情…':'Adjust position & expression…',
   '恢复默认位置':'Reset position',
-  '进入编辑模式后，直接用鼠标拖拽桌宠即可调整它在首页的位置，工具条里还能切换表情（桌面端）。':'In edit mode, drag the pet with your mouse to place it on the homepage; the toolbar also lets you switch its expression (desktop).',
-  '位置 {p} · 表情：{e}':'Position {p} · Expression: {e}',
-  '拖拽桌宠调整位置':'Drag the pet to reposition', '表情':'Expression',
+  '进入编辑模式后，直接用鼠标拖拽桌宠即可调整它在首页的位置，工具条里还能切换表情。电脑端与移动端各存一份、互不影响（想调手机上的效果请用手机打开本页）。':'In edit mode, drag the pet with your mouse to place it on the homepage and switch its expression in the toolbar. Desktop and mobile keep separate settings and never affect each other (open this page on your phone to tune the mobile view).',
+  '电脑端':'Desktop', '移动端':'Mobile',
+  '位置（{d}）{p} · 表情：{e}':'Position ({d}) {p} · Expression: {e}',
+  '拖拽桌宠调整位置':'Drag the pet to reposition', '拖拽桌宠调整位置（{d}）':'Drag the pet to reposition ({d})', '表情':'Expression',
   '默认':'Default', '表情{n}':'Expression {n}',
   '表情1':'Expression 1', '表情2':'Expression 2', '表情3':'Expression 3',
   '表情4':'Expression 4', '表情5':'Expression 5', '表情6':'Expression 6',
@@ -2457,7 +2458,7 @@ async function downloadItem(it){
    - 折叠：点侧边箭头滑出屏幕边缘，再点滑回（并记忆状态）
    - 非首页 / 折叠 / 页面隐藏时暂停渲染；首次进首页才加载库与模型
    ============================================================ */
-var L2D = {app:null, model:null, state:'', timer:0, expr:-1, blinkMgr:null, exprTimer:0};
+var L2D = {app:null, model:null, state:'', timer:0, expr:-1, exprDev:'', blinkMgr:null, exprTimer:0};
 var L2D_ZOOM = 1.30;   /* 放大倍率：调大 = 模型更大（四周透明边距被裁掉更多） */
 var L2D_DROP  = 0.12;  /* 向下偏移（按模型高度比例）：吃掉底部透明边距、贴近屏幕底边 */
 var L2D_SHIFT = 0.05;  /* 向右偏移（按模型宽度比例）：贴近屏幕右边距 */
@@ -2531,7 +2532,7 @@ function l2dCycleExpression(){
   if(L2D_EDIT && L2D_EDIT.editing) return;                       /* 编辑模式下不自动切表情 */
   if(!(window.matchMedia && matchMedia('(max-width: 720px)').matches)) return;   /* 仅移动设备视图 */
   if(!L2D.model) return;
-  var base = l2dCfgClean().expr;
+  var base = l2dCfgClean(l2dActiveCfg()).expr;      /* 本端（移动端）的基准表情 */
   if(L2D.expr !== base){ l2dSetExpression(base); return; }       /* 回到基准表情 */
   var pool = [], i;
   for(i = 0; i < l2dExprCount(); i++) if(i !== base && !l2dExprIsBlank(i)) pool.push(i);
@@ -2570,6 +2571,7 @@ async function l2dSetExpression(idx){
   if(isNaN(n)) n = -1;
   n = Math.max(-1, Math.min(l2dExprCount() - 1, n));
   L2D.expr = n;
+  L2D.exprDev = l2dActiveDev();   /* 记住当前这张脸属于哪一端 */
   if(L2D.model){
     try{
       var em = l2dExprManager();
@@ -2627,17 +2629,26 @@ function l2dBlink(on){
 }
 
 /* ---------- Live2D 编辑模式（管理模式）：鼠标拖拽调整首页位置 + 切换表情 ----------
+   电脑端 / 移动端各存一份（位置 + 表情都互不影响，谁也盖不掉谁），
    位置按「视口百分比」记忆（换屏宽 / 手机上也不跑位）：x 右移为正、y 上移为正 */
-var L2D_EDIT = {editing:false, cfg:null, backup:null, drag:null};
+var L2D_EDIT = {editing:false, dev:'', cfg:null, backup:null, drag:null};
 var L2D_LIMIT = {xMin:-70, xMax:12, yMin:-25, yMax:45};
+function l2dDevice(){ return (window.matchMedia && matchMedia('(max-width: 720px)').matches) ? 'mobile' : 'desktop'; }
+function l2dActiveDev(){ return (L2D_EDIT.editing && L2D_EDIT.dev) ? L2D_EDIT.dev : l2dDevice(); }
 function l2dCfg(){
   var s = state.site.l2d;
   if(s && typeof s === 'object') return s;
   return lsGet('layout.l2d', null) || {};   /* 本机模式兜底（草稿不回写 site） */
 }
-function l2dActiveCfg(){ return (L2D_EDIT.editing && L2D_EDIT.cfg) ? L2D_EDIT.cfg : l2dCfg(); }
+function l2dSlotOf(dev){
+  var c = l2dCfg();
+  var s = (dev === 'mobile') ? c.mobile : c.desktop;
+  if(s && typeof s === 'object') return s;
+  if(c.x != null || c.y != null || c.expr != null) return c;   /* 旧版单份配置：两端共用，兼容老数据 */
+  return {};
+}
 function l2dCfgClean(src){
-  var c = src || l2dCfg();
+  var c = src || l2dActiveCfg();
   var e = parseInt(c.expr, 10);
   if(isNaN(e)) e = -1;
   return {
@@ -2646,6 +2657,21 @@ function l2dCfgClean(src){
     expr: Math.max(-1, Math.min(l2dExprCount() - 1, e))
   };
 }
+function l2dActiveCfg(){
+  return (L2D_EDIT.editing && L2D_EDIT.cfg) ? L2D_EDIT.cfg : l2dSlotOf(l2dActiveDev());
+}
+/* 落盘：只覆盖当前编辑的那一端，另一端原样保留（旧版单份配置在这里顺手拆成两份） */
+function l2dSaveCfg(next, dev){
+  dev = dev || l2dActiveDev();
+  var out = {
+    desktop: l2dCfgClean(l2dSlotOf('desktop')),
+    mobile: l2dCfgClean(l2dSlotOf('mobile'))
+  };
+  out[dev] = l2dCfgClean(next || out[dev]);
+  state.site.l2d = out;
+  lsSet('layout.l2d', out);
+  return out;
+}
 function applyL2dLayout(cfg){
   var c = l2dCfgClean(cfg || l2dActiveCfg());
   var root = document.documentElement;
@@ -2653,14 +2679,24 @@ function applyL2dLayout(cfg){
   root.style.setProperty('--l2d-y', ((Number(c.y) || 0) / 100 * window.innerHeight).toFixed(1) + 'px');
   return c;
 }
+/* 跨断点（电脑端 ↔ 移动端）时换上这一端自己的表情与位置 */
+function l2dSyncDevice(){
+  if(L2D_EDIT.editing) return;                 /* 编辑中以本局锁定的那一端为准 */
+  if(l2dDevice() === L2D.exprDev) return;
+  l2dSetExpression(l2dActiveCfg().expr);
+}
 function l2dSyncUI(){
+  var dev = l2dActiveDev();
+  var devName = t(dev === 'mobile' ? '移动端' : '电脑端');
   var c = l2dCfgClean(l2dActiveCfg());
   var posTxt = 'x ' + (c.x >= 0 ? '+' : '') + c.x + '% · y ' + (c.y >= 0 ? '+' : '') + c.y + '%';
   var pt = $('l2dPosText');
   if(pt) pt.textContent = posTxt;
+  var tip = $('l2dEditTip');
+  if(tip) tip.textContent = fmtTpl(t('拖拽桌宠调整位置（{d}）'), {d: devName});
   var name = (c.expr < 0) ? t('默认') : fmtTpl(t('表情{n}'), {n: c.expr + 1});
   var hint = $('l2dHint');
-  if(hint) hint.textContent = fmtTpl(t('位置 {p} · 表情：{e}'), {p: posTxt, e: name});
+  if(hint) hint.textContent = fmtTpl(t('位置（{d}）{p} · 表情：{e}'), {d: devName, p: posTxt, e: name});
   Array.prototype.forEach.call(document.querySelectorAll('#l2dExprChips .l2d-chip'), function(b){
     b.classList.toggle('is-on', Number(b.dataset.expr) === c.expr);
   });
@@ -2693,24 +2729,24 @@ function l2dEditOpen(){
   l2dShow(true);
   if($('l2d').classList.contains('is-hidden')) $('l2dTab').click();          /* 折叠着没法拖 */
   L2D_EDIT.editing = true;
-  L2D_EDIT.backup = l2dCfgClean();
-  L2D_EDIT.cfg = l2dCfgClean();
+  L2D_EDIT.dev = l2dDevice();                       /* 这一局只改当前端，另一端不受影响 */
+  L2D_EDIT.backup = l2dCfgClean(l2dSlotOf(L2D_EDIT.dev));
+  L2D_EDIT.cfg = l2dCfgClean(L2D_EDIT.backup);
   $('l2d').classList.add('is-editing');
   $('l2dEditBar').classList.remove('hidden');
-  applyL2dLayout();
+  applyL2dLayout(L2D_EDIT.cfg);
   l2dSyncUI();
 }
 function l2dEditClose(save){
   if(!L2D_EDIT.editing) return;
+  var dev = L2D_EDIT.dev || l2dDevice();
   L2D_EDIT.editing = false;
   L2D_EDIT.drag = null;
   $('l2d').classList.remove('is-editing', 'is-dragging');
   $('l2dEditBar').classList.add('hidden');
   if(save){
-    var c = l2dCfgClean(L2D_EDIT.cfg);
-    state.site.l2d = c;
-    lsSet('layout.l2d', c);
-    applyL2dLayout(c);
+    var out = l2dSaveCfg(L2D_EDIT.cfg, dev);
+    applyL2dLayout(out[dev]);
     saveManifest('update site.l2d', 'dieshot');   /* 自行提示「已同步到 GitHub 仓库」/「已保存到本机草稿」 */
   }else{
     applyL2dLayout(L2D_EDIT.backup);
@@ -3547,14 +3583,13 @@ function bind(){
     if(L2D.app){ h ? L2D.app.stop() : L2D.app.start(); }
   });
 
-  /* Live2D 编辑模式（管理模式）：拖拽调整首页位置 + 切换表情 */
+  /* Live2D 编辑模式（管理模式）：拖拽调整首页位置 + 切换表情（电脑端 / 移动端各存一份） */
   $('btnL2dEdit').addEventListener('click', l2dEditOpen);
   $('btnL2dReset').addEventListener('click', function(){
-    var c = l2dCfgClean();
-    c.x = 0; c.y = 0;
-    state.site.l2d = c;
-    lsSet('layout.l2d', c);
-    applyL2dLayout(c);
+    var dev = l2dActiveDev();
+    var s = l2dCfgClean(l2dSlotOf(dev));
+    var out = l2dSaveCfg({x:0, y:0, expr: s.expr}, dev);   /* 只重置本端的位置，表情与另一端不动 */
+    applyL2dLayout(out[dev]);
     l2dSyncUI();
     saveManifest('reset site.l2d position', 'dieshot');
     toast('已恢复默认位置');
@@ -3563,7 +3598,7 @@ function bind(){
   $('l2dEditCancel').addEventListener('click', function(){ l2dEditClose(false); });
   $('l2dEditReset').addEventListener('click', function(){
     if(!L2D_EDIT.editing) return;
-    L2D_EDIT.cfg = {x:0, y:0, expr:-1};   /* 先只改待存的配置，点「保存位置」才落盘 */
+    L2D_EDIT.cfg = {x:0, y:0, expr:-1};   /* 先只改本端待存的配置，点「保存位置」才落盘 */
     applyL2dLayout();
     l2dSetExpression(-1);
   });
@@ -3572,7 +3607,7 @@ function bind(){
   window.addEventListener('pointermove', l2dDragMove);
   window.addEventListener('pointerup', l2dDragEnd);
   window.addEventListener('pointercancel', l2dDragEnd);
-  window.addEventListener('resize', function(){ applyL2dLayout(); });
+  window.addEventListener('resize', function(){ applyL2dLayout(); l2dSyncUI(); l2dSyncDevice(); });
 
   /* 点击遮罩关闭（编辑弹窗除外：只能用「取消」/「保存」关闭，防误触丢改动） */
   ['modalLogin','modalPanel'].forEach(function(id){
