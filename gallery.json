@@ -7,9 +7,16 @@
     "avatar": "https://github.com/HiEq.png?size=64",
     "bg": "images/home-bg.jpg",
     "l2d": {
-      "x": -0.2,
-      "y": 0,
-      "expr": -1
+      "desktop": {
+        "x": -0.2,
+        "y": 0,
+        "expr": -1
+      },
+      "mobile": {
+        "x": 5.2,
+        "y": -6.2,
+        "expr": -1
+      }
     }
   },
   "config": {
