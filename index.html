@@ -1056,7 +1056,7 @@ footer .sep{opacity:.4}
       <button class="btn ghost sm" id="btnL2dReset">恢复默认位置</button>
     </div>
     <div class="count" id="l2dHint" style="margin-top:8px"></div>
-    <p class="hint" style="margin-top:8px">进入编辑模式后，直接用鼠标拖拽桌宠即可调整它在首页的位置，工具条里还能切换表情。电脑端与移动端各存一份、互不影响（想调手机上的效果请用手机打开本页）。</p>
+    <p class="hint" style="margin-top:8px">进入编辑模式后，直接用鼠标拖拽桌宠即可调整它在首页的位置，工具条里还能切换表情。电脑端与移动端各存一份、互不影响（想调手机上的效果请用手机打开本页）；设置只存本机浏览器，不写入仓库、无需重新部署。</p>
 
     <div class="divider"></div>
     <div class="row2">
@@ -1221,7 +1221,8 @@ var EN = {
   '主页 Live2D 桌宠':'Homepage Live2D pet',
   '调整位置与表情…':'Adjust position & expression…',
   '恢复默认位置':'Reset position',
-  '进入编辑模式后，直接用鼠标拖拽桌宠即可调整它在首页的位置，工具条里还能切换表情。电脑端与移动端各存一份、互不影响（想调手机上的效果请用手机打开本页）。':'In edit mode, drag the pet with your mouse to place it on the homepage and switch its expression in the toolbar. Desktop and mobile keep separate settings and never affect each other (open this page on your phone to tune the mobile view).',
+  '进入编辑模式后，直接用鼠标拖拽桌宠即可调整它在首页的位置，工具条里还能切换表情。电脑端与移动端各存一份、互不影响（想调手机上的效果请用手机打开本页）；设置只存本机浏览器，不写入仓库、无需重新部署。':'In edit mode, drag the pet with your mouse to place it on the homepage and switch its expression in the toolbar. Desktop and mobile keep separate settings and never affect each other (open this page on your phone to tune the mobile view). Settings stay in this browser only — nothing is written to the repo, no redeploy needed.',
+  'Live2D 设置已保存到本机':'Live2D settings saved on this device',
   '电脑端':'Desktop', '移动端':'Mobile',
   '位置（{d}）{p} · 表情：{e}':'Position ({d}) {p} · Expression: {e}',
   '拖拽桌宠调整位置':'Drag the pet to reposition', '拖拽桌宠调整位置（{d}）':'Drag the pet to reposition ({d})', '表情':'Expression',
@@ -1599,6 +1600,13 @@ async function loadManifest(){
   (localItems || []).forEach(function(li){ (li.coll === 'misc' ? state.misc : state.dieshot).unshift(li); });
   enterCollection('dieshot');
 }
+/* 写进仓库/草稿的 site 字段：Live2D 的位置与表情是「这台设备 + 这个浏览器」的偏好，
+   永远不入库 —— 改桌宠只写本机，不触发仓库提交与 Pages 重建 */
+function siteForManifest(){
+  var s = Object.assign({}, state.site);
+  delete s.l2d;
+  return s;
+}
 async function saveManifest(message, coll){
   /* 写回当前版块的清单（gallery.json 或 misc.json）；否则存本机草稿 */
   coll = coll || state.active;
@@ -1609,7 +1617,7 @@ async function saveManifest(message, coll){
     ? {version: 1, items: list}
     : {
     version: 1,
-    site: state.site,
+    site: siteForManifest(),
     config: {
       adminHash: state.cfg.adminHash || DEFAULT_CFG.adminHash,
       /* 安全：Token 绝不写进清单/仓库，只存在你自己的浏览器 localStorage 里 */
@@ -2639,10 +2647,37 @@ var L2D_EDIT = {editing:false, dev:'', cfg:null, backup:null, drag:null};
 var L2D_LIMIT = {xMin:-70, xMax:12, yMin:-25, yMax:45};
 function l2dDevice(){ return (window.matchMedia && matchMedia('(max-width: 720px)').matches) ? 'mobile' : 'desktop'; }
 function l2dActiveDev(){ return (L2D_EDIT.editing && L2D_EDIT.dev) ? L2D_EDIT.dev : l2dDevice(); }
+/* Live2D 的位置 / 表情 = 「这台设备 + 这个浏览器」的偏好：只存本机 localStorage，
+   不进 gallery.json —— 调桌宠不用提交仓库、等 Pages 重建（图库内容仍照常同步 GitHub） */
+/* 把任意历史格式的桌宠配置统一成 {desktop, mobile} 两份：
+   ① 已是两份（desktop/mobile）→ 各自取值
+   ② 早期单份 {x,y,expr}（仓库里全站共用 / 旧的本机存档）→ 两端各复制一份 */
+function l2dNormalize(src){
+  if(!src || typeof src !== 'object') return null;
+  if(src.desktop || src.mobile){
+    return {desktop: l2dCfgClean(src.desktop || {}), mobile: l2dCfgClean(src.mobile || {})};
+  }
+  if(src.x != null || src.y != null || src.expr != null){
+    return {desktop: l2dCfgClean(src), mobile: l2dCfgClean(src)};
+  }
+  return null;
+}
 function l2dCfg(){
-  var s = state.site.l2d;
-  if(s && typeof s === 'object') return s;
-  return lsGet('layout.l2d', null) || {};   /* 本机模式兜底（草稿不回写 site） */
+  var s = lsGet('layout.l2d', null);
+  if(s && typeof s === 'object'){
+    if(s.desktop || s.mobile) return s;
+    var pair = l2dNormalize(s);
+    if(pair){ lsSet('layout.l2d', pair); return pair; }
+  }
+  var old = state.site && state.site.l2d;
+  if(old && typeof old === 'object'){
+    /* 旧版曾在 gallery.json 里存过（全站共用）：首次进入时搬来本机，之后仓库不再带它 */
+    var seed = l2dNormalize(old);
+    if(seed) lsSet('layout.l2d', seed);
+    delete state.site.l2d;
+    return seed || {};
+  }
+  return {};
 }
 function l2dSlotOf(dev){
   var c = l2dCfg();
@@ -2672,8 +2707,7 @@ function l2dSaveCfg(next, dev){
     mobile: l2dCfgClean(l2dSlotOf('mobile'))
   };
   out[dev] = l2dCfgClean(next || out[dev]);
-  state.site.l2d = out;
-  lsSet('layout.l2d', out);
+  lsSet('layout.l2d', out);     /* 只落本机，不写仓库 */
   return out;
 }
 function applyL2dLayout(cfg){
@@ -2751,7 +2785,7 @@ function l2dEditClose(save){
   if(save){
     var out = l2dSaveCfg(L2D_EDIT.cfg, dev);
     applyL2dLayout(out[dev]);
-    saveManifest('update site.l2d', 'dieshot');   /* 自行提示「已同步到 GitHub 仓库」/「已保存到本机草稿」 */
+    toast('Live2D 设置已保存到本机');   /* 只写 localStorage，不提交仓库 */
   }else{
     applyL2dLayout(L2D_EDIT.backup);
     l2dSetExpression(L2D_EDIT.backup.expr);
@@ -3310,7 +3344,7 @@ function exportManifest(){
   var gc = ghCfg();
   var payload = {
     version: 1,
-    site: state.site,
+    site: siteForManifest(),
     config: {
       adminHash: state.cfg.adminHash || DEFAULT_CFG.adminHash,
       /* 安全：Token 绝不写进清单/仓库，只存在你自己的浏览器 localStorage 里 */
@@ -3595,7 +3629,6 @@ function bind(){
     var out = l2dSaveCfg({x:0, y:0, expr: s.expr}, dev);   /* 只重置本端的位置，表情与另一端不动 */
     applyL2dLayout(out[dev]);
     l2dSyncUI();
-    saveManifest('reset site.l2d position', 'dieshot');
     toast('已恢复默认位置');
   });
   $('l2dEditSave').addEventListener('click', function(){ l2dEditClose(true); });
