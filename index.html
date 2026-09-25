@@ -2616,7 +2616,8 @@ function l2dShow(show){
 }
 
 /* 表情/眨眼联动（「表情随机展示」开关）：
-   开 → 点按桌宠或每 8 秒在「随机表情 ↔ 基准表情」间切换（移动端默认开、电脑端默认关）；
+   开 → 点按桌宠或每 8 秒换一张表情，**每次都是真随机**（从全部表情里等概率抽取，
+   只避开连抽同一张；空白表情与默认表情同貌，不重复占位）；
    关 → 只显示设置好的表情。无论哪种，只要不是空白表情就彻底停眨眼
    （否则眨眼会覆写眼部参数、叠在表情造型上） */
 function l2dRandomOn(){
@@ -2625,12 +2626,14 @@ function l2dRandomOn(){
 function l2dCycleExpression(){
   if(!l2dRandomOn()) return;                                   /* 随机展示没开就不切 */
   if(!L2D.model) return;
-  var base = l2dCfgClean(l2dActiveCfg()).expr;      /* 本端的基准表情 */
-  if(L2D.expr !== base){ l2dSetExpression(base); return; }       /* 回到基准表情 */
-  var pool = [], i;
-  for(i = 0; i < l2dExprCount(); i++) if(i !== base && !l2dExprIsBlank(i)) pool.push(i);
-  if(!pool.length) for(i = 0; i < l2dExprCount(); i++) if(i !== base) pool.push(i);
-  l2dSetExpression(pool.length ? pool[Math.floor(Math.random() * pool.length)] : base);
+  var n = l2dExprCount(), pool = [], i;
+  for(i = -1; i < n; i++){
+    if(i === L2D.expr) continue;                    /* 只避开连抽同一张，其余等概率 */
+    if(i >= 0 && l2dExprIsBlank(i)) continue;       /* 与默认表情同貌，不重复占位 */
+    pool.push(i);
+  }
+  if(!pool.length) return;
+  l2dSetExpression(pool[Math.floor(Math.random() * pool.length)]);
 }
 
 /* ---------- 表情切换（-1 = 模型自带默认表情） ----------
