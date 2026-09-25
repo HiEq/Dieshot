@@ -5,7 +5,12 @@
     "sub": "Die Shot 裸片图库：{tags} 家厂商 · {items} 张裸片显微影像。",
     "brand": "HiEq",
     "avatar": "https://github.com/HiEq.png?size=64",
-    "bg": "images/home-bg.jpg"
+    "bg": "images/home-bg.jpg",
+    "l2d": {
+      "x": -0.2,
+      "y": 0,
+      "expr": -1
+    }
   },
   "config": {
     "adminHash": "386cc1fc613bf00865387cd578cc5c5bfd188f0167516ac44e41cfcc2119f5ab",
@@ -20,20 +25,19 @@
   "items": [
     {
       "id": "imuf7154iu9ub1",
-      "coll": "dieshot",
       "title": "M5",
       "desc": "TSMC N3P",
       "tags": [
         "Apple Silicon"
       ],
+      "src": "images/dieshot/apple-silicon/muf7154i-M5.jpg",
+      "thumb": "images/dieshot/apple-silicon/muf7154i-M5.thumb.jpg",
+      "file": "images/dieshot/apple-silicon/muf7154i-M5.jpg",
       "name": "M5.jpg",
       "size": 7125132,
-      "addedAt": "2026-09-24T07:11:23.442Z",
       "w": 6717,
       "h": 6786,
-      "src": "images/dieshot/apple-silicon/muf7154i-M5.jpg",
-      "file": "images/dieshot/apple-silicon/muf7154i-M5.jpg",
-      "thumb": "images/dieshot/apple-silicon/muf7154i-M5.thumb.jpg"
+      "addedAt": "2026-09-24T07:11:23.442Z"
     },
     {
       "id": "ds-guz2-1",
