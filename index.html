@@ -1119,6 +1119,10 @@ footer .sep{opacity:.4}
 <div class="l2d-editbar hidden" id="l2dEditBar">
   <div class="ttl"><span id="l2dEditTip">拖拽桌宠调整位置</span> · <b id="l2dPosText">x +0% · y +0%</b></div>
   <div class="row">
+    <span class="ttl">模型</span>
+    <div class="l2d-expr-chips" id="l2dModelChips"></div>
+  </div>
+  <div class="row">
     <span class="ttl">表情</span>
     <div class="l2d-expr-chips" id="l2dExprChips"></div>
   </div>
@@ -1247,8 +1251,8 @@ var EN = {
   '进入编辑模式后，直接用鼠标拖拽桌宠即可调整它在首页的位置，工具条里还能切换表情、拖滑块改大小、开关表情随机展示（开启后和移动端一样自动随机切换）。电脑端与移动端各存一份、互不影响（想调手机上的效果请用手机打开本页）；设置只存本机浏览器，不写入仓库、无需重新部署。':'In edit mode, drag the pet with your mouse to place it on the homepage; the toolbar also lets you switch its expression, resize it with the slider, and toggle random expression (auto-switches like on mobile). Desktop and mobile keep separate settings and never affect each other (open this page on your phone to tune the mobile view). Settings stay in this browser only — nothing is written to the repo, no redeploy needed.',
   'Live2D 设置已保存到本机':'Live2D settings saved on this device',
   '电脑端':'Desktop', '移动端':'Mobile',
-  '位置（{d}）{p} · 表情：{e} · 大小 {s} · 随机 {r}':'Position ({d}) {p} · Expression: {e} · Size {s} · Random {r}',
-  '大小':'Size', '桌宠大小':'Pet size', '表情随机展示':'Random expression', '开':'On', '关':'Off',
+  '位置（{d}）{p} · 表情：{e} · 大小 {s} · 随机 {r} · 模型 {m}':'Position ({d}) {p} · Expression: {e} · Size {s} · Random {r} · Model {m}',
+  '大小':'Size', '桌宠大小':'Pet size', '表情随机展示':'Random expression', '开':'On', '关':'Off', '模型':'Model',
   '拖拽桌宠调整位置':'Drag the pet to reposition', '拖拽桌宠调整位置（{d}）':'Drag the pet to reposition ({d})', '表情':'Expression',
   '默认':'Default', '表情{n}':'Expression {n}',
   '表情1':'Expression 1', '表情2':'Expression 2', '表情3':'Expression 3',
@@ -2494,10 +2498,28 @@ async function downloadItem(it){
    - 折叠：点侧边箭头滑出屏幕边缘，再点滑回（并记忆状态）
    - 非首页 / 折叠 / 页面隐藏时暂停渲染；首次进首页才加载库与模型
    ============================================================ */
-var L2D = {app:null, model:null, size:null, state:'', timer:0, expr:-1, exprDev:'', blinkMgr:null, exprTimer:0};
+var L2D = {app:null, model:null, modelId:'', size:null, state:'', timer:0, expr:-1, exprDev:'', blinkMgr:null, exprTimer:0};
 var L2D_ZOOM = 1.30;   /* 放大倍率：调大 = 模型更大（四周透明边距被裁掉更多） */
 var L2D_DROP  = 0.12;  /* 向下偏移（按模型高度比例）：吃掉底部透明边距、贴近屏幕底边 */
 var L2D_SHIFT = 0.05;  /* 向右偏移（按模型宽度比例）：贴近屏幕右边距 */
+/* 可选桌宠模型：id 写进配置，url 是各自的 model3.json */
+var L2D_MODELS = [
+  {id:'heiq', name:'HEiQ', url:'live2d/model/cat.model3.json'},
+  {id:'null', name:'NULL', url:'live2d/model/null/cat.model3.json'}
+];
+var L2D_DEFAULT_MODEL = 'heiq';   /* 未配置时的默认模型（访客看到的就是它） */
+function l2dModelDef(id){
+  for(var i = 0; i < L2D_MODELS.length; i++) if(L2D_MODELS[i].id === id) return L2D_MODELS[i];
+  for(var j = 0; j < L2D_MODELS.length; j++) if(L2D_MODELS[j].id === L2D_DEFAULT_MODEL) return L2D_MODELS[j];
+  return L2D_MODELS[0];
+}
+/* 用哪个模型也是「本机」偏好（每个设备各自选），跟位置 / 大小 / 表情一样不写仓库 */
+function l2dModelCfg(){
+  var id = l2dCfg().model;
+  for(var i = 0; i < L2D_MODELS.length; i++) if(L2D_MODELS[i].id === id) return id;
+  return L2D_DEFAULT_MODEL;
+}
+function l2dActiveModel(){ return (L2D_EDIT.editing && L2D_EDIT.model) ? L2D_EDIT.model : l2dModelCfg(); }
 function l2dLoad(src, ready){
   if(ready && ready()) return Promise.resolve();   /* 运行库已就绪则跳过加载 */
   return new Promise(function(res, rej){
@@ -2526,6 +2548,28 @@ function l2dResize(){
   }
   l2dFit();
 }
+/* 载入 / 切换模型：位置、大小等设置原样保留（表情数量随模型不同，按钮与序号自动适配） */
+async function l2dLoadModel(id){
+  var def = l2dModelDef(id), app = L2D.app, host = $('l2d');
+  if(!app) return null;
+  if(L2D.model){
+    try{ app.stage.removeChild(L2D.model); }catch(e){}
+    try{ L2D.model.destroy({children:true, texture:true, baseTexture:true}); }
+    catch(e){ try{ L2D.model.destroy(); }catch(e2){} }
+    L2D.model = null;
+    L2D.blinkMgr = null;      /* 眨眼管理器属于上一个模型，换模型必须重找 */
+    L2D.expr = -1;
+  }
+  var model = await window.PIXI.live2d.Live2DModel.from(def.url, {autoInteract: false});
+  L2D.size = {w: model.width, h: model.height};   /* 原始尺寸先记下（缩放后 model.width 会跟着变） */
+  app.stage.addChild(model);
+  L2D.model = model; L2D.modelId = def.id; L2D.state = 'ready';
+  l2dFit();                                /* 透明边距裁切 + 定位（按当前盒子适配） */
+  applyL2dLayout();                        /* 套用已保存的位置 / 大小（换模型不重置） */
+  buildL2dExprChips();                     /* 表情数量随模型变：按钮重建 */
+  l2dSetExpression(l2dActiveCfg().expr);   /* 表情序号越界会自动回默认表情 */
+  return model;
+}
 async function initLive2D(){
   if(L2D.state) return;
   L2D.state = 'loading';
@@ -2539,19 +2583,12 @@ async function initLive2D(){
       view: $('l2dCanvas'), backgroundAlpha: 0, resizeTo: host,
       autoDensity: true, resolution: Math.min(window.devicePixelRatio || 1, 2)
     });
-    var model = await PIXI.live2d.Live2DModel.from('live2d/model/cat.model3.json', {autoInteract: false});
-    L2D.size = {w: model.width, h: model.height};   /* 原始尺寸先记下（缩放后 model.width 会跟着变） */
-    app.stage.addChild(model);
-    L2D.app = app; L2D.model = model; L2D.state = 'ready';
-    l2dFit();                                /* 透明边距裁切 + 定位 */
-    applyL2dLayout();                        /* 套用已保存的位置 / 大小微调 */
-    buildL2dExprChips();                     /* 模型就绪后按真实表情数重建表情按钮 */
-    l2dSetExpression(l2dActiveCfg().expr);   /* 套用默认表情（编辑模式中则跟随待存的选择） */
-    /* —— 仅保留：鼠标视线跟踪 + 模型自带眨眼 ——
-       （随机表情 / 随机动作已移除：切换表情会在透明背景上留下黑块） */
+    L2D.app = app;
+    /* —— 互动只绑定一次，永远跟着「当前模型」走（换模型不用重绑）：
+       鼠标视线跟踪 + 表情随机展示（开关控制），眨眼由表情联动自动开关 */
     try{
       window.addEventListener('mousemove', function(e){
-        if(!host.hidden) model.focus(e.clientX, e.clientY);
+        if(!host.hidden && L2D.model) L2D.model.focus(e.clientX, e.clientY);
       });
     }catch(err){
       try{ console.warn('[Live2D] 互动绑定失败（模型仍正常显示）：', err); }catch(e){}
@@ -2562,6 +2599,7 @@ async function initLive2D(){
       if(document.hidden || $('l2d').hidden) return;
       l2dCycleExpression();
     }, 8000);
+    await l2dLoadModel(l2dActiveModel());
   }catch(err){
     /* 只有「库或模型加载失败」才隐藏桌宠，且不影响站点其余功能 */
     L2D.state = 'error';
@@ -2686,7 +2724,7 @@ function l2dBlink(on){
 /* ---------- Live2D 编辑模式（管理模式）：鼠标拖拽调整首页位置 + 切换表情 ----------
    电脑端 / 移动端各存一份（位置 + 表情都互不影响，谁也盖不掉谁），
    位置按「视口百分比」记忆（换屏宽 / 手机上也不跑位）：x 右移为正、y 上移为正 */
-var L2D_EDIT = {editing:false, dev:'', cfg:null, backup:null, drag:null};
+var L2D_EDIT = {editing:false, dev:'', model:'', cfg:null, backup:null, drag:null};
 var L2D_LIMIT = {xMin:-70, xMax:12, yMin:-25, yMax:45};
 function l2dDevice(){ return (window.matchMedia && matchMedia('(max-width: 720px)').matches) ? 'mobile' : 'desktop'; }
 function l2dActiveDev(){ return (L2D_EDIT.editing && L2D_EDIT.dev) ? L2D_EDIT.dev : l2dDevice(); }
@@ -2697,18 +2735,21 @@ function l2dActiveDev(){ return (L2D_EDIT.editing && L2D_EDIT.dev) ? L2D_EDIT.de
    ② 早期单份 {x,y,expr}（仓库里全站共用 / 旧的本机存档）→ 两端各复制一份 */
 function l2dNormalize(src){
   if(!src || typeof src !== 'object') return null;
+  var out = null;
   if(src.desktop || src.mobile){
-    return {desktop: l2dCfgClean(src.desktop || {}, 'desktop'), mobile: l2dCfgClean(src.mobile || {}, 'mobile')};
+    out = {desktop: l2dCfgClean(src.desktop || {}, 'desktop'), mobile: l2dCfgClean(src.mobile || {}, 'mobile')};
+  }else if(src.x != null || src.y != null || src.expr != null){
+    out = {desktop: l2dCfgClean(src, 'desktop'), mobile: l2dCfgClean(src, 'mobile')};
   }
-  if(src.x != null || src.y != null || src.expr != null){
-    return {desktop: l2dCfgClean(src, 'desktop'), mobile: l2dCfgClean(src, 'mobile')};
-  }
-  return null;
+  if(!out && !src.model) return null;
+  out = out || {desktop: l2dCfgClean({}, 'desktop'), mobile: l2dCfgClean({}, 'mobile')};
+  if(src.model) out.model = l2dModelDef(src.model).id;
+  return out;
 }
 function l2dCfg(){
   var s = lsGet('layout.l2d', null);
   if(s && typeof s === 'object'){
-    if(s.desktop || s.mobile) return s;
+    if(s.desktop || s.mobile || s.model) return s;
     var pair = l2dNormalize(s);
     if(pair){ lsSet('layout.l2d', pair); return pair; }
   }
@@ -2750,11 +2791,12 @@ function l2dActiveCfg(){
   return (L2D_EDIT.editing && L2D_EDIT.cfg) ? L2D_EDIT.cfg : l2dSlotOf(l2dActiveDev());
 }
 /* 落盘：只覆盖当前编辑的那一端，另一端原样保留（旧版单份配置在这里顺手拆成两份） */
-function l2dSaveCfg(next, dev){
+function l2dSaveCfg(next, dev, model){
   dev = dev || l2dActiveDev();
   var out = {
     desktop: l2dCfgClean(l2dSlotOf('desktop'), 'desktop'),
-    mobile: l2dCfgClean(l2dSlotOf('mobile'), 'mobile')
+    mobile: l2dCfgClean(l2dSlotOf('mobile'), 'mobile'),
+    model: l2dModelDef(model || l2dModelCfg()).id
   };
   out[dev] = l2dCfgClean(next || out[dev], dev);
   lsSet('layout.l2d', out);     /* 只落本机，不写仓库 */
@@ -2799,10 +2841,13 @@ function l2dSyncUI(){
   var sw = $('l2dRandom');
   if(sw) sw.setAttribute('aria-checked', rndOn ? 'true' : 'false');
   var hint = $('l2dHint');
-  if(hint) hint.textContent = fmtTpl(t('位置（{d}）{p} · 表情：{e} · 大小 {s} · 随机 {r}'),
-    {d: devName, p: posTxt, e: name, s: sizeTxt, r: t(rndOn ? '开' : '关')});
+  if(hint) hint.textContent = fmtTpl(t('位置（{d}）{p} · 表情：{e} · 大小 {s} · 随机 {r} · 模型 {m}'),
+    {d: devName, p: posTxt, e: name, s: sizeTxt, r: t(rndOn ? '开' : '关'), m: l2dModelDef(l2dActiveModel()).name});
   Array.prototype.forEach.call(document.querySelectorAll('#l2dExprChips .l2d-chip'), function(b){
     b.classList.toggle('is-on', Number(b.dataset.expr) === c.expr);
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('#l2dModelChips .l2d-chip'), function(b){
+    b.classList.toggle('is-on', b.dataset.model === l2dActiveModel());
   });
 }
 function buildL2dExprChips(){
@@ -2826,6 +2871,32 @@ function buildL2dExprChips(){
   }
   l2dSyncUI();
 }
+/* 模型选择器（站点级设置：换模型不动位置 / 大小 / 表情序号等本机偏好） */
+function buildL2dModelChips(){
+  var box = $('l2dModelChips');
+  if(!box) return;
+  box.innerHTML = '';
+  var cur = l2dActiveModel();
+  L2D_MODELS.forEach(function(m){
+    var b = el('button', 'l2d-chip');
+    b.type = 'button';
+    b.dataset.model = m.id;
+    b.textContent = m.name;
+    if(b.firstChild) b.firstChild._zh = m.name;
+    b.classList.toggle('is-on', m.id === cur);
+    b.addEventListener('click', function(){ l2dSwitchModel(m.id); });
+    box.appendChild(b);
+  });
+}
+async function l2dSwitchModel(id){
+  if(!L2D_EDIT.editing || L2D_EDIT.model === id) return;
+  L2D_EDIT.model = id;
+  await l2dLoadModel(id);        /* 位置 / 大小原样保留 */
+  /* 表情序号是「模型内」的：新模型表情数不够就回默认表情 */
+  if(L2D_EDIT.cfg && L2D_EDIT.cfg.expr >= l2dExprCount()) L2D_EDIT.cfg.expr = -1;
+  l2dSetExpression(L2D_EDIT.cfg ? L2D_EDIT.cfg.expr : -1);
+  l2dSyncUI();
+}
 function l2dEditOpen(){
   if(!state.admin){ toast('先进入管理模式'); return; }
   $('modalPanel').classList.remove('is-open');
@@ -2834,6 +2905,7 @@ function l2dEditOpen(){
   if($('l2d').classList.contains('is-hidden')) $('l2dTab').click();          /* 折叠着没法拖 */
   L2D_EDIT.editing = true;
   L2D_EDIT.dev = l2dDevice();                       /* 这一局只改当前端，另一端不受影响 */
+  L2D_EDIT.model = l2dModelCfg();                   /* 模型选择（站点级），取消时按它回滚 */
   L2D_EDIT.backup = l2dCfgClean(l2dSlotOf(L2D_EDIT.dev));
   L2D_EDIT.cfg = l2dCfgClean(L2D_EDIT.backup);
   $('l2d').classList.add('is-editing');
@@ -2844,20 +2916,23 @@ function l2dEditOpen(){
 function l2dEditClose(save){
   if(!L2D_EDIT.editing) return;
   var dev = L2D_EDIT.dev || l2dDevice();
+  var model = L2D_EDIT.model;
   L2D_EDIT.editing = false;
   L2D_EDIT.drag = null;
   $('l2d').classList.remove('is-editing', 'is-dragging');
   $('l2dEditBar').classList.add('hidden');
   if(save){
-    var out = l2dSaveCfg(L2D_EDIT.cfg, dev);
+    var out = l2dSaveCfg(L2D_EDIT.cfg, dev, model);   /* 位置 / 大小 / 表情 / 随机 / 模型一起落本机 */
     applyL2dLayout(out[dev]);
     toast('Live2D 设置已保存到本机');   /* 只写 localStorage，不提交仓库 */
   }else{
+    if(model && model !== l2dModelCfg()) l2dLoadModel(l2dModelCfg());   /* 取消：模型一并回滚 */
     applyL2dLayout(L2D_EDIT.backup);
     l2dSetExpression(L2D_EDIT.backup.expr);
     toast('已放弃 Live2D 的改动');
   }
   L2D_EDIT.cfg = null;
+  L2D_EDIT.model = '';
   l2dSyncUI();
 }
 function l2dDragStart(e){
@@ -3749,6 +3824,7 @@ function bind(){
   bind();
   await loadManifest();
   applyL2dLayout();                        /* 套用已保存的 Live2D 位置（模型未加载也先把框摆好） */
+  buildL2dModelChips();                    /* 模型选择按钮 */
   buildL2dExprChips();                     /* 表情按钮（模型就绪后会按真实表情数重建一次） */
   var savedLang = '';
   try{ savedLang = localStorage.getItem('layout.lang') || ''; }catch(e){}
