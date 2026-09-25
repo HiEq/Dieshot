@@ -19,6 +19,23 @@
   },
   "items": [
     {
+      "id": "imuh2vsjj2bvro",
+      "coll": "dieshot",
+      "title": "Power 7+",
+      "desc": "IBM 32nm SOI",
+      "tags": [
+        "IBM"
+      ],
+      "name": "IBM Power 7+.png",
+      "size": 9376730,
+      "addedAt": "2026-09-25T14:50:47.743Z",
+      "w": 2333,
+      "h": 1989,
+      "src": "images/dieshot/ibm/muh2vsjk-IBM-Power-7.png",
+      "file": "images/dieshot/ibm/muh2vsjk-IBM-Power-7.png",
+      "thumb": "images/dieshot/ibm/muh2vsjk-IBM-Power-7.thumb.jpg"
+    },
+    {
       "id": "imuf7154iu9ub1",
       "title": "M5",
       "desc": "TSMC N3P",
