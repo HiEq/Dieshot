@@ -58,15 +58,16 @@ export async function onRequestPost({env, request}){
   let body = {};
   try{ body = await request.json(); }catch(e){}
   const method = String(body.method || 'GET').toUpperCase();
-  const path = String(body.path || '');
+  /* 空路径 = 仓库根目录（「测试连接」查的就是根目录），两侧多余斜杠先去掉 */
+  const path = String(body.path || '').replace(/^\/+/, '').replace(/\/+$/, '');
   const repo = env.GH_REPO || '';
   /* 路径白名单校验：只允许普通字符、禁止 .. 路径穿越 */
-  if (!repo || !path || !/^[A-Za-z0-9._\-\/]+$/.test(path) || path.indexOf('..') >= 0) {
+  if (!repo || (path && (!/^[A-Za-z0-9._\-\/]+$/.test(path) || path.indexOf('..') >= 0))) {
     return json({ok: false, error: 'bad request'}, 400);
   }
   if (!['GET', 'PUT', 'DELETE'].includes(method)) return json({ok: false, error: 'bad method'}, 400);
 
-  const url = 'https://api.github.com/repos/' + repo + '/contents/' + path.split('/').map(encodeURIComponent).join('/');
+  const url = 'https://api.github.com/repos/' + repo + '/contents/' + path.split('/').filter(Boolean).map(encodeURIComponent).join('/');
   try {
     const res = await fetch(url, {
       method,

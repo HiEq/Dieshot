@@ -3,7 +3,7 @@
   <h1>HiEQ · HOME</h1>
   <p><b>单文件个人主页</b> ＋ <b>Dieshot图库</b></p>
   <p>
-    <a href="https://hieq.github.io/HOME/"><b>🌐 在线访问</b></a>
+    <a href="https://hieq-home404.pages.dev/"><b>🌐 在线访问</b></a>
     &nbsp;·&nbsp;
     <a href="CATALOG.md"><b>📚 厂商目录清单</b></a>
     &nbsp;·&nbsp;
@@ -12,7 +12,7 @@
     <a href="https://space.bilibili.com/571650607"><b>📺 我的 Bilibili</b></a>
   </p>
   <p>
-    <img alt="GitHub Pages" src="https://img.shields.io/badge/GitHub%20Pages-Live-brightgreen">
+    <img alt="Cloudflare Pages" src="https://img.shields.io/badge/Cloudflare%20Pages-Live-brightgreen">
     <img alt="Die Shot" src="https://img.shields.io/badge/Die%20Shot-221%20张-blue">
     <img alt="Vendors" src="https://img.shields.io/badge/厂商-27%20家-orange">
     <img alt="Single file" src="https://img.shields.io/badge/单文件-零依赖-lightgrey">
@@ -56,7 +56,7 @@
 ### 🎛️ 管理模式
 - 管理口令解锁后可**上传 / 编辑 / 删除**图片，访客只读
 - 支持拖拽、粘贴截图批量上传，后台逐张生成缩略图
-- 填写 GitHub Token 后，改动通过 **Contents API 直接提交仓库**，访客刷新即见
+- 改动通过 **Contents API 直接提交仓库**，访客刷新即见（Cloudflare 部署下 Token 存在服务端，浏览器不接触）
 - 也可离线保存到本机草稿，随时「同步到 GitHub」补交
 - 换主页背景、改口令、补齐缩略图、导出 gallery.json
 
@@ -91,7 +91,7 @@
 | 页面 | 原生 HTML / CSS / JS |
 | Live2D | Cubism 4 Core ＋ PixiJS ＋ pixi-live2d-display |
 | 字体 | Qualcomm Next（打包在 `fonts/`，Regular / Medium） |
-| 部署 | GitHub Pages（`.nojekyll` 原样输出） |
+| 部署 | Cloudflare Pages + Pages Functions（后端鉴权，`hieq-home404.pages.dev`） |
 | 内容 | GitHub Contents API（管理后台直接写 `gallery.json` 与图片） |
 
 ---
@@ -109,7 +109,7 @@ live2d/                 Live2D 运行库与模型（lib/ ＋ model/）
 images/dieshot/         Die Shot 图库（4096px JPEG ＋ 720px 缩略图，按厂商分子目录）
 images/misc/            杂图
 tools/                  工具脚本：import-dieshot.js / build-catalog.js / verify-ratio.js
-.nojekyll               让 GitHub Pages 原样输出文件
+.nojekyll               让 GitHub Pages 原样输出文件（兼容保留）
 ```
 
 ---
