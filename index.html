@@ -995,7 +995,7 @@ footer .sep{opacity:.4}
   <div class="wrap">
     <span id="footName">HiEQ</span>
     <span class="sep">|</span>
-    <span>由 GitHub Pages 托管 · 单文件静态站</span>
+    <span>Cloudflare Pages 托管 · 单文件前端 + Workers 鉴权</span>
     <span class="sep">|</span>
     <a href="CATALOG.md">厂商目录清单</a>
     <span class="sep">|</span>
@@ -1308,7 +1308,7 @@ var EN = {
   '当前图库':'Current gallery', '补齐缩略图':'Backfill thumbnails', '重新加载清单':'Reload manifest',
   '退出管理模式':'Exit admin',
   /* 页脚 */
-  '由 GitHub Pages 托管 · 单文件静态站':'Hosted on GitHub Pages · single-file static site',
+  'Cloudflare Pages 托管 · 单文件前端 + Workers 鉴权':'Cloudflare Pages · single-file front end + Workers auth',
   '厂商目录清单':'Catalog',
   '杂图':'Misc', '{items} 张杂图 · 点击查看大图':'{items} images · click to view',
   '全部列表':'All images', '滚动墙':'Scroll wall',
@@ -1538,6 +1538,27 @@ var IDB = (function(){
   };
 })();
 
+/* ---------- 服务端鉴权（Cloudflare Pages Functions，可选） ----------
+   部署到 Cloudflare Pages 时：口令校验与 GitHub 写入都在服务端完成 ——
+   口令与 GitHub Token 都只存在 Worker 的加密环境变量里，不进浏览器、不进仓库。
+   没有后端时（GitHub Pages / 本地直开）自动退回「本地哈希 + 本机 Token」模式。 */
+var LS_SESSION = 'layout.adminSession';
+function getSession(){ try{ return localStorage.getItem(LS_SESSION) || ''; }catch(e){ return ''; } }
+function setSession(v){ try{ v ? localStorage.setItem(LS_SESSION, v) : localStorage.removeItem(LS_SESSION); }catch(e){} }
+function serverMode(){ return !!getSession(); }
+async function apiLogin(pw){
+  try{
+    var res = await fetch('/api/login', {
+      method:'POST', cache:'no-store',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({password: pw})
+    });
+    if(res.status === 404 || res.status === 405) return {mode:'local'};   /* 没有后端 → 退回本地校验 */
+    var d = await res.json();
+    return {mode:'server', ok: !!(res.ok && d && d.ok), token: (d && d.token) || ''};
+  }catch(e){ return {mode:'local'}; }
+}
+
 /* ---------- GitHub 接口 ---------- */
 function ghCfg(){
   var c = state.cfg.github || {};
@@ -1546,15 +1567,33 @@ function ghCfg(){
 }
 function ghReady(){
   var c = ghCfg();
-  return !!(c.token && c.owner && c.manifest);
+  return !!getSession() || !!(c.token && c.owner && c.manifest);   /* 有服务端会话即可写 */
 }
 function ghUrl(path){
   var c = ghCfg();
   return 'https://api.github.com/repos/' + c.owner + '/contents/' + path.split('/').map(encodeURIComponent).join('/');
 }
 async function ghApi(path, opts){
-  var c = ghCfg();
   opts = opts || {};
+  var session = getSession();
+  if(session){
+    /* 服务端代理：GitHub Token 留在 Worker 里，浏览器只带会话凭证 */
+    try{
+      var r = await fetch('/api/gh', {
+        method:'POST', cache:'no-store',
+        headers:{'Content-Type':'application/json', 'X-Admin-Token': session},
+        body: JSON.stringify({method: opts.method || 'GET', path: path, body: opts.body ? String(opts.body) : null})
+      });
+      if(r.status === 401){
+        setSession('');
+        if(state.admin){ state.admin = false; setAdminUI(); toast('会话已过期，请重新登录'); }
+      }
+      var payload = null;
+      try{ payload = await r.json(); }catch(e){}
+      return {ok:r.ok, status:r.status, data:payload};
+    }catch(e){ return {ok:false, status:0, data:null}; }
+  }
+  var c = ghCfg();
   opts.headers = Object.assign({
     'Authorization': 'token ' + c.token,
     'Accept': 'application/vnd.github+json'
@@ -3167,6 +3206,17 @@ function openLogin(){
   setTimeout(function(){ $('pw').focus(); }, 60);
 }
 var PW_TRIES = 0, PW_LOCK_UNTIL = 0;      /* 连续试错限速：越错锁得越久 */
+function loginFail(){
+  PW_TRIES++;
+  if(PW_TRIES >= 5){
+    PW_LOCK_UNTIL = Date.now() + Math.min(30000 * Math.pow(2, PW_TRIES - 5), 300000);   /* 30 秒起，指数退避到 5 分钟 */
+    $('pwErr').textContent = t('连续错误次数过多，已暂时锁定');
+  }else{
+    $('pwErr').textContent = t('口令不正确，请重试。');
+  }
+  $('pwErr').classList.remove('hidden');
+  $('pw').select();
+}
 async function tryLogin(){
   if(Date.now() < PW_LOCK_UNTIL){
     $('pwErr').textContent = fmtTpl(t('尝试太频繁，请 {s} 秒后再试'), {s: Math.ceil((PW_LOCK_UNTIL - Date.now()) / 1000)});
@@ -3174,18 +3224,21 @@ async function tryLogin(){
     return;
   }
   var pw = $('pw').value || '';
-  var ok = await verifyPassword(pw, state.cfg.adminHash || DEFAULT_CFG.adminHash);
-  if(!ok){
-    PW_TRIES++;
-    if(PW_TRIES >= 5){
-      PW_LOCK_UNTIL = Date.now() + Math.min(30000 * Math.pow(2, PW_TRIES - 5), 300000);   /* 30 秒起，指数退避到 5 分钟 */
-      $('pwErr').textContent = t('连续错误次数过多，已暂时锁定');
-    }else{
-      $('pwErr').textContent = t('口令不正确，请重试。');
-    }
-    $('pwErr').classList.remove('hidden');
-    $('pw').select();
-    return;
+  /* 1) 服务端校验（真正的鉴权：口令与 GitHub Token 都只存在 Worker 里） */
+  var r = await apiLogin(pw);
+  if(r.mode === 'server'){
+    if(!r.ok){ loginFail(); return; }
+    setSession(r.token);
+  }else{
+    /* 2) 无后端 → 本地哈希校验（GitHub Pages / 本地直开） */
+    if(!(await verifyPassword(pw, state.cfg.adminHash || DEFAULT_CFG.adminHash))){ loginFail(); return; }
+    try{
+      /* 旧格式（纯 SHA-256）自动升级为慢哈希，防止口令被离线撞库还原 */
+      if((state.cfg.adminHash || '').indexOf('p1$') !== 0){
+        state.cfg.adminHash = await hashPasswordNew(pw);
+        await saveManifest('upgrade admin hash', 'dieshot');
+      }
+    }catch(e){}
   }
   PW_TRIES = 0; PW_LOCK_UNTIL = 0;
   state.admin = true;
@@ -3193,13 +3246,6 @@ async function tryLogin(){
   setAdminUI();
   toast('已进入管理模式');
   openPanel();
-  /* 旧格式（纯 SHA-256）自动升级为慢哈希，防止口令被离线撞库还原 */
-  try{
-    if((state.cfg.adminHash || '').indexOf('p1$') !== 0){
-      state.cfg.adminHash = await hashPasswordNew(pw);
-      await saveManifest('upgrade admin hash', 'dieshot');
-    }
-  }catch(e){}
 }
 function setAdminUI(){
   clearCards();                        /* 管理模式卡片带删除按钮，需重建节点 */
