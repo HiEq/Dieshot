@@ -181,26 +181,39 @@ main{flex:1 0 auto}
   position:fixed;inset:0;z-index:-1;
   background:var(--bg-alt) url("images/home-bg.jpg") center center / cover no-repeat;
 }
+/* 首页字体：Qualcomm Next（打包在 fonts/ 下，访客也用同一套） */
+@font-face{
+  font-family:'Qualcomm Next';
+  src:url('fonts/QualcommNext-Regular.ttf') format('truetype');
+  font-weight:400;font-style:normal;font-display:swap;
+}
+@font-face{
+  font-family:'Qualcomm Next';
+  src:url('fonts/QualcommNext-Medium.ttf') format('truetype');
+  font-weight:500;font-style:normal;font-display:swap;
+}
 /* 首页标题 + 跳转按钮：宽屏 = 水平靠左、竖直居中；竖屏/手机 = 水平居中、略微靠上 */
 .home-hero{
   position:fixed;inset:0;z-index:5;pointer-events:none;
   display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
-  gap:26px;
   /* 上下留白相等 → 内容正好落在视口垂直中线 */
   padding:calc(var(--nav-h, 64px) + 28px) clamp(28px, 7vw, 120px) calc(var(--nav-h, 64px) + 28px);
+  font-family:'Qualcomm Next', -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 .home-hero > *{pointer-events:auto}     /* 只有文字和按钮可点，其余区域留给视线跟踪 */
+.home-hero-inner{display:flex;flex-direction:column;align-items:center;gap:24px}   /* 标题与按钮相互居中对齐 */
 .home-title{
-  margin:0;font-weight:800;line-height:1.05;letter-spacing:-.02em;
-  font-size:clamp(40px, 7vw, 84px);
-  color:var(--fg);text-shadow:0 2px 28px rgba(0,0,0,.32);
+  margin:0;font-weight:500;line-height:1.1;letter-spacing:-.01em;
+  font-size:clamp(32px, 5vw, 60px);
+  /* 背景是亮色实景图：白字 + 双层阴影，任何位置都读得清 */
+  color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.4), 0 10px 40px rgba(0,0,0,.38);
 }
-.home-links{display:flex;gap:16px;flex-wrap:wrap}
+.home-links{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
 /* 液态玻璃按钮：半透明填充 + 高斯模糊 + 圆角矩形 */
 .glass-btn{
   display:inline-flex;align-items:center;justify-content:center;
   height:54px;padding:0 28px;border-radius:20px;
-  color:var(--fg);font-size:17px;font-weight:600;text-decoration:none;
+  color:var(--fg);font-size:17px;font-weight:400;text-decoration:none;
   background:var(--glass);
   -webkit-backdrop-filter:saturate(180%) blur(22px);backdrop-filter:saturate(180%) blur(22px);
   border:1px solid var(--hairline);
@@ -214,10 +227,9 @@ main{flex:1 0 auto}
   .home-hero{
     align-items:center;justify-content:center;
     padding:calc(var(--nav-h, 64px) + 18px) max(24px, env(safe-area-inset-right)) 22vh max(24px, env(safe-area-inset-left));
-    gap:20px;
   }
-  .home-title{font-size:clamp(34px, 10vw, 52px);text-align:center}
-  .home-links{justify-content:center;width:100%}
+  .home-title{font-size:clamp(28px, 8vw, 42px);text-align:center}
+  .home-links{width:100%}
   .glass-btn{height:50px;padding:0 22px;font-size:15.5px}
 }
 .section-head h2{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
@@ -900,10 +912,12 @@ footer .sep{opacity:.4}
   <section class="view" id="view-home">
     <div class="home-bg" id="homeBg"></div>
     <div class="home-hero">
-      <h1 class="home-title">HIEQ的小站</h1>
-      <div class="home-links">
-        <a class="glass-btn" href="https://github.com/HiEq" target="_blank" rel="noopener">我的Github主页</a>
-        <a class="glass-btn" href="https://space.bilibili.com/571650607" target="_blank" rel="noopener">我的Bilibili主页</a>
+      <div class="home-hero-inner">
+        <h1 class="home-title">HIEQ的小站</h1>
+        <div class="home-links">
+          <a class="glass-btn" href="https://github.com/HiEq" target="_blank" rel="noopener">Github主页</a>
+          <a class="glass-btn" href="https://space.bilibili.com/571650607" target="_blank" rel="noopener">Bilibili主页</a>
+        </div>
       </div>
     </div>
   </section>
@@ -1253,7 +1267,7 @@ var EN = {
   '首页':'Home', 'Layout 版块':'Layout section', '搜索图片':'Search images', '管理模式':'Admin',
   '打开管理面板':'Open admin panel', '夜间 / 日间模式':'Toggle dark / light', 'HiEq 的 GitHub 主页':'HiEq on GitHub',
   /* 首页标题与跳转按钮 */
-  'HIEQ的小站':"HIEQ's Site", '我的Github主页':'My GitHub', '我的Bilibili主页':'My Bilibili',
+  'HIEQ的小站':"HIEQ's Site", 'Github主页':'GitHub', 'Bilibili主页':'Bilibili',
   '{tags} 家厂商 · {items} 张 Dieshot · 支持搜索与标签筛选':'{tags} Manufactures · {items} Dieshot · search and filter by tags',
   /* Layout 版块 */
   '搜索标题、描述或标签':'Search title, description or tags', '最新在前':'Newest first', '最早在前':'Oldest first',
