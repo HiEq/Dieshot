@@ -140,9 +140,10 @@ button{cursor:pointer;background:none;border:0;padding:0}
 }
 :root[data-theme="dark"] .admin-chip{color:#ff9f0a}
 
-/* 顶栏下拉超大菜单 */
+/* 顶栏下拉超大菜单：收紧成刚好包裹内容的圆角卡片 */
 .megamenu{
-  position:absolute;left:12px;right:12px;top:calc(var(--nav-h) + 14px);
+  position:absolute;left:12px;top:calc(var(--nav-h) + 4px);
+  width:max-content;max-width:calc(100vw - 24px);
   border-radius:18px;
   background:var(--glass-strong);
   -webkit-backdrop-filter:saturate(180%) blur(24px);
@@ -153,9 +154,9 @@ button{cursor:pointer;background:none;border:0;padding:0}
   transition:opacity .28s ease,transform .28s ease;
 }
 .megamenu.is-open{opacity:1;transform:none;pointer-events:auto}
-.megamenu-inner{max-width:var(--max);margin:0 auto;padding:34px 24px 42px}
-.mm-lead{font-size:24px;font-weight:700;letter-spacing:-.02em;margin:0 0 20px}
-.mm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.megamenu-inner{padding:20px 22px 22px}          /* 不再撑满整行，直接包裹主体内容 */
+.mm-lead{font-size:20px;font-weight:700;letter-spacing:-.02em;margin:0 0 14px}
+.mm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
 .mm-card{
   display:flex;gap:14px;align-items:center;
   padding:12px;border-radius:14px;border:1px solid transparent;
@@ -576,11 +577,22 @@ footer{
   background:var(--glass-strong);
   -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.3), 0 4px 18px rgba(0,0,0,.08);
-  color:var(--fg2);font-size:13px;
+  color:var(--fg2);font-size:14px;                 /* 与顶栏文字一致 */
 }
 footer .fstats b{color:var(--fg);font-weight:600;font-variant-numeric:tabular-nums}
-footer .wrap{padding-top:14px;padding-bottom:14px;display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+footer .wrap{
+  max-width:none;margin:0;                          /* 不再居中收窄，整体靠左 */
+  padding:14px 22px;                                /* 与底栏圆角边缘留出空隙 */
+  display:flex;gap:14px;flex-wrap:wrap;align-items:center;
+}
 footer .sep{opacity:.4}
+/* 友情链接：底栏中间偏右 */
+footer .foot-links{
+  margin-left:auto;margin-right:clamp(8px, 8vw, 160px);
+  display:flex;gap:10px;align-items:center;
+}
+footer .foot-links a{color:var(--fg2);text-decoration:none;transition:color .2s}
+footer .foot-links a:hover{color:var(--blue);text-decoration:none}
 
 /* ---------- 液态玻璃质感 + Apple 式动效（覆写层） ---------- */
 :root{--spring:cubic-bezier(.2,.9,.25,1.06);--ease:cubic-bezier(.2,.8,.2,1)}
@@ -723,6 +735,21 @@ footer .sep{opacity:.4}
 .l2d-tab:hover{color:var(--blue)}
 .l2d-tab svg{width:18px;height:18px;transition:transform .35s var(--spring)}
 .l2d.is-hidden .l2d-tab svg{transform:rotate(180deg)}
+/* 访客用的桌宠样式入口（齿轮）：显隐与收起箭头完全一致 */
+.l2d-gear{
+  position:absolute;left:-36px;bottom:100px;width:36px;height:36px;
+  pointer-events:none;display:flex;align-items:center;justify-content:center;
+  border-radius:12px 0 0 12px;color:var(--fg);
+  background:var(--glass-strong);
+  -webkit-backdrop-filter:saturate(180%) blur(16px);backdrop-filter:saturate(180%) blur(16px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.3), inset 0 0 0 1px var(--hairline), -2px 2px 12px rgba(0,0,0,.12);
+  opacity:0;transition:opacity .2s,color .2s;
+}
+.l2d:hover .l2d-gear,
+.l2d.is-hidden .l2d-gear,
+.l2d.show-tab .l2d-gear{opacity:1;pointer-events:auto}
+.l2d-gear:hover{color:var(--blue)}
+.l2d-gear svg{width:18px;height:18px}
 /* ---------- Live2D 编辑模式（管理模式）：鼠标拖拽调位置 + 切换表情 ---------- */
 .l2d.is-editing{transition:transform .45s var(--spring)}   /* 拖拽时不给动画插值，模型跟手 */
 .l2d.is-editing.is-dragging{transition:none}
@@ -995,13 +1022,20 @@ footer .sep{opacity:.4}
   <div class="wrap">
     <span id="footName">HiEQ</span>
     <span class="sep">|</span>
-    <span>Cloudflare Pages 托管 · 单文件前端 + Workers 鉴权</span>
+    <span>Cloudflare Pages</span>
     <span class="sep">|</span>
     <a href="CATALOG.md">厂商目录清单</a>
     <span class="sep">|</span>
     <span class="fstats">总访问 <b id="statViews">—</b> · 当前在线 <b id="statOnline">—</b></span>
     <span class="sep">|</span>
     <span id="footYear"></span>
+    <div class="foot-links">
+      <span>友情链接</span>
+      <span class="sep">·</span>
+      <a href="https://raku404.com/#aboutme" target="_blank" rel="noopener">羽梦千景</a>
+      <span class="sep">·</span>
+      <a href="http://yieeesh.com/" target="_blank" rel="noopener">Yieeesh</a>
+    </div>
   </div>
 </footer>
 
@@ -1180,6 +1214,9 @@ footer .sep{opacity:.4}
   <button class="l2d-tab" id="l2dTab" title="折叠 / 展开模型" aria-label="折叠 / 展开模型">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6l6 6-6 6"/></svg>
   </button>
+  <button class="l2d-gear" id="l2dGear" title="桌宠样式设置" aria-label="桌宠样式设置">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.9 19.3a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.56-1.03H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.7 8.9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1.03-1.56V3a2 2 0 1 1 4 0v.09c0 .68.4 1.3 1.03 1.56a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9v.01c0 .68.4 1.24 1.03 1.56H21a2 2 0 1 1 0 4h-.09c-.63 0-1.24.4-1.51 1.03z"/></svg>
+  </button>
 </div>
 
 <!-- ============ Live2D 编辑模式工具条（拖拽调位置 + 切换表情，仅管理模式可见） ============ -->
@@ -1308,7 +1345,7 @@ var EN = {
   '当前图库':'Current gallery', '补齐缩略图':'Backfill thumbnails', '重新加载清单':'Reload manifest',
   '退出管理模式':'Exit admin',
   /* 页脚 */
-  'Cloudflare Pages 托管 · 单文件前端 + Workers 鉴权':'Cloudflare Pages · single-file front end + Workers auth',
+  'Cloudflare Pages':'Cloudflare Pages', '友情链接':'Friend links',
   '厂商目录清单':'Catalog',
   '杂图':'Misc', '{items} 张杂图 · 点击查看大图':'{items} images · click to view',
   '全部列表':'All images', '滚动墙':'Scroll wall',
@@ -1329,6 +1366,7 @@ var EN = {
   '表情1':'Expression 1', '表情2':'Expression 2', '表情3':'Expression 3',
   '表情4':'Expression 4', '表情5':'Expression 5', '表情6':'Expression 6',
   '恢复默认':'Reset',
+  '桌宠样式设置':'Pet style settings', '访客样式：拖拽调整桌宠（{d}）':'Visitor style: drag the pet ({d})',
   '已恢复默认位置':'Position reset to default', '已放弃 Live2D 的改动':'Live2D changes discarded',
   '先进入管理模式':'Enter admin mode first',
   '总访问':'Visits', '当前在线':'Online now',
@@ -1843,11 +1881,18 @@ function buildNav(){
     a.addEventListener('click', function(){ closeMenu(); });
     wrap.appendChild(a);
   });
-  $('navShell').addEventListener('mouseleave', closeMenu);
+  $('navShell').addEventListener('mouseleave', scheduleCloseMenu);
+  $('navShell').addEventListener('mouseenter', cancelCloseMenu);
 }
-var menuOpenFor = null;
+var menuOpenFor = null, menuCloseTimer = 0;
+function scheduleCloseMenu(){          /* 收起加一点缓冲：鼠标往卡片移动的过程中不会被误收 */
+  clearTimeout(menuCloseTimer);
+  menuCloseTimer = setTimeout(closeMenu, 320);
+}
+function cancelCloseMenu(){ clearTimeout(menuCloseTimer); }
 function openMenu(n){
   if(!n.menu) return;
+  cancelCloseMenu();
   menuOpenFor = n.id;
   var inner = $('megamenuInner');
   inner.innerHTML = '';
@@ -1872,6 +1917,7 @@ function openMenu(n){
   });
 }
 function closeMenu(){
+  clearTimeout(menuCloseTimer);
   menuOpenFor = null;
   $('megamenu').classList.remove('is-open');
   Array.prototype.forEach.call(document.querySelectorAll('.nav-item'), function(a){ a.classList.remove('is-open'); });
@@ -2913,7 +2959,7 @@ function l2dBlink(on){
 /* ---------- Live2D 编辑模式（管理模式）：鼠标拖拽调整首页位置 + 切换表情 ----------
    电脑端 / 移动端各存一份（位置 + 表情都互不影响，谁也盖不掉谁），
    位置按「视口百分比」记忆（换屏宽 / 手机上也不跑位）：x 右移为正、y 上移为正 */
-var L2D_EDIT = {editing:false, dev:'', model:'', cfg:null, backup:null, drag:null};
+var L2D_EDIT = {editing:false, kind:'', dev:'', model:'', cfg:null, backup:null, drag:null};
 var L2D_LIMIT = {xMin:-70, xMax:12, yMin:-25, yMax:45};
 function l2dDevice(){ return (window.matchMedia && matchMedia('(max-width: 720px)').matches) ? 'mobile' : 'desktop'; }
 function l2dActiveDev(){ return (L2D_EDIT.editing && L2D_EDIT.dev) ? L2D_EDIT.dev : l2dDevice(); }
@@ -3019,7 +3065,9 @@ function l2dSyncUI(){
   var pt = $('l2dPosText');
   if(pt) pt.textContent = posTxt;
   var tip = $('l2dEditTip');
-  if(tip) tip.textContent = fmtTpl(t('拖拽桌宠调整位置（{d}）'), {d: devName});
+  if(tip) tip.textContent = (L2D_EDIT.kind === 'guest')
+    ? fmtTpl(t('访客样式：拖拽调整桌宠（{d}）'), {d: devName})
+    : fmtTpl(t('拖拽桌宠调整位置（{d}）'), {d: devName});
   var name = (c.expr < 0) ? t('默认') : fmtTpl(t('表情{n}'), {n: c.expr + 1});
   var sizeTxt = Math.round(c.size * 100) + '%';
   var sl = $('l2dSize');
@@ -3086,13 +3134,18 @@ async function l2dSwitchModel(id){
   l2dSetExpression(L2D_EDIT.cfg ? L2D_EDIT.cfg.expr : -1);
   l2dSyncUI();
 }
-function l2dEditOpen(){
-  if(!state.admin){ toast('先进入管理模式'); return; }
+/* kind：'admin' = 管理面板进入（管理模式）；'guest' = 桌宠齿轮进入（访客可用）。
+   两者只动桌宠外观、都只存本机；访客入口与上传/删除等核心功能完全无关。 */
+function l2dEditOpen(kind){
+  kind = (kind === 'guest') ? 'guest' : 'admin';
+  if(kind === 'admin' && !state.admin){ toast('先进入管理模式'); return; }
+  if(L2D_EDIT.editing) return;
   $('modalPanel').classList.remove('is-open');
   if(location.hash !== '#/' && location.hash !== '') location.hash = '#/';  /* 回首页才看得到桌宠 */
   l2dShow(true);
   if($('l2d').classList.contains('is-hidden')) $('l2dTab').click();          /* 折叠着没法拖 */
   L2D_EDIT.editing = true;
+  L2D_EDIT.kind = kind;
   L2D_EDIT.dev = l2dDevice();                       /* 这一局只改当前端，另一端不受影响 */
   L2D_EDIT.model = l2dModelCfg();                   /* 模型选择（站点级），取消时按它回滚 */
   L2D_EDIT.backup = l2dCfgClean(l2dSlotOf(L2D_EDIT.dev));
@@ -3102,6 +3155,8 @@ function l2dEditOpen(){
   applyL2dLayout(L2D_EDIT.cfg);
   l2dSyncUI();
 }
+/* 访客入口：桌宠齿轮 → 桌宠样式（不进管理模式，也碰不到上传等核心功能） */
+function l2dGuestOpen(){ l2dEditOpen('guest'); }
 function l2dEditClose(save){
   if(!L2D_EDIT.editing) return;
   var dev = L2D_EDIT.dev || l2dDevice();
@@ -3122,6 +3177,7 @@ function l2dEditClose(save){
   }
   L2D_EDIT.cfg = null;
   L2D_EDIT.model = '';
+  L2D_EDIT.kind = '';
   l2dSyncUI();
 }
 function l2dDragStart(e){
@@ -3984,6 +4040,10 @@ function bind(){
     try{ localStorage.setItem('layout.l2dHidden', h ? '1' : '0'); }catch(e){}
     if(L2D.app){ h ? L2D.app.stop() : L2D.app.start(); }
   });
+
+  /* 访客桌宠样式入口：齿轮（显隐与收起箭头完全一致；只动桌宠、只存本机） */
+  $('l2dGear').addEventListener('pointerdown', l2dTabPing);
+  $('l2dGear').addEventListener('click', l2dGuestOpen);
 
   /* Live2D 编辑模式（管理模式）：拖拽调整首页位置 + 切换表情（电脑端 / 移动端各存一份） */
   $('btnL2dEdit').addEventListener('click', l2dEditOpen);
