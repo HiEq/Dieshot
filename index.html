@@ -207,8 +207,9 @@ main{flex:1 0 auto}
 .home-hero-inner{display:flex;flex-direction:column;align-items:center;gap:24px}   /* 标题与按钮相互居中对齐 */
 .home-title{
   margin:0;font-weight:700;line-height:1.15;letter-spacing:-.01em;
-  font-size:clamp(30px, 4.6vw, 54px);   /* 基准值；JS 会自动适配到框内（与下方按钮行等宽） */
+  font-size:clamp(30px, 4.6vw, 54px);   /* 基准值；JS 会缩字号塞进固定大小的方框内 */
   /* 与下方按钮同一套液态玻璃：圆角矩形 + 半透明 + 高斯模糊 + 内高光 */
+  display:flex;align-items:center;justify-content:center;
   padding:10px 32px;border-radius:20px;
   background:var(--glass);
   -webkit-backdrop-filter:saturate(180%) blur(22px);backdrop-filter:saturate(180%) blur(22px);
@@ -947,7 +948,7 @@ footer .foot-links a:hover{color:var(--blue);text-decoration:none}
     <div class="home-bg" id="homeBg"></div>
     <div class="home-hero">
       <div class="home-hero-inner">
-        <h1 class="home-title">HIEQ的小站</h1>
+        <h1 class="home-title">HiEQ is here~</h1>
         <div class="home-links">
           <a class="glass-btn" href="https://github.com/HiEq" target="_blank" rel="noopener">Github主页</a>
           <a class="glass-btn" href="https://space.bilibili.com/571650607" target="_blank" rel="noopener">Bilibili主页</a>
@@ -1913,6 +1914,15 @@ function openMenu(n){
     grid.appendChild(card);
   });
   inner.appendChild(grid);
+  /* 卡片与触发它的导航项左对齐，并夹在视口内不贴边、不溢出 */
+  var item = document.querySelector('.nav-item[data-nav="' + n.id + '"]');
+  var shell = $('navShell');
+  var mm = $('megamenu');
+  if(item && shell && mm){
+    var left = item.getBoundingClientRect().left - shell.getBoundingClientRect().left;
+    var max = window.innerWidth - 24 - mm.offsetWidth;
+    mm.style.left = Math.max(12, Math.min(left, max)) + 'px';
+  }
   $('megamenu').classList.add('is-open');
   Array.prototype.forEach.call(document.querySelectorAll('.nav-item'), function(a){
     a.classList.toggle('is-open', a.dataset.nav === n.id);
@@ -2154,18 +2164,21 @@ function route(){
 function fitHomeTitle(){
   var t = document.querySelector('.home-title'), l = document.querySelector('.home-links');
   if(!t || !l) return;
-  t.style.fontSize = '';                                  /* 回到 CSS 基准再量 */
+  t.style.fontSize = '';                                   /* 回到 CSS 基准再量 */
+  t.style.minHeight = '';
   var cs = getComputedStyle(t);
   var base = parseFloat(cs.fontSize) || 46;
-  var target = l.getBoundingClientRect().width;           /* 按钮行宽度 */
-  var w = t.getBoundingClientRect().width;                /* 方框宽度（含内边距与描边） */
-  /* 内边距 + 描边不随字号缩放，先扣掉再算字号，方框才能与按钮行严丝合缝 */
+  var boxH = t.getBoundingClientRect().height;             /* 基准高度：方框面积保持不变 */
+  var target = l.getBoundingClientRect().width;            /* 按钮行宽度 = 方框宽度 */
+  var w = t.getBoundingClientRect().width;                 /* 方框宽度（含内边距与描边） */
+  /* 内边距 + 描边不随字号缩放，先扣掉再算字号 */
   var fixed = (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0)
             + (parseFloat(cs.borderLeftWidth) || 0) + (parseFloat(cs.borderRightWidth) || 0);
   var textW = Math.max(1, w - fixed);
   if(textW > 4 && target > 4){
-    var size = base * Math.max(1, target - fixed) / textW;   /* 文字自动适配到方框内 */
-    size = Math.max(base * 0.7, Math.min(size, base * 2.2));
+    var size = base * Math.max(1, target - fixed) / textW;  /* 缩字号，把文字塞进大小不变的方框 */
+    size = Math.max(base * 0.45, Math.min(size, base * 2.2));
+    t.style.minHeight = boxH.toFixed(1) + 'px';            /* 高度锁定 → 方框面积不变 */
     t.style.fontSize = size.toFixed(1) + 'px';
   }
 }
