@@ -19,23 +19,6 @@
   },
   "items": [
     {
-      "id": "imuijtu6a4vefw",
-      "coll": "dieshot",
-      "title": "Helio G95",
-      "desc": "TSMC 12nm",
-      "tags": [
-        "MediaTek"
-      ],
-      "name": "G95-MT6785v-8.20x8.04x0.jpg",
-      "size": 16974543,
-      "addedAt": "2026-09-26T15:32:56.194Z",
-      "w": 9033,
-      "h": 9380,
-      "src": "images/dieshot/mediatek/muijtu6a-G95-MT6785v-8.20x8.04x0.jpg",
-      "file": "images/dieshot/mediatek/muijtu6a-G95-MT6785v-8.20x8.04x0.jpg",
-      "thumb": "images/dieshot/mediatek/muijtu6a-G95-MT6785v-8.20x8.04x0.thumb.jpg"
-    },
-    {
       "id": "imuh2vsjj2bvro",
       "title": "Power 7+",
       "desc": "IBM 32nm SOI",
@@ -2082,22 +2065,6 @@
       "w": 10951,
       "h": 4167,
       "addedAt": "2026-05-09T05:46:12.769Z"
-    },
-    {
-      "id": "ds-13do-127",
-      "title": "Smithfield",
-      "desc": "Intel 90nm",
-      "tags": [
-        "Intel"
-      ],
-      "src": "images/dieshot/intel/pentuim-d-820-101k-13do.jpg",
-      "thumb": "images/dieshot/intel/pentuim-d-820-101k-13do.thumb.jpg",
-      "file": "images/dieshot/intel/pentuim-d-820-101k-13do.jpg",
-      "name": "pentuim D 820-101K.jpg",
-      "size": 1205603,
-      "w": 10876,
-      "h": 5529,
-      "addedAt": "2025-01-18T10:51:53.000Z"
     },
     {
       "id": "ds-1wpp-128",
