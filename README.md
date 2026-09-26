@@ -1,7 +1,7 @@
 <div align="center">
   <img src="1.jpg" width="96" height="96" alt="HiEQ" style="border-radius:24px">
   <h1>HiEQ · HOME</h1>
-  <p><b>单文件个人主页</b> ＋ <b>Dieshot图库</b></p>
+  <p><b>个人主页</b> ＋ <b>Dieshot图库</b></p>
   <p>
     <a href="https://hieq-home404.pages.dev/"><b>🌐 在线访问</b></a>
     &nbsp;·&nbsp;
@@ -23,9 +23,6 @@
 ---
 
 ## 📖 关于这个站点
-
-这是一个**单文件静态站**
-站点分三个部分：
 
 | 版块 | 内容 |
 | --- | --- |
