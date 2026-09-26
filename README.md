@@ -88,7 +88,7 @@
 
 | 层 | 选型 |
 | --- | --- |
-| 页面 | 原生 HTML / CSS / JS（**单文件、零依赖、无构建**） |
+| 页面 | 原生 HTML / CSS / JS |
 | Live2D | Cubism 4 Core ＋ PixiJS ＋ pixi-live2d-display |
 | 字体 | Qualcomm Next（打包在 `fonts/`，Regular / Medium） |
 | 部署 | GitHub Pages（`.nojekyll` 原样输出） |
