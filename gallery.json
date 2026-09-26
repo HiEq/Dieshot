@@ -19,6 +19,23 @@
   },
   "items": [
     {
+      "id": "imuijtu6a4vefw",
+      "coll": "dieshot",
+      "title": "Helio G95",
+      "desc": "TSMC 12nm",
+      "tags": [
+        "MediaTek"
+      ],
+      "name": "G95-MT6785v-8.20x8.04x0.jpg",
+      "size": 16974543,
+      "addedAt": "2026-09-26T15:32:56.194Z",
+      "w": 9033,
+      "h": 9380,
+      "src": "images/dieshot/mediatek/muijtu6a-G95-MT6785v-8.20x8.04x0.jpg",
+      "file": "images/dieshot/mediatek/muijtu6a-G95-MT6785v-8.20x8.04x0.jpg",
+      "thumb": "images/dieshot/mediatek/muijtu6a-G95-MT6785v-8.20x8.04x0.thumb.jpg"
+    },
+    {
       "id": "imuh2vsjj2bvro",
       "title": "Power 7+",
       "desc": "IBM 32nm SOI",
