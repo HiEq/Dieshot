@@ -203,10 +203,10 @@ main{flex:1 0 auto}
 .home-hero > *{pointer-events:auto}     /* 只有文字和按钮可点，其余区域留给视线跟踪 */
 .home-hero-inner{display:flex;flex-direction:column;align-items:center;gap:24px}   /* 标题与按钮相互居中对齐 */
 .home-title{
-  margin:0;font-weight:500;line-height:1.1;letter-spacing:-.01em;
-  font-size:clamp(32px, 5vw, 60px);
-  /* 背景是亮色实景图：白字 + 双层阴影，任何位置都读得清 */
-  color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.4), 0 10px 40px rgba(0,0,0,.38);
+  margin:0;font-weight:400;line-height:1.15;letter-spacing:-.01em;
+  font-size:clamp(28px, 4vw, 46px);
+  /* 亮色实景背景上用黑字 + 一层浅色光晕保证可读 */
+  color:#111;text-shadow:0 1px 2px rgba(255,255,255,.5), 0 6px 26px rgba(255,255,255,.38);
 }
 .home-links{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
 /* 液态玻璃按钮：半透明填充 + 高斯模糊 + 圆角矩形 */
@@ -228,7 +228,7 @@ main{flex:1 0 auto}
     align-items:center;justify-content:center;
     padding:calc(var(--nav-h, 64px) + 18px) max(24px, env(safe-area-inset-right)) 22vh max(24px, env(safe-area-inset-left));
   }
-  .home-title{font-size:clamp(28px, 8vw, 42px);text-align:center}
+  .home-title{font-size:clamp(24px, 6.5vw, 34px);text-align:center}
   .home-links{width:100%}
   .glass-btn{height:50px;padding:0 22px;font-size:15.5px}
 }
