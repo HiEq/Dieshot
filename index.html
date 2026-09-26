@@ -1143,7 +1143,7 @@ footer .sep{opacity:.4}
     <div class="row2">
       <div>
         <div class="mini-title">修改管理口令</div>
-        <div class="field"><input id="newPw" type="password" placeholder="新的管理口令（至少 4 位）" autocomplete="new-password"></div>
+        <div class="field"><input id="newPw" type="password" placeholder="新的管理口令（至少 8 位，建议长随机）" autocomplete="new-password"></div>
         <button class="btn ghost sm" id="btnPw">更新口令</button>
       </div>
       <div>
@@ -1302,7 +1302,9 @@ var EN = {
   'Personal Access Token':'Personal Access Token', '仓库所有者 / 仓库名':'Owner / repository',
   '分支':'Branch', '图片目录':'Image directory', '清单文件路径':'Manifest path',
   '测试连接':'Test connection', '保存设置':'Save settings', '修改管理口令':'Change password',
-  '新的管理口令（至少 4 位）':'New password (min 4 chars)', '更新口令':'Update password',
+  '新的管理口令（至少 8 位，建议长随机）':'New password (min 8 chars, long & random advised)', '更新口令':'Update password',
+  '尝试太频繁，请 {s} 秒后再试':'Too many attempts — try again in {s}s',
+  '连续错误次数过多，已暂时锁定':'Too many failed attempts — temporarily locked',
   '当前图库':'Current gallery', '补齐缩略图':'Backfill thumbnails', '重新加载清单':'Reload manifest',
   '退出管理模式':'Exit admin',
   /* 页脚 */
@@ -1373,7 +1375,7 @@ var DYN = [
   [/^已导出 gallery\.json，可直接提交到仓库根目录$/, 'Exported gallery.json — commit it to the repo root'],
   [/^所有图片都已有缩略图$/, 'All images already have thumbnails'],
   [/^已重新加载清单$/, 'Manifest reloaded'],
-  [/^口令至少 4 位$/, 'Password must be at least 4 characters'],
+  [/^口令至少 8 位$/, 'Password must be at least 8 characters'],
   [/^已进入管理模式$/, 'Admin mode unlocked'],
   [/^已退出管理模式$/, 'Exited admin mode'],
   [/^正在连接…$/, 'Connecting…'],
@@ -1467,6 +1469,41 @@ function b64(buf){
   var u8=new Uint8Array(buf), s='', CH=0x8000;
   for(var i=0;i<u8.length;i+=CH){ s += String.fromCharCode.apply(null, u8.subarray(i, i+CH)); }
   return btoa(s);
+}
+/* ---------- 管理口令哈希：PBKDF2-SHA256（20 万次迭代 + 每口令随机盐） ----------
+   安全说明：纯静态站没有后端，前端**不可能藏住秘密** —— adminHash 只是一把「界面锁」，
+   真正的权限边界是 GitHub Token（只存在管理员自己的浏览器 localStorage，绝不入库；
+   没有 Token 就算进得了管理模式也改不了仓库）。这里改用慢哈希，是为了让离线撞库
+   的成本高到不划算 —— 但弱口令依然不安全，请用长随机口令。
+   格式：p1$<迭代次数>$<盐 base64>$<派生哈希 base64>；旧的纯 SHA-256 十六进制仍可验证。 */
+var PW_ITER = 200000;
+function bytesFromB64(s){
+  try{
+    var bin = atob(s || ''), out = new Uint8Array(bin.length);
+    for(var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }catch(e){ return new Uint8Array(0); }
+}
+async function pbkdf2B64(password, saltBytes, iter){
+  var key = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits']);
+  var bits = await crypto.subtle.deriveBits({name:'PBKDF2', salt: saltBytes, iterations: iter, hash:'SHA-256'}, key, 256);
+  return b64(bits);
+}
+async function hashPasswordNew(password){
+  if(!(window.crypto && crypto.subtle && crypto.subtle.importKey)) return 'plain:' + password;
+  var salt = new Uint8Array(16);
+  crypto.getRandomValues(salt);
+  return 'p1$' + PW_ITER + '$' + b64(salt) + '$' + await pbkdf2B64(password, salt, PW_ITER);
+}
+async function verifyPassword(password, stored){
+  stored = stored || DEFAULT_CFG.adminHash;
+  if(stored && stored.indexOf('p1$') === 0){
+    if(!(window.crypto && crypto.subtle && crypto.subtle.importKey)) return false;
+    var p = stored.split('$');
+    var iter = parseInt(p[1], 10) || PW_ITER;
+    try{ return (await pbkdf2B64(password, bytesFromB64(p[2] || ''), iter)) === p[3]; }catch(e){ return false; }
+  }
+  return (await sha256(password)) === stored;    /* 兼容旧的纯 SHA-256 十六进制 */
 }
 function lsGet(k, d){ try{ var v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch(e){ return d; } }
 function lsSet(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
@@ -3129,20 +3166,40 @@ function openLogin(){
   $('modalLogin').classList.add('is-open');
   setTimeout(function(){ $('pw').focus(); }, 60);
 }
+var PW_TRIES = 0, PW_LOCK_UNTIL = 0;      /* 连续试错限速：越错锁得越久 */
 async function tryLogin(){
-  var ok = false;
-  var hash = await sha256($('pw').value || '');
-  ok = (hash === (state.cfg.adminHash || DEFAULT_CFG.adminHash));
+  if(Date.now() < PW_LOCK_UNTIL){
+    $('pwErr').textContent = fmtTpl(t('尝试太频繁，请 {s} 秒后再试'), {s: Math.ceil((PW_LOCK_UNTIL - Date.now()) / 1000)});
+    $('pwErr').classList.remove('hidden');
+    return;
+  }
+  var pw = $('pw').value || '';
+  var ok = await verifyPassword(pw, state.cfg.adminHash || DEFAULT_CFG.adminHash);
   if(!ok){
+    PW_TRIES++;
+    if(PW_TRIES >= 5){
+      PW_LOCK_UNTIL = Date.now() + Math.min(30000 * Math.pow(2, PW_TRIES - 5), 300000);   /* 30 秒起，指数退避到 5 分钟 */
+      $('pwErr').textContent = t('连续错误次数过多，已暂时锁定');
+    }else{
+      $('pwErr').textContent = t('口令不正确，请重试。');
+    }
     $('pwErr').classList.remove('hidden');
     $('pw').select();
     return;
   }
+  PW_TRIES = 0; PW_LOCK_UNTIL = 0;
   state.admin = true;
   $('modalLogin').classList.remove('is-open');
   setAdminUI();
   toast('已进入管理模式');
   openPanel();
+  /* 旧格式（纯 SHA-256）自动升级为慢哈希，防止口令被离线撞库还原 */
+  try{
+    if((state.cfg.adminHash || '').indexOf('p1$') !== 0){
+      state.cfg.adminHash = await hashPasswordNew(pw);
+      await saveManifest('upgrade admin hash', 'dieshot');
+    }
+  }catch(e){}
 }
 function setAdminUI(){
   clearCards();                        /* 管理模式卡片带删除按钮，需重建节点 */
@@ -3678,8 +3735,8 @@ function bind(){
   });
   $('btnPw').addEventListener('click', async function(){
     var v = $('newPw').value || '';
-    if(v.length < 4){ toast('口令至少 4 位'); return; }
-    state.cfg.adminHash = await sha256(v);
+    if(v.length < 8){ toast('口令至少 8 位'); return; }   /* 慢哈希也挡不住弱口令，请用长随机口令 */
+    state.cfg.adminHash = await hashPasswordNew(v);
     $('newPw').value = '';
     await saveManifest('update admin hash');
   });
