@@ -748,8 +748,8 @@ footer .foot-links a:hover{color:var(--blue);text-decoration:none}
   opacity:0;transition:opacity .2s,color .2s;
 }
 .l2d:hover .l2d-gear,
-.l2d.is-hidden .l2d-gear,
 .l2d.show-tab .l2d-gear{opacity:1;pointer-events:auto}
+.l2d.is-hidden .l2d-gear{display:none}          /* 折叠后只留一个展开箭头 */
 .l2d-gear:hover{color:var(--blue)}
 .l2d-gear svg{width:18px;height:18px}
 /* ---------- Live2D 编辑模式（管理模式）：鼠标拖拽调位置 + 切换表情 ---------- */
