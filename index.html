@@ -1829,30 +1829,51 @@ function renderCounts(){
   $('layoutSub').textContent = fmtTpl(t(LAYOUT_SUB_TPL), null, state.dieshot);
   $('miscSub').textContent = fmtTpl(t(MISC_SUB_TPL), null, state.misc);
 }
-/* ---------- 站点统计：总访问次数 + 当前在线（15 分钟窗口去重计数，CountAPI 公共计数器） ---------- */
+/* ---------- 站点统计：总访问次数 + 当前在线（15 分钟窗口去重计数，CountAPI 公共计数器） ----------
+   实时刷新：每 20 秒只读拉一次两个计数器；页面重新可见 / 窗口聚焦时立刻补一次；
+   标签页隐藏时暂停轮询，不给公共计数器添乱 */
 var STATS_API = 'https://countapi.mileshilliard.com/api/v1';
 var STATS_KEY = 'hieq-dieshot-site';
+var STATS_POLL = 20000;            /* 实时刷新间隔 */
+var STATS_BUSY = false;
 function fmtNum(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
-async function bumpViews(){
+function setStat(id, v){ var el = $(id); if(el) el.textContent = isNaN(v) ? '—' : fmtNum(v); }
+async function bumpViews(){        /* 进站 +1，并显示最新总数 */
   try{
     var d = await (await fetch(STATS_API + '/hit/' + STATS_KEY + '-views?ts=' + Date.now(), {cache:'no-store', keepalive:true})).json();
-    var v = Number(d && d.value);
-    $('statViews').textContent = isNaN(v) ? '—' : fmtNum(v);
-  }catch(e){ $('statViews').textContent = '—'; }
+    setStat('statViews', Number(d && d.value));
+  }catch(e){ setStat('statViews', NaN); }
 }
-async function refreshOnline(){
+/* 只读刷新（绝不给访问数 +1） */
+async function refreshStats(){
+  if(STATS_BUSY || document.hidden) return;
+  STATS_BUSY = true;
   try{
-    var bucket = Math.floor(Date.now() / 900000);      /* 15 分钟一桶 */
-    var last = 0;
-    try{ last = parseInt(localStorage.getItem('layout.presence') || '0', 10) || 0; }catch(e){}
-    if(last !== bucket){                               /* 同一访客每窗口只计一次 */
-      try{ localStorage.setItem('layout.presence', String(bucket)); }catch(e){}
-      await fetch(STATS_API + '/hit/' + STATS_KEY + '-on-' + bucket + '?ts=' + Date.now(), {cache:'no-store', keepalive:true});
-    }
-    var g = await (await fetch(STATS_API + '/get/' + STATS_KEY + '-on-' + bucket + '?ts=' + Date.now(), {cache:'no-store'})).json();
-    var ov = Number(g && g.value);
-    $('statOnline').textContent = isNaN(ov) ? '—' : fmtNum(ov);
-  }catch(e){ $('statOnline').textContent = '—'; }
+    try{
+      var d = await (await fetch(STATS_API + '/get/' + STATS_KEY + '-views?ts=' + Date.now(), {cache:'no-store'})).json();
+      setStat('statViews', Number(d && d.value));
+    }catch(e){}
+    try{
+      var bucket = Math.floor(Date.now() / 900000);      /* 15 分钟一桶 */
+      var last = 0;
+      try{ last = parseInt(localStorage.getItem('layout.presence') || '0', 10) || 0; }catch(e){}
+      if(last !== bucket){                               /* 同一访客每窗口只计一次 */
+        try{ localStorage.setItem('layout.presence', String(bucket)); }catch(e){}
+        await fetch(STATS_API + '/hit/' + STATS_KEY + '-on-' + bucket + '?ts=' + Date.now(), {cache:'no-store', keepalive:true});
+      }
+      var g = await (await fetch(STATS_API + '/get/' + STATS_KEY + '-on-' + bucket + '?ts=' + Date.now(), {cache:'no-store'})).json();
+      setStat('statOnline', Number(g && g.value));
+    }catch(e){}
+  }finally{
+    STATS_BUSY = false;
+  }
+}
+function startStats(){
+  bumpViews();                                   /* 进站 +1 */
+  refreshStats();
+  setInterval(refreshStats, STATS_POLL);         /* 实时轮询两个计数器 */
+  document.addEventListener('visibilitychange', function(){ if(!document.hidden) refreshStats(); });
+  window.addEventListener('focus', refreshStats);   /* 切回本页立刻刷新 */
 }
 function firstImage(){
   /* 下拉菜单缩略图 = 最新一张 Dieshot */
@@ -3923,9 +3944,7 @@ function bind(){
   var savedLang = '';
   try{ savedLang = localStorage.getItem('layout.lang') || ''; }catch(e){}
   setLang(savedLang || ((navigator.language || '').toLowerCase().indexOf('en') === 0 ? 'en' : 'zh'));
-  bumpViews();                              /* 总访问 +1 并显示 */
-  refreshOnline();                          /* 当前在线 */
-  setInterval(refreshOnline, 60000);        /* 每分钟刷新在线人数 */
+  startStats();                             /* 总访问 + 当前在线：每 20 秒实时刷新 */
 })();
 
 })();
