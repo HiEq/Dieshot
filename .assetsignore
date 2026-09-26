@@ -1,0 +1,15 @@
+# 静态资源上传忽略清单（.gitignore 语法）
+# 目的：构建产物里混进 .git 会触发「单文件不得超过 25 MiB」报错（.git/objects 的 pack 文件有几百 MB），
+# 同时后端代码与开发脚本也不该作为公开静态资源上传。
+.git
+.github
+.vscode
+.wrangler
+node_modules
+functions
+tools
+bongoUsingVer
+DEPLOY.md
+*.log
+*.zip
+*.psd

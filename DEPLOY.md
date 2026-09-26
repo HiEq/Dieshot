@@ -74,6 +74,9 @@ Pages 项目 → **Custom domains** → 添加域名，按提示把 CNAME 指到
 
 ## 六、常见问题
 
+**Q：构建报「单文件不得超过 25 MiB」，还提示找到了 `.git/objects/...` 的文件？**
+A：构建产物里混进了 Git 历史。仓库根目录的 `.assetsignore` 已把 `.git`、`functions`、`tools` 等排除在静态资源上传之外，保留它即可；如果自己改动过，确认 `.git` 那一行还在。
+
 **Q：改了环境变量没生效？**
 A：环境变量在部署时注入，去 Deployments 里点 **Retry deployment**。
 
