@@ -8,7 +8,7 @@
     "bg": "images/home-bg.jpg"
   },
   "config": {
-    "adminHash": "90248665dd7a50717e26ddc4bfa9922d8d373096c968238564fcd591216d61ba",
+    "adminHash": "f94eea0f5f8b9ed117a678359da5c29033a34dcfdea874d4b64cd5ed17d9326c",
     "github": {
       "token": "",
       "owner": "HiEq/Dieshot",
@@ -20,20 +20,19 @@
   "items": [
     {
       "id": "imuh2vsjj2bvro",
-      "coll": "dieshot",
       "title": "Power 7+",
       "desc": "IBM 32nm SOI",
       "tags": [
         "IBM"
       ],
+      "src": "images/dieshot/ibm/muh2vsjk-IBM-Power-7.png",
+      "thumb": "images/dieshot/ibm/muh2vsjk-IBM-Power-7.thumb.jpg",
+      "file": "images/dieshot/ibm/muh2vsjk-IBM-Power-7.png",
       "name": "IBM Power 7+.png",
       "size": 9376730,
-      "addedAt": "2026-09-25T14:50:47.743Z",
       "w": 2333,
       "h": 1989,
-      "src": "images/dieshot/ibm/muh2vsjk-IBM-Power-7.png",
-      "file": "images/dieshot/ibm/muh2vsjk-IBM-Power-7.png",
-      "thumb": "images/dieshot/ibm/muh2vsjk-IBM-Power-7.thumb.jpg"
+      "addedAt": "2026-09-25T14:50:47.743Z"
     },
     {
       "id": "imuf7154iu9ub1",
