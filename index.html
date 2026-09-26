@@ -142,7 +142,7 @@ button{cursor:pointer;background:none;border:0;padding:0}
 
 /* 顶栏下拉超大菜单：收紧成刚好包裹内容的圆角卡片 */
 .megamenu{
-  position:absolute;left:12px;top:calc(var(--nav-h) + 4px);
+  position:absolute;left:12px;top:calc(var(--nav-h) + 16px);   /* 落在顶栏底边之下，不与顶栏重叠 */
   width:max-content;max-width:calc(100vw - 24px);
   border-radius:18px;
   background:var(--glass-strong);
@@ -153,6 +153,8 @@ button{cursor:pointer;background:none;border:0;padding:0}
   opacity:0;transform:translateY(-6px);pointer-events:none;
   transition:opacity .28s ease,transform .28s ease;
 }
+/* 与顶栏之间的缝隙补一块透明热区：鼠标向下移动时不会「掉出」菜单 */
+.megamenu::before{content:"";position:absolute;left:0;right:0;top:-12px;height:14px}
 .megamenu.is-open{opacity:1;transform:none;pointer-events:auto}
 .megamenu-inner{padding:20px 22px 22px}          /* 不再撑满整行，直接包裹主体内容 */
 .mm-lead{font-size:20px;font-weight:700;letter-spacing:-.02em;margin:0 0 14px}
