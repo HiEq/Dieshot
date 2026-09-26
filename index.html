@@ -203,10 +203,15 @@ main{flex:1 0 auto}
 .home-hero > *{pointer-events:auto}     /* 只有文字和按钮可点，其余区域留给视线跟踪 */
 .home-hero-inner{display:flex;flex-direction:column;align-items:center;gap:24px}   /* 标题与按钮相互居中对齐 */
 .home-title{
-  margin:0;font-weight:400;line-height:1.15;letter-spacing:-.01em;
-  font-size:clamp(28px, 4vw, 46px);
-  /* 亮色实景背景上用黑字 + 一层浅色光晕保证可读 */
-  color:#111;text-shadow:0 1px 2px rgba(255,255,255,.5), 0 6px 26px rgba(255,255,255,.38);
+  margin:0;font-weight:700;line-height:1.15;letter-spacing:-.01em;
+  font-size:clamp(30px, 4.6vw, 54px);   /* 基准值；JS 会自动适配到框内（与下方按钮行等宽） */
+  /* 与下方按钮同一套液态玻璃：圆角矩形 + 半透明 + 高斯模糊 + 内高光 */
+  padding:10px 32px;border-radius:20px;
+  background:var(--glass);
+  -webkit-backdrop-filter:saturate(180%) blur(22px);backdrop-filter:saturate(180%) blur(22px);
+  border:1px solid var(--hairline);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35), 0 12px 32px rgba(0,0,0,.18);
+  color:var(--fg);        /* 黑色（浅色模式）；深色模式下玻璃变深、字随之变亮保持可读 */
 }
 .home-links{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
 /* 液态玻璃按钮：半透明填充 + 高斯模糊 + 圆角矩形 */
@@ -228,8 +233,8 @@ main{flex:1 0 auto}
     align-items:center;justify-content:center;
     padding:calc(var(--nav-h, 64px) + 18px) max(24px, env(safe-area-inset-right)) 22vh max(24px, env(safe-area-inset-left));
   }
-  .home-title{font-size:clamp(24px, 6.5vw, 34px);text-align:center}
-  .home-links{width:100%}
+  .home-title{font-size:clamp(24px, 6.5vw, 34px);text-align:center;padding:8px 22px}   /* 基准值；同样按按钮行宽度自动放大 */
+  .home-links{width:auto}
   .glass-btn{height:50px;padding:0 22px;font-size:15.5px}
 }
 .section-head h2{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
@@ -2000,6 +2005,25 @@ function route(){
   window.scrollTo(0, 0);
 }
 
+/* ---------- 首页标题：字号自动适配到方框内（方框与下方按钮行等宽） ---------- */
+function fitHomeTitle(){
+  var t = document.querySelector('.home-title'), l = document.querySelector('.home-links');
+  if(!t || !l) return;
+  t.style.fontSize = '';                                  /* 回到 CSS 基准再量 */
+  var cs = getComputedStyle(t);
+  var base = parseFloat(cs.fontSize) || 46;
+  var target = l.getBoundingClientRect().width;           /* 按钮行宽度 */
+  var w = t.getBoundingClientRect().width;                /* 方框宽度（含内边距与描边） */
+  /* 内边距 + 描边不随字号缩放，先扣掉再算字号，方框才能与按钮行严丝合缝 */
+  var fixed = (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0)
+            + (parseFloat(cs.borderLeftWidth) || 0) + (parseFloat(cs.borderRightWidth) || 0);
+  var textW = Math.max(1, w - fixed);
+  if(textW > 4 && target > 4){
+    var size = base * Math.max(1, target - fixed) / textW;   /* 文字自动适配到方框内 */
+    size = Math.max(base * 0.7, Math.min(size, base * 2.2));
+    t.style.fontSize = size.toFixed(1) + 'px';
+  }
+}
 /* ---------- 渲染：首页 ---------- */
 function renderHome(){
   renderCounts();
@@ -2023,6 +2047,7 @@ function renderHome(){
   }
   $('footName').textContent = state.site.foot || 'HiEQ';
   $('footYear').textContent = '© ' + new Date().getFullYear();
+  fitHomeTitle();      /* 标题字号自动适配到方框内（与按钮行等宽） */
 }
 /* （展示条随机抽取 / 自动滚动引擎已随个人主页改版移除） */
 
@@ -3876,6 +3901,8 @@ function bind(){
   window.addEventListener('pointerup', l2dDragEnd);
   window.addEventListener('pointercancel', l2dDragEnd);
   window.addEventListener('resize', function(){ applyL2dLayout(); l2dSyncUI(); l2dSyncDevice(); });
+  window.addEventListener('resize', function(){ fitHomeTitle(); });   /* 标题字号随窗口重算 */
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(fitHomeTitle);   /* 字体就绪后再量一次 */
 
   /* 点击遮罩关闭（编辑弹窗除外：只能用「取消」/「保存」关闭，防误触丢改动） */
   ['modalLogin','modalPanel'].forEach(function(id){
